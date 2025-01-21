@@ -9,14 +9,13 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
+import jakarta.validation.constraints.NotNull;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
 
 @Entity
 @Table(name = "emotions")
 @Getter
-@Setter
 @NoArgsConstructor(access = PROTECTED)
 public class Emotion extends BaseEntity {
 
@@ -24,9 +23,10 @@ public class Emotion extends BaseEntity {
     @GeneratedValue(strategy = IDENTITY)
     private Long id;
 
+    @NotNull
     @Column(name = "type", nullable = false)
     private String type;
 
-    @Column(name = "content", nullable = false, length = 100)
+    @Column(name = "content")
     private String content;
 }

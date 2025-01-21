@@ -12,14 +12,13 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
+import jakarta.validation.constraints.NotNull;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
 
 @Entity
 @Table(name = "story_comments")
 @Getter
-@Setter
 @NoArgsConstructor(access = PROTECTED)
 public class Comment extends BaseEntity {
 
@@ -27,10 +26,12 @@ public class Comment extends BaseEntity {
     @GeneratedValue(strategy = IDENTITY)
     private Long id;
 
+    @NotNull
     @ManyToOne
     @JoinColumn(name = "story_id", nullable = false)
     private Story story;
 
+    @NotNull
     @Column(name = "content", nullable = false, columnDefinition = "TEXT")
     private String content;
 

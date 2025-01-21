@@ -15,14 +15,13 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
+import jakarta.validation.constraints.NotNull;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
 
 @Entity
 @Table(name = "users")
 @Getter
-@Setter
 @NoArgsConstructor(access = PROTECTED)
 public class User extends BaseEntity {
 
@@ -30,12 +29,15 @@ public class User extends BaseEntity {
     @GeneratedValue(strategy = IDENTITY)
     private Long id;
 
+    @NotNull
     @Column(name = "name", nullable = false)
     private String name;
 
-    @Column(name = "nickname", nullable = false)
+    @NotNull
+    @Column(name = "nickname", nullable = false, unique = true)
     private String nickname;
 
+    @NotNull
     @Column(name = "email", nullable = false, unique = true)
     private String email;
 

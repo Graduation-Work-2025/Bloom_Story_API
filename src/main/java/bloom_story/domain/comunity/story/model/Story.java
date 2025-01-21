@@ -20,14 +20,13 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
+import jakarta.validation.constraints.NotNull;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
 
 @Entity
 @Table(name = "stories")
 @Getter
-@Setter
 @NoArgsConstructor(access = PROTECTED)
 public class Story extends BaseEntity {
 
@@ -35,16 +34,19 @@ public class Story extends BaseEntity {
     @GeneratedValue(strategy = IDENTITY)
     private Long id;
 
+    @NotNull
     @ManyToOne
     @JoinColumn(name = "user_id", nullable = false)
     private User user;
 
+    @NotNull
     @Column(name = "title", nullable = false)
     private String title;
 
-    @Column(name = "content", nullable = false, columnDefinition = "TEXT")
+    @Column(name = "content", columnDefinition = "TEXT")
     private String content;
 
+    @NotNull
     @Column(name = "likes", nullable = false)
     private int likes = 0;
 
@@ -52,18 +54,20 @@ public class Story extends BaseEntity {
     @JoinColumn(name = "bloom_id", nullable = false)
     private Bloom bloom;
 
+    @NotNull
     @ManyToOne(fetch = LAZY)
     @JoinColumn(name = "emotion_id", nullable = false)
     private Emotion emotion;
 
+    @NotNull
     @Column(name = "location", nullable = false, columnDefinition = "POINT")
     private String location;
 
     @OneToMany(mappedBy = "story", cascade = ALL, orphanRemoval = true, fetch = LAZY)
-    @JoinColumn(name = "comment_id", updatable = false)
+    @JoinColumn(name = "comment_id")
     private List<Comment> comments;
 
     @OneToMany(mappedBy = "story", cascade = ALL, orphanRemoval = true, fetch = LAZY)
-    @JoinColumn(name = "image_id", updatable = false)
+    @JoinColumn(name = "image_id")
     private List<StoryImage> images;
 }
