@@ -1,4 +1,4 @@
-package java.bloom_story;
+package bloom_story;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
