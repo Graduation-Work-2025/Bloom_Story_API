@@ -12,6 +12,7 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 import jakarta.validation.constraints.NotNull;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -23,7 +24,7 @@ public class StoryImage extends BaseEntity {
 
     @Id
     @GeneratedValue(strategy = IDENTITY)
-    private Long id;
+    private Integer id;
 
     @NotNull
     @ManyToOne
@@ -33,4 +34,15 @@ public class StoryImage extends BaseEntity {
     @NotNull
     @Column(name = "image_url", nullable = false)
     private String imageUrl;
+
+    @Builder
+    public StoryImage(
+        Integer id,
+        Story story,
+        String imageUrl
+    ) {
+        this.id = id;
+        this.story = story;
+        this.imageUrl = imageUrl;
+    }
 }

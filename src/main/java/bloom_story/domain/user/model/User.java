@@ -16,6 +16,7 @@ import jakarta.persistence.Id;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import jakarta.validation.constraints.NotNull;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -27,7 +28,7 @@ public class User extends BaseEntity {
 
     @Id
     @GeneratedValue(strategy = IDENTITY)
-    private Long id;
+    private Integer id;
 
     @NotNull
     @Column(name = "name", nullable = false)
@@ -46,4 +47,19 @@ public class User extends BaseEntity {
 
     @OneToMany(mappedBy = "user", cascade = ALL, orphanRemoval = true, fetch = LAZY)
     private List<Story> stories;
+
+    @Builder
+    public User(
+        Integer id,
+        String name,
+        String nickname,
+        String email,
+        String phone
+    ) {
+        this.id = id;
+        this.name = name;
+        this.nickname = nickname;
+        this.email = email;
+        this.phone = phone;
+    }
 }

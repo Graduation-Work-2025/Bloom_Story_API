@@ -10,6 +10,7 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
 import jakarta.validation.constraints.NotNull;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -21,7 +22,7 @@ public class Emotion extends BaseEntity {
 
     @Id
     @GeneratedValue(strategy = IDENTITY)
-    private Long id;
+    private Integer id;
 
     @NotNull
     @Column(name = "type", nullable = false)
@@ -29,4 +30,13 @@ public class Emotion extends BaseEntity {
 
     @Column(name = "content")
     private String content;
+
+    @Builder
+    public Emotion(
+        String type,
+        String content
+    ) {
+        this.type = type;
+        this.content = content;
+    }
 }

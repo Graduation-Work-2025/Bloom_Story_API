@@ -13,6 +13,7 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 import jakarta.validation.constraints.NotNull;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -24,7 +25,7 @@ public class Comment extends BaseEntity {
 
     @Id
     @GeneratedValue(strategy = IDENTITY)
-    private Long id;
+    private Integer id;
 
     @NotNull
     @ManyToOne
@@ -34,5 +35,16 @@ public class Comment extends BaseEntity {
     @NotNull
     @Column(name = "content", nullable = false, columnDefinition = "TEXT")
     private String content;
+
+    @Builder
+    public Comment(
+        Integer id,
+        Story story,
+        String content
+    ) {
+        this.id = id;
+        this.story = story;
+        this.content = content;
+    }
 
 }

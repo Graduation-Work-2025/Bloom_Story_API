@@ -21,6 +21,7 @@ import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import jakarta.validation.constraints.NotNull;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -32,7 +33,7 @@ public class Story extends BaseEntity {
 
     @Id
     @GeneratedValue(strategy = IDENTITY)
-    private Long id;
+    private Integer id;
 
     @NotNull
     @ManyToOne
@@ -70,4 +71,21 @@ public class Story extends BaseEntity {
     @OneToMany(mappedBy = "story", cascade = ALL, orphanRemoval = true, fetch = LAZY)
     @JoinColumn(name = "image_id")
     private List<StoryImage> images;
+
+    @Builder
+    public Story(
+        Integer id,
+        User user,
+        String title,
+        String content,
+        int likes,
+        String location
+    ) {
+        this.id = id;
+        this.user = user;
+        this.title = title;
+        this.content = content;
+        this.likes = likes;
+        this.location = location;
+    }
 }

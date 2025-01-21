@@ -10,6 +10,7 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
 import jakarta.validation.constraints.NotNull;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -21,7 +22,7 @@ public class Bloom extends BaseEntity {
 
     @Id
     @GeneratedValue(strategy = IDENTITY)
-    private Long id;
+    private Integer id;
 
     @NotNull
     @Column(name = "name", nullable = false, unique = true)
@@ -33,4 +34,17 @@ public class Bloom extends BaseEntity {
 
     @Column(name = "symbol")
     private String symbol;
+
+    @Builder
+    public Bloom(
+        Integer id,
+        String name,
+        String type,
+        String symbol
+    ) {
+        this.id = id;
+        this.name = name;
+        this.type = type;
+        this.symbol = symbol;
+    }
 }
