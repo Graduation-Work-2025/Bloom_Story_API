@@ -30,7 +30,7 @@ public class Comment {
     @JoinColumn(name = "story_id", nullable = false)
     private Story story;
 
-    @Column(name = "content", nullable = false, length = 100)
+    @Column(name = "content", nullable = false, columnDefinition = "TEXT")
     private String content;
 
 }
