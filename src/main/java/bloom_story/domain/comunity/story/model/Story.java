@@ -65,11 +65,9 @@ public class Story extends BaseEntity {
     private String location;
 
     @OneToMany(mappedBy = "story", cascade = ALL, orphanRemoval = true, fetch = LAZY)
-    @JoinColumn(name = "comment_id")
     private List<Comment> comments;
 
     @OneToMany(mappedBy = "story", cascade = ALL, orphanRemoval = true, fetch = LAZY)
-    @JoinColumn(name = "image_id")
     private List<StoryImage> images;
 
     @Builder

@@ -42,7 +42,7 @@ public class User extends BaseEntity {
     @Column(name = "email", nullable = false, unique = true)
     private String email;
 
-    @Column(name = "email", nullable = false, unique = true)
+    @Column(name = "phone", nullable = false, unique = true)
     private String phone;
 
     @OneToMany(mappedBy = "user", cascade = ALL, orphanRemoval = true, fetch = LAZY)
