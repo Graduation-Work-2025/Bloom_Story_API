@@ -10,7 +10,7 @@ public record UnityMessage(
 ) {
 
     public static UnityMessage fromJson(String json) {
-
+        return null;
     }
 }
 

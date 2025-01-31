@@ -25,7 +25,7 @@ public class UnityWebSocketHandler extends TextWebSocketHandler {
 
         // JSON 데이터 변환 (예제)
         UnityMessage unityMessage = objectMapper.readValue(message.getPayload(), UnityMessage.class);
-        unityMessage.setResponse("서버에서 응답함");
+        //unityMessage.setResponse("서버에서 응답함");
 
         // Unity에 메시지 응답
         sendMessage(session, unityMessage);
