@@ -5,6 +5,7 @@ import static jakarta.persistence.FetchType.LAZY;
 import static jakarta.persistence.GenerationType.IDENTITY;
 import static lombok.AccessLevel.PROTECTED;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import bloom_story.domain.bloom.model.Bloom;
@@ -65,10 +66,10 @@ public class Story extends BaseEntity {
     private String location;
 
     @OneToMany(mappedBy = "story", cascade = ALL, orphanRemoval = true, fetch = LAZY)
-    private List<Comment> comments;
+    private List<Comment> comments = new ArrayList<>();
 
     @OneToMany(mappedBy = "story", cascade = ALL, orphanRemoval = true, fetch = LAZY)
-    private List<StoryImage> images;
+    private List<StoryImage> images = new ArrayList<>();
 
     @Builder
     public Story(
@@ -77,7 +78,9 @@ public class Story extends BaseEntity {
         String title,
         String content,
         int likes,
-        String location
+        String location,
+        Emotion emotion,
+        Bloom bloom
     ) {
         this.id = id;
         this.user = user;
@@ -85,5 +88,7 @@ public class Story extends BaseEntity {
         this.content = content;
         this.likes = likes;
         this.location = location;
+        this.emotion = emotion;
+        this.bloom = bloom;
     }
 }
