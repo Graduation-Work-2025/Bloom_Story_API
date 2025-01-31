@@ -10,7 +10,7 @@ import java.util.List;
 
 import bloom_story.domain.bloom.model.Bloom;
 import bloom_story.domain.comunity.comment.model.Comment;
-import bloom_story.domain.emotion.Emotion;
+import bloom_story.domain.emotion.model.Emotion;
 import bloom_story.domain.user.model.User;
 import bloom_story.global.domain.BaseEntity;
 import jakarta.persistence.Column;

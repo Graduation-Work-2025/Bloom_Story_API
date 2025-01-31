@@ -1,5 +1,6 @@
-package bloom_story.domain.emotion;
+package bloom_story.domain.emotion.model;
 
+import static bloom_story.domain.emotion.model.EmotionType.NEUTRAL;
 import static jakarta.persistence.GenerationType.IDENTITY;
 import static lombok.AccessLevel.PROTECTED;
 
@@ -25,18 +26,23 @@ public class Emotion extends BaseEntity {
     private Integer id;
 
     @NotNull
-    @Column(name = "type", nullable = false)
-    private String type;
+    @Column(name = "type", nullable = false, columnDefinition = "neutral")
+    private EmotionType type;
+
+    @Column(name = "color")
+    private String color;
 
     @Column(name = "content")
     private String content;
 
     @Builder
     public Emotion(
-        String type,
+        EmotionType type,
+        String color,
         String content
     ) {
         this.type = type;
+        this.color = color;
         this.content = content;
     }
 }

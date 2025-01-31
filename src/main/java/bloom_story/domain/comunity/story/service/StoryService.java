@@ -10,6 +10,8 @@ import bloom_story.domain.comunity.story.dto.StoryRequest;
 import bloom_story.domain.comunity.story.dto.StoryResponse;
 import bloom_story.domain.comunity.story.model.Story;
 import bloom_story.domain.comunity.story.repository.StoryRepository;
+import bloom_story.domain.emotion.model.Emotion;
+import bloom_story.domain.emotion.repository.EmotionRepository;
 import bloom_story.domain.user.model.User;
 import bloom_story.domain.user.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
@@ -21,12 +23,12 @@ public class StoryService {
 
     private final StoryRepository storyRepository;
     private final UserRepository userRepository;
-    //private final EmotionRepository emotionRepository;
+    private final EmotionRepository emotionRepository;
     //private final BloomRepository bloomRepository;
 
     public StoryResponse createStory(StoryRequest request) {
         User user = userRepository.getById(request.userId());
-        //Emotion emotion = emotionRepository.findById(request.emotionId());
+        Emotion emotion = emotionRepository.getById(request.emotionId());
         //Bloom bloom = bloomRepository.findById(request.bloomId());
 
         Story story = Story.builder()
@@ -34,7 +36,7 @@ public class StoryService {
             .title(request.title())
             .content(request.content())
             .location(request.location())
-            .emotion(null)
+            .emotion(emotion)
             .bloom(null)
             .build();
 
