@@ -5,6 +5,7 @@ import static jakarta.persistence.FetchType.LAZY;
 import static jakarta.persistence.GenerationType.IDENTITY;
 import static lombok.AccessLevel.PROTECTED;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import bloom_story.domain.comunity.story.model.Story;
@@ -42,23 +43,29 @@ public class User extends BaseEntity {
     @Column(name = "email", nullable = false, unique = true)
     private String email;
 
+    @NotNull
+    @Column(name = "password", nullable = false)
+    private String password;
+
     @Column(name = "phone", nullable = false, unique = true)
     private String phone;
 
     @OneToMany(mappedBy = "user", cascade = ALL, orphanRemoval = true, fetch = LAZY)
-    private List<Story> stories;
+    private List<Story> stories = new ArrayList<>();
 
     @Builder
     public User(
         Integer id,
         String name,
         String nickname,
+        String password,
         String email,
         String phone
     ) {
         this.id = id;
         this.name = name;
         this.nickname = nickname;
+        this.password = password;
         this.email = email;
         this.phone = phone;
     }

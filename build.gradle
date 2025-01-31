@@ -47,6 +47,9 @@ dependencies {
 
 	// flyway
 	implementation 'org.flywaydb:flyway-mysql'
+
+	//security
+	implementation 'org.springframework.security:spring-security-crypto'
 }
 
 tasks.named('test') {

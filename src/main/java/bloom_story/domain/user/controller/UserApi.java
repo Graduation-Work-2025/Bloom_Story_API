@@ -5,12 +5,12 @@ import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+import bloom_story.domain.user.dto.UserLoginRequest;
+import bloom_story.domain.user.dto.UserLoginResponse;
 import bloom_story.domain.user.dto.UserSignupRequest;
-import bloom_story.domain.user.dto.UserUpdateRequest;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -30,8 +30,20 @@ public interface UserApi {
         })
     @Operation(summary = "사용자 회원가입")
     @PostMapping("/signup")
-    ResponseEntity<Void> signUp(
+    ResponseEntity<UserLoginResponse> signUp(
         @RequestBody UserSignupRequest request
+    );
+
+    @ApiResponses(
+        value = {
+            @ApiResponse(responseCode = "201"),
+            @ApiResponse(responseCode = "400", content = @Content(schema = @Schema(hidden = true))),
+            @ApiResponse(responseCode = "404", content = @Content(schema = @Schema(hidden = true)))
+        })
+    @Operation(summary = "사용자 로그인")
+    @PostMapping("/login")
+    ResponseEntity<UserLoginResponse> login(
+        @RequestBody UserLoginRequest request
     );
 
     @ApiResponses(
@@ -46,18 +58,18 @@ public interface UserApi {
         @PathVariable Integer id
     );
 
-    @ApiResponses(
-        value = {
-            @ApiResponse(responseCode = "201"),
-            @ApiResponse(responseCode = "400", content = @Content(schema = @Schema(hidden = true))),
-            @ApiResponse(responseCode = "404", content = @Content(schema = @Schema(hidden = true)))
-        })
-    @Operation(summary = "사용자 정보 수정")
-    @PutMapping("/{id}")
-    ResponseEntity<Void> updateUser(
-        @PathVariable Integer id,
-        @RequestBody UserUpdateRequest request
-    );
+    // @ApiResponses(
+    //     value = {
+    //         @ApiResponse(responseCode = "201"),
+    //         @ApiResponse(responseCode = "400", content = @Content(schema = @Schema(hidden = true))),
+    //         @ApiResponse(responseCode = "404", content = @Content(schema = @Schema(hidden = true)))
+    //     })
+    // @Operation(summary = "사용자 정보 수정")
+    // @PutMapping("/{id}")
+    // ResponseEntity<Void> updateUser(
+    //     @PathVariable Integer id,
+    //     @RequestBody UserUpdateRequest request
+    // );
 
     @ApiResponses(
         value = {
