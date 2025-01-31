@@ -5,6 +5,8 @@ import java.util.List;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import bloom_story.domain.bloom.model.Bloom;
+import bloom_story.domain.bloom.repository.BloomRepository;
 import bloom_story.domain.comunity.story.dto.StoriesResponse;
 import bloom_story.domain.comunity.story.dto.StoryRequest;
 import bloom_story.domain.comunity.story.dto.StoryResponse;
@@ -24,12 +26,12 @@ public class StoryService {
     private final StoryRepository storyRepository;
     private final UserRepository userRepository;
     private final EmotionRepository emotionRepository;
-    //private final BloomRepository bloomRepository;
+    private final BloomRepository bloomRepository;
 
     public StoryResponse createStory(StoryRequest request) {
         User user = userRepository.getById(request.userId());
         Emotion emotion = emotionRepository.getById(request.emotionId());
-        //Bloom bloom = bloomRepository.findById(request.bloomId());
+        Bloom bloom = bloomRepository.getById(request.bloomId());
 
         Story story = Story.builder()
             .user(user)
@@ -37,7 +39,7 @@ public class StoryService {
             .content(request.content())
             .location(request.location())
             .emotion(emotion)
-            .bloom(null)
+            .bloom(bloom)
             .build();
 
         storyRepository.save(story);
