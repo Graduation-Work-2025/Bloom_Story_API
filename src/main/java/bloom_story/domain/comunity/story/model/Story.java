@@ -8,6 +8,8 @@ import static lombok.AccessLevel.PROTECTED;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.locationtech.jts.geom.Point;
+
 import bloom_story.domain.bloom.model.Bloom;
 import bloom_story.domain.comunity.comment.model.Comment;
 import bloom_story.domain.emotion.model.Emotion;
@@ -63,7 +65,7 @@ public class Story extends BaseEntity {
 
     @NotNull
     @Column(name = "location", nullable = false, columnDefinition = "POINT")
-    private String location;
+    private Point location;
 
     @OneToMany(mappedBy = "story", cascade = ALL, orphanRemoval = true, fetch = LAZY)
     private List<Comment> comments = new ArrayList<>();
@@ -78,7 +80,7 @@ public class Story extends BaseEntity {
         String title,
         String content,
         int likes,
-        String location,
+        Point location,
         Emotion emotion,
         Bloom bloom
     ) {

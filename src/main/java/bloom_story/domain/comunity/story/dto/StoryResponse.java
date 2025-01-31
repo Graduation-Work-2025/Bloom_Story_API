@@ -2,6 +2,8 @@ package bloom_story.domain.comunity.story.dto;
 
 import static io.swagger.v3.oas.annotations.media.Schema.RequiredMode.REQUIRED;
 
+import org.locationtech.jts.geom.Point;
+
 import bloom_story.domain.comunity.story.model.Story;
 import io.swagger.v3.oas.annotations.media.Schema;
 
@@ -16,7 +18,7 @@ public record StoryResponse(
     String content,
 
     @Schema(description = "위치 정보 (POINT 형식)", example = "POINT(37.7749 -122.4194)", requiredMode = REQUIRED)
-    String location,
+    Point location,
 
     @Schema(description = "스토리 좋아요 수", example = "0", requiredMode = REQUIRED)
     Integer likes,
@@ -41,6 +43,6 @@ public record StoryResponse(
             null,
             null,
             null
-            );
+        );
     }
 }

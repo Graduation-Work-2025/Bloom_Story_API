@@ -50,6 +50,16 @@ dependencies {
 
 	//security
 	implementation 'org.springframework.security:spring-security-crypto'
+
+	// https://mvnrepository.com/artifact/com.azure/azure-ai-textanalytics
+	implementation group: 'com.azure', name: 'azure-ai-textanalytics', version: '5.2.0'
+
+	// JTS (Java Topology Suite)
+	implementation 'org.locationtech.jts:jts-core:1.19.0'
+
+	// Hibernate Spatial (JPA에서 GEOMETRY 타입을 사용할 경우 필요)
+	implementation 'org.hibernate:hibernate-spatial:6.2.1.Final'
+
 }
 
 tasks.named('test') {

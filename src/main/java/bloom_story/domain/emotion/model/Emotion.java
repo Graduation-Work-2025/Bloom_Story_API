@@ -27,7 +27,7 @@ public class Emotion extends BaseEntity {
 
     @NotNull
     @Column(name = "type", nullable = false, columnDefinition = "neutral")
-    private EmotionType type;
+    private String type;
 
     @Column(name = "color")
     private String color;
@@ -37,7 +37,7 @@ public class Emotion extends BaseEntity {
 
     @Builder
     public Emotion(
-        EmotionType type,
+        String type,
         String color,
         String content
     ) {
