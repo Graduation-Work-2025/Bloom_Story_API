@@ -33,24 +33,21 @@ public class TextAnalytics {
             .buildClient();
     }
 
-    // Example method for detecting sentiment and opinions in text.
     public String sentimentAnalysisWithOpinionMiningExample(TextAnalyticsClient client, String content) {
-        // 분석할 문서
-
-        System.out.printf("분석할 문서: %s%n", content);
+        System.out.printf("분석할 스토리: %s%n", content);
 
         AnalyzeSentimentOptions options = new AnalyzeSentimentOptions().setIncludeOpinionMining(true);
         final DocumentSentiment documentSentiment = client.analyzeSentiment(content, "en", options);
         SentimentConfidenceScores scores = documentSentiment.getConfidenceScores();
         System.out.printf(
-            "문서의 전체 감정 분석 결과: %s, 긍정 점수: %f, 중립 점수: %f, 부정 점수: %f.%n",
-            documentSentiment.getSentiment(), scores.getPositive(), scores.getNeutral(), scores.getNegative());
+            "감정 분석 결과: %s, 긍정 점수: %.1f%%, 중립 점수: %.1f%%, 부정 점수: %.1f%%%n",
+            documentSentiment.getSentiment(), scores.getPositive() * 100, scores.getNeutral() * 100, scores.getNegative() * 100);
 
         documentSentiment.getSentences().forEach(sentenceSentiment -> {
             SentimentConfidenceScores sentenceScores = sentenceSentiment.getConfidenceScores();
-            System.out.printf("\t문장 감정 분석 결과: %s, 긍정 점수: %f, 중립 점수: %f, 부정 점수: %f.%n",
-                sentenceSentiment.getSentiment(), sentenceScores.getPositive(), sentenceScores.getNeutral(),
-                sentenceScores.getNegative());
+            System.out.printf("\t문장별 감정 분석: %s, 긍정 점수: %.1f%%, 중립 점수: %.1f%%, 부정 점수: %.1f%%%n",
+                sentenceSentiment.getSentiment(), sentenceScores.getPositive() * 100, sentenceScores.getNeutral() * 100,
+                sentenceScores.getNegative() * 100);
 
             sentenceSentiment.getOpinions().forEach(opinion -> {
                 TargetSentiment targetSentiment = opinion.getTarget();
