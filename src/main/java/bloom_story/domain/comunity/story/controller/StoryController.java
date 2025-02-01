@@ -1,5 +1,6 @@
 package bloom_story.domain.comunity.story.controller;
 
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -30,7 +31,7 @@ public class StoryController implements StoryApi{
         @RequestBody StoryRequest request
     ) {
         StoryResponse response = storyService.createStory(request);
-        return ResponseEntity.ok(response);
+        return ResponseEntity.status(HttpStatus.CREATED).body(response);
     }
 
     @Operation(summary = "스토리 조회")
@@ -51,15 +52,15 @@ public class StoryController implements StoryApi{
         return ResponseEntity.ok(response);
     }
 
-    @Operation(summary = "스토리 수정")
-    @PutMapping("/{id}")
-    public ResponseEntity<StoryResponse> updateStory(
-        @PathVariable Integer id,
-        @RequestBody StoryRequest request
-    ) {
-        StoryResponse response = storyService.updateStory(id, request);
-        return ResponseEntity.ok(response);
-    }
+    // @Operation(summary = "스토리 수정")
+    // @PutMapping("/{id}")
+    // public ResponseEntity<StoryResponse> updateStory(
+    //     @PathVariable Integer id,
+    //     @RequestBody StoryRequest request
+    // ) {
+    //     StoryResponse response = storyService.updateStory(id, request);
+    //     return ResponseEntity.ok(response);
+    // }
 
     @Operation(summary = "스토리 삭제")
     @DeleteMapping("/{id}")
