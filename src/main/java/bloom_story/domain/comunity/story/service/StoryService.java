@@ -16,6 +16,7 @@ import bloom_story.domain.emotion.model.Emotion;
 import bloom_story.domain.emotion.repository.EmotionRepository;
 import bloom_story.domain.user.model.User;
 import bloom_story.domain.user.repository.UserRepository;
+import bloom_story.global.domain.textanalytics.TextAnalytics;
 import lombok.RequiredArgsConstructor;
 
 @Service
@@ -27,6 +28,7 @@ public class StoryService {
     private final UserRepository userRepository;
     private final EmotionRepository emotionRepository;
     private final BloomRepository bloomRepository;
+    private final TextAnalytics textAnalytics;
 
     public StoryResponse createStory(StoryRequest request) {
         User user = userRepository.getById(request.userId());
@@ -43,12 +45,15 @@ public class StoryService {
             .build();
 
         storyRepository.save(story);
+
         return StoryResponse.from(story);
     }
 
     public StoryResponse getStoryById(Integer id) {
-        Story story = storyRepository.getById(id);
-        return StoryResponse.from(story);
+        //Story story = storyRepository.getById(id);
+        textAnalytics.main();
+        //return StoryResponse.from(story);
+        return null;
     }
 
     public StoriesResponse getStoriesByLocation(String location) {

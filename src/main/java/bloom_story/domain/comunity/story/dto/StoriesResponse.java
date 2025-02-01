@@ -4,6 +4,8 @@ import static io.swagger.v3.oas.annotations.media.Schema.RequiredMode.REQUIRED;
 
 import java.util.List;
 
+import org.locationtech.jts.geom.Point;
+
 import bloom_story.domain.comunity.story.model.Story;
 import io.swagger.v3.oas.annotations.media.Schema;
 
@@ -27,7 +29,7 @@ public record StoriesResponse(
         String title,
 
         @Schema(description = "위치 정보 (POINT 형식)", example = "POINT(37.7749 -122.4194)", requiredMode = REQUIRED)
-        String location,
+        Point location,
 
         @Schema(description = "작성자 ID", example = "1", requiredMode = REQUIRED)
         Integer userId,

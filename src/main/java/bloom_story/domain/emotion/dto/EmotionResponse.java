@@ -11,7 +11,7 @@ public record EmotionResponse(
     Integer id,
 
     @Schema(description = "emotion 종류", example = "HAPPY", requiredMode = REQUIRED)
-    EmotionType type,
+    String type,
 
     @Schema(description = "emotion 색상번호", example = "#4A90E2", requiredMode = REQUIRED)
     String color
