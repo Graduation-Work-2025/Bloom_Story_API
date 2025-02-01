@@ -21,9 +21,9 @@ public class TextAnalytics {
     @Value("${azure.endpoint}")
     private String endPoint;
 
-    public void main() {
+    public String analyzeTextEmotion(String content) {
         TextAnalyticsClient client = authenticateClient(apiKey, endPoint);
-        sentimentAnalysisWithOpinionMiningExample(client);
+        return sentimentAnalysisWithOpinionMiningExample(client, content);
     }
 
     private TextAnalyticsClient authenticateClient(String key, String endpoint) {
@@ -34,14 +34,13 @@ public class TextAnalytics {
     }
 
     // Example method for detecting sentiment and opinions in text.
-    public void sentimentAnalysisWithOpinionMiningExample(TextAnalyticsClient client) {
+    public String sentimentAnalysisWithOpinionMiningExample(TextAnalyticsClient client, String content) {
         // 분석할 문서
-        String document = "오늘은 여자친구와 데이트를 했다. 처음엔 되게 즐거웠는데, 중간에 살짝 다퉈서 우울했다.";
 
-        System.out.printf("분석할 문서: %s%n", document);
+        System.out.printf("분석할 문서: %s%n", content);
 
         AnalyzeSentimentOptions options = new AnalyzeSentimentOptions().setIncludeOpinionMining(true);
-        final DocumentSentiment documentSentiment = client.analyzeSentiment(document, "en", options);
+        final DocumentSentiment documentSentiment = client.analyzeSentiment(content, "en", options);
         SentimentConfidenceScores scores = documentSentiment.getConfidenceScores();
         System.out.printf(
             "문서의 전체 감정 분석 결과: %s, 긍정 점수: %f, 중립 점수: %f, 부정 점수: %f.%n",
@@ -66,5 +65,7 @@ public class TextAnalytics {
                 }
             });
         });
+
+        return documentSentiment.getSentiment().toString();
     }
 }

@@ -54,12 +54,12 @@ public class Story extends BaseEntity {
     @Column(name = "likes", nullable = false)
     private int likes = 0;
 
-    @ManyToOne(fetch = LAZY)
+    @ManyToOne(fetch = LAZY, cascade = ALL)
     @JoinColumn(name = "bloom_id", nullable = false)
     private Bloom bloom;
 
     @NotNull
-    @ManyToOne(fetch = LAZY)
+    @ManyToOne(fetch = LAZY, cascade = ALL)
     @JoinColumn(name = "emotion_id", nullable = false)
     private Emotion emotion;
 
@@ -91,6 +91,14 @@ public class Story extends BaseEntity {
         this.likes = likes;
         this.location = location;
         this.emotion = emotion;
+        this.bloom = bloom;
+    }
+
+    public void setEmotion(Emotion emotion) {
+        this.emotion = emotion;
+    }
+
+    public void setBloom(Bloom bloom) {
         this.bloom = bloom;
     }
 }
