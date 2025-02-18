@@ -28,10 +28,6 @@ public class Bloom extends BaseEntity {
     @Column(name = "name", nullable = false, unique = true)
     private String name;
 
-    @NotNull
-    @Column(name = "type", nullable = false)
-    private String type;
-
     @Column(name = "symbol")
     private String symbol;
 
@@ -39,12 +35,10 @@ public class Bloom extends BaseEntity {
     public Bloom(
         Integer id,
         String name,
-        String type,
         String symbol
     ) {
         this.id = id;
         this.name = name;
-        this.type = type;
         this.symbol = symbol;
     }
 }
