@@ -43,10 +43,6 @@ public class Story extends BaseEntity {
     @JoinColumn(name = "user_id", nullable = false)
     private User user;
 
-    @NotNull
-    @Column(name = "title", nullable = false)
-    private String title;
-
     @Column(name = "content", columnDefinition = "TEXT")
     private String content;
 
@@ -77,7 +73,6 @@ public class Story extends BaseEntity {
     public Story(
         Integer id,
         User user,
-        String title,
         String content,
         int likes,
         Point location,
@@ -86,7 +81,6 @@ public class Story extends BaseEntity {
     ) {
         this.id = id;
         this.user = user;
-        this.title = title;
         this.content = content;
         this.likes = likes;
         this.location = location;

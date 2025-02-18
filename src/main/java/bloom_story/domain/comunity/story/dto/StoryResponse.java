@@ -13,9 +13,6 @@ public record StoryResponse(
     @Schema(description = "스토리 고유번호", example = "1", requiredMode = REQUIRED)
     Integer id,
 
-    @Schema(description = "스토리 제목", example = "2공에서 있었던 일", requiredMode = REQUIRED)
-    String title,
-
     @Schema(description = "스토리 내용", example = "오늘은 좋은 일이 많았어요!")
     String content,
 
@@ -44,7 +41,6 @@ public record StoryResponse(
         List<Double> points = LocationService.extractFromPoint(story.getLocation());
         return new StoryResponse(
             story.getId(),
-            story.getTitle(),
             story.getContent(),
             points.get(0),
             points.get(1),

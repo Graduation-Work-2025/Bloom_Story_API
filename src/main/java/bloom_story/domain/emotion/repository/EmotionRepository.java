@@ -5,6 +5,7 @@ import java.util.Optional;
 import org.springframework.data.repository.Repository;
 
 import bloom_story.domain.emotion.model.Emotion;
+import bloom_story.domain.emotion.model.EmotionType;
 
 public interface EmotionRepository extends Repository<Emotion, Integer> {
 
@@ -12,10 +13,10 @@ public interface EmotionRepository extends Repository<Emotion, Integer> {
 
     void delete(Emotion emotion);
 
-    Optional<Emotion> findById(Integer id);
+    Optional<Emotion> findByType(EmotionType emotionType);
 
-    default Emotion getById(Integer id) {
-        return findById(id)
-            .orElseThrow(() -> new RuntimeException("id: " + id));
+    default Emotion getByType(String type) {
+        return findByType(EmotionType.valueOf(type))
+            .orElseThrow(() -> new RuntimeException("type: " + type));
     }
 }

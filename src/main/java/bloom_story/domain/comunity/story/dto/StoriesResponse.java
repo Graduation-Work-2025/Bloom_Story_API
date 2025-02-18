@@ -4,8 +4,6 @@ import static io.swagger.v3.oas.annotations.media.Schema.RequiredMode.REQUIRED;
 
 import java.util.List;
 
-import org.locationtech.jts.geom.Point;
-
 import bloom_story.domain.comunity.story.model.Story;
 import bloom_story.domain.location.service.LocationService;
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -26,9 +24,6 @@ public record StoriesResponse(
     private record InnerStoryResponse(
         @Schema(description = "스토리 고유번호", example = "1", requiredMode = REQUIRED)
         Integer id,
-
-        @Schema(description = "스토리 제목", example = "2공에서 있었던 일", requiredMode = REQUIRED)
-        String title,
 
         @Schema(description = "위치 정보 경도", example = "-122.4194", requiredMode = REQUIRED)
         @NotNull
@@ -52,7 +47,6 @@ public record StoriesResponse(
             List<Double> points = LocationService.extractFromPoint(story.getLocation());
             return new InnerStoryResponse(
                 story.getId(),
-                story.getTitle(),
                 points.get(0),
                 points.get(1),
                 story.getUser().getId(),

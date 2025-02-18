@@ -1,19 +1,21 @@
 package bloom_story.domain.comunity.story.service;
 
 import java.util.List;
+import java.util.Random;
 
 import org.locationtech.jts.geom.Point;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import bloom_story.domain.bloom.model.Bloom;
-import bloom_story.domain.bloom.repository.BloomRepository;
 import bloom_story.domain.comunity.story.dto.StoriesResponse;
 import bloom_story.domain.comunity.story.dto.StoryRequest;
 import bloom_story.domain.comunity.story.dto.StoryResponse;
 import bloom_story.domain.comunity.story.model.Story;
 import bloom_story.domain.comunity.story.repository.StoryRepository;
 import bloom_story.domain.emotion.model.Emotion;
+import bloom_story.domain.emotion.repository.EmotionBloomMapRepository;
+import bloom_story.domain.emotion.repository.EmotionRepository;
 import bloom_story.domain.location.service.LocationService;
 import bloom_story.domain.user.model.User;
 import bloom_story.domain.user.repository.UserRepository;
@@ -28,7 +30,8 @@ public class StoryService {
     private final StoryRepository storyRepository;
     private final UserRepository userRepository;
     private final TextAnalytics textAnalytics;
-    private final BloomRepository bloomRepository;
+    private final EmotionRepository emotionRepository;
+    private final EmotionBloomMapRepository emotionBloomMapRepository;
 
     @Transactional
     public StoryResponse createStory(StoryRequest request) {
@@ -37,21 +40,15 @@ public class StoryService {
 
         Story story = Story.builder()
             .user(user)
-            .title(request.title())
             .content(request.content())
             .location(point)
             .build();
 
-        String emotion = analyzeEmotionByStory(story);
-        Bloom bloom = plantBloomOfStory(emotion);
+        String result = analyzeEmotionByStory(story);
+        Emotion emotion = emotionRepository.getByType(result);
+        Bloom bloom = getRandomBloom(emotion);
 
-        Emotion emo = Emotion.builder()
-            .type(emotion)
-            .color("#FF007F")
-            .content("default")
-            .build();
-
-        story.setEmotion(emo);
+        story.setEmotion(emotion);
         story.setBloom(bloom);
 
         storyRepository.save(story);
@@ -62,10 +59,15 @@ public class StoryService {
         return textAnalytics.analyzeTextEmotion(story.getContent());
     }
 
-    private Bloom plantBloomOfStory(String emotion) {
+    private Bloom getRandomBloom(Emotion emotion) {
         //TODO: emotion을 gpt에게 말해서 적절한 꽃으로 표현하기(꽃말 활용?)
+        List<Bloom> blooms = emotionBloomMapRepository.findAllByEmotion(emotion).stream()
+            .map(emo -> emo.getBloom())
+            .toList();
 
-        return bloomRepository.getById(1);
+        Random random = new Random();
+        int randomNum = random.nextInt(blooms.size());
+        return blooms.get(randomNum);
     }
 
     public StoryResponse getStoryById(Integer id) {

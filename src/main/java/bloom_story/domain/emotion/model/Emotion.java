@@ -19,14 +19,14 @@ import lombok.NoArgsConstructor;
 @Table(name = "emotions")
 @Getter
 @NoArgsConstructor(access = PROTECTED)
-public class Emotion extends BaseEntity {
+public class Emotion {
 
     @Id
     @GeneratedValue(strategy = IDENTITY)
     private Integer id;
 
     @NotNull
-    @Column(name = "type", nullable = false, columnDefinition = "neutral")
+    @Column(name = "type", nullable = false)
     private String type;
 
     @Column(name = "color")
