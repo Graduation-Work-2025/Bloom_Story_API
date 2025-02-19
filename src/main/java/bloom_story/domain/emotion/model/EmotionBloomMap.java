@@ -22,7 +22,7 @@ import lombok.NoArgsConstructor;
     @UniqueConstraint(columnNames = {"emotion_id", "bloom_id"})
 })
 @NoArgsConstructor(access = PROTECTED)
-public class EmotionBloomMap extends BaseEntity {
+public class EmotionBloomMap{
 
     @Id
     @GeneratedValue(strategy = IDENTITY)

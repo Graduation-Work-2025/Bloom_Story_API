@@ -2,14 +2,14 @@ ALTER TABLE `stories`
 DROP COLUMN `title`;
 
 CREATE TABLE `emotion_bloom_map` (
+    `id`         INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
     `emotion_id` INT UNSIGNED NOT NULL,
     `bloom_id`   INT UNSIGNED NOT NULL,
-    PRIMARY KEY (`emotion_id`, `bloom_id`),
     FOREIGN KEY (`emotion_id`) REFERENCES `emotions` (`id`) ON DELETE CASCADE,
     FOREIGN KEY (`bloom_id`) REFERENCES `blooms` (`id`) ON DELETE CASCADE
 );
 
-INSERT INTO `emotion_bloom_map`
+INSERT INTO `emotion_bloom_map` (`emotion_id`, `bloom_id`)
 VALUES (1,1),
        (1,2),
        (1,3),

@@ -32,11 +32,12 @@ public class StoryService {
     private final TextAnalytics textAnalytics;
     private final EmotionRepository emotionRepository;
     private final EmotionBloomMapRepository emotionBloomMapRepository;
+    private final LocationService locationService;
 
     @Transactional
     public StoryResponse createStory(StoryRequest request) {
         User user = userRepository.getById(request.userId());
-        Point point = LocationService.convertToPoint(request.longitude(), request.latitude());
+        Point point = locationService.convertToPoint(request.longitude(), request.latitude());
 
         Story story = Story.builder()
             .user(user)
@@ -44,7 +45,8 @@ public class StoryService {
             .location(point)
             .build();
 
-        String result = analyzeEmotionByStory(story);
+        // String result = analyzeEmotionByStory(story);
+        String result = "HAPPY";
         Emotion emotion = emotionRepository.getByType(result);
         Bloom bloom = getRandomBloom(emotion);
 

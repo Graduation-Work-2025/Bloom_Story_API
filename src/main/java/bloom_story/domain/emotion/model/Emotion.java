@@ -7,6 +7,8 @@ import static lombok.AccessLevel.PROTECTED;
 import bloom_story.global.domain.BaseEntity;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
@@ -26,8 +28,9 @@ public class Emotion {
     private Integer id;
 
     @NotNull
+    @Enumerated(EnumType.STRING)
     @Column(name = "type", nullable = false)
-    private String type;
+    private EmotionType type;
 
     @Column(name = "color")
     private String color;
@@ -37,7 +40,7 @@ public class Emotion {
 
     @Builder
     public Emotion(
-        String type,
+        EmotionType type,
         String color,
         String content
     ) {

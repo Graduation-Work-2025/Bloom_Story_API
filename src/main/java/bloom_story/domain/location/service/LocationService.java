@@ -8,12 +8,21 @@ import org.locationtech.jts.geom.GeometryFactory;
 import org.locationtech.jts.geom.Point;
 import org.springframework.stereotype.Service;
 
+import bloom_story.domain.comunity.story.dto.StoriesResponse;
+import bloom_story.domain.comunity.story.model.Story;
+import bloom_story.domain.location.repository.LocationRepository;
+import lombok.RequiredArgsConstructor;
+
 @Service
+@RequiredArgsConstructor
 public class LocationService {
 
-    private static final GeometryFactory geometryFactory = new GeometryFactory();
+    private final GeometryFactory geometryFactory = new GeometryFactory();
+    private static final double DISTANCE = 4.0;
 
-    public static Point convertToPoint(double longitude, double latitude) {
+    private final LocationRepository locationRepository;
+
+    public Point convertToPoint(double longitude, double latitude) {
         return geometryFactory.createPoint(new Coordinate(longitude, latitude));
     }
 
@@ -22,5 +31,11 @@ public class LocationService {
             return null;
         }
         return Arrays.asList(point.getX(), point.getY());
+    }
+
+    public StoriesResponse getNearbyStories(double longitude, double latitude) {
+        String point = String.format("POINT(%.5f %.5f)", longitude, latitude);
+        List<Story> stories = locationRepository.findStoriesWithinDistance(point, DISTANCE);
+        return StoriesResponse.from(stories);
     }
 }
