@@ -15,6 +15,7 @@ import bloom_story.domain.comunity.story.dto.StoriesResponse;
 import bloom_story.domain.comunity.story.dto.StoryRequest;
 import bloom_story.domain.comunity.story.dto.StoryResponse;
 import bloom_story.domain.comunity.story.service.StoryService;
+import bloom_story.global.domain.jwt.UserId;
 import io.swagger.v3.oas.annotations.Operation;
 import lombok.RequiredArgsConstructor;
 
@@ -28,9 +29,10 @@ public class StoryController implements StoryApi {
     @Operation(summary = "스토리 작성")
     @PostMapping
     public ResponseEntity<StoryResponse> createStory(
+        @UserId Integer userId,
         @RequestBody StoryRequest request
     ) {
-        StoryResponse response = storyService.createStory(request);
+        StoryResponse response = storyService.createStory(userId, request);
         return ResponseEntity.status(HttpStatus.CREATED).body(response);
     }
 
@@ -65,6 +67,7 @@ public class StoryController implements StoryApi {
     @Operation(summary = "스토리 삭제")
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteStory(
+        @UserId Integer userId,
         @PathVariable Integer id
     ) {
         storyService.deleteStory(id);

@@ -11,6 +11,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 import bloom_story.domain.user.model.User;
+import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.JwtException;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.security.Keys;
@@ -22,7 +23,7 @@ public class JwtProvider {
     private final Long expirationTime;
 
     public JwtProvider(
-        @Value("$jwt.secret-key}") String secretKey,
+        @Value("${jwt.secret-key}") String secretKey,
         @Value("${jwt.access-token.expiration-time}") Long expirationTime
     ) {
         this.secretKey = secretKey;

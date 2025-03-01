@@ -35,8 +35,8 @@ public class StoryService {
     private final EmotionAnalyticsClient emotionAnalyticsClient;
 
     @Transactional
-    public StoryResponse createStory(StoryRequest request) {
-        User user = userRepository.getById(request.userId());
+    public StoryResponse createStory(Integer userId, StoryRequest request) {
+        User user = userRepository.getById(userId);
         Point point = locationService.convertToPoint(request.longitude(), request.latitude());
 
         Story story = Story.builder()

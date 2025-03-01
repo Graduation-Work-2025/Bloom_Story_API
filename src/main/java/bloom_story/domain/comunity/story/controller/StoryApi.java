@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import bloom_story.domain.comunity.story.dto.StoriesResponse;
 import bloom_story.domain.comunity.story.dto.StoryRequest;
 import bloom_story.domain.comunity.story.dto.StoryResponse;
+import bloom_story.global.domain.jwt.UserId;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -32,6 +33,7 @@ public interface StoryApi {
     @Operation(summary = "스토리 작성")
     @PostMapping
     ResponseEntity<StoryResponse> createStory(
+        @UserId Integer userId,
         @RequestBody StoryRequest request
     );
 
@@ -81,6 +83,7 @@ public interface StoryApi {
     @Operation(summary = "스토리 삭제")
     @DeleteMapping("/{id}")
     ResponseEntity<Void> deleteStory(
+        @UserId Integer userId,
         @PathVariable Integer id
     );
 
