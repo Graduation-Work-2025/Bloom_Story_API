@@ -21,7 +21,7 @@ import lombok.RequiredArgsConstructor;
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/stories")
-public class StoryController implements StoryApi{
+public class StoryController implements StoryApi {
 
     private final StoryService storyService;
 
@@ -65,6 +65,31 @@ public class StoryController implements StoryApi{
     @Operation(summary = "스토리 삭제")
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteStory(
+        @PathVariable Integer id
+    ) {
+        storyService.deleteStory(id);
+        return ResponseEntity.noContent().build();
+    }
+
+    @Operation(summary = "감정 정원에 스토리 추가")
+    @PutMapping("/garden/{id}")
+    public ResponseEntity<Void> addStoryGarden(
+        @PathVariable Integer id
+    ) {
+        storyService.addStoryGarden(id);
+        return ResponseEntity.ok().build();
+    }
+
+    @Operation(summary = "감정 정원 조회")
+    @GetMapping("/garden")
+    public ResponseEntity<StoriesResponse> getStoryGarden() {
+        StoriesResponse response = storyService.getStoryByIsHighlight();
+        return ResponseEntity.ok(response);
+    }
+
+    @Operation(summary = "감정 정원에서 스토리 제거")
+    @DeleteMapping("/garden/{id}")
+    public ResponseEntity<Void> deleteStoryGarden(
         @PathVariable Integer id
     ) {
         storyService.deleteStory(id);

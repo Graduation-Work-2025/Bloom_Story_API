@@ -16,7 +16,7 @@ public interface EmotionRepository extends Repository<Emotion, Integer> {
     Optional<Emotion> findByType(EmotionType emotionType);
 
     default Emotion getByType(String type) {
-        return findByType(EmotionType.valueOf(type))
+        return findByType(EmotionType.getByName(type))
             .orElseThrow(() -> new RuntimeException("type: " + type));
     }
 }

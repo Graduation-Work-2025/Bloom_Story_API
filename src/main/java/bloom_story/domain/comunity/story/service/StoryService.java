@@ -19,7 +19,7 @@ import bloom_story.domain.emotion.repository.EmotionRepository;
 import bloom_story.domain.location.service.LocationService;
 import bloom_story.domain.user.model.User;
 import bloom_story.domain.user.repository.UserRepository;
-import bloom_story.global.domain.textanalytics.TextAnalytics;
+import bloom_story.global.domain.emotionAnalytics.EmotionAnalyticsClient;
 import lombok.RequiredArgsConstructor;
 
 @Service
@@ -29,10 +29,10 @@ public class StoryService {
 
     private final StoryRepository storyRepository;
     private final UserRepository userRepository;
-    private final TextAnalytics textAnalytics;
     private final EmotionRepository emotionRepository;
     private final EmotionBloomMapRepository emotionBloomMapRepository;
     private final LocationService locationService;
+    private final EmotionAnalyticsClient emotionAnalyticsClient;
 
     @Transactional
     public StoryResponse createStory(StoryRequest request) {
@@ -45,9 +45,9 @@ public class StoryService {
             .location(point)
             .build();
 
-        // String result = analyzeEmotionByStory(story);
-        String result = "HAPPY";
-        Emotion emotion = emotionRepository.getByType(result);
+        String analyzedEmotion = emotionAnalyticsClient.analysisEmotion(story.getContent());
+        System.out.println(analyzedEmotion);
+        Emotion emotion = emotionRepository.getByType(analyzedEmotion);
         Bloom bloom = getRandomBloom(emotion);
 
         story.setEmotion(emotion);
@@ -55,10 +55,6 @@ public class StoryService {
 
         storyRepository.save(story);
         return StoryResponse.from(story);
-    }
-
-    private String analyzeEmotionByStory(Story story) {
-        return textAnalytics.analyzeTextEmotion(story.getContent());
     }
 
     private Bloom getRandomBloom(Emotion emotion) {
@@ -102,5 +98,13 @@ public class StoryService {
     public void deleteStory(Integer id) {
         Story story = storyRepository.getById(id);
         storyRepository.delete(story);
+    }
+
+    public StoriesResponse getStoryByIsHighlight() {
+        return null;
+    }
+
+    public StoriesResponse addStoryGarden(Integer id) {
+        return null;
     }
 }

@@ -1,7 +1,5 @@
 package bloom_story.domain.user.service;
 
-import java.util.Optional;
-
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -11,20 +9,19 @@ import bloom_story.domain.user.dto.UserLoginResponse;
 import bloom_story.domain.user.dto.UserSignupRequest;
 import bloom_story.domain.user.model.User;
 import bloom_story.domain.user.repository.UserRepository;
+import bloom_story.global.domain.jwt.UserTokenService;
+import lombok.RequiredArgsConstructor;
 
 @Service
 @Transactional
+@RequiredArgsConstructor
 public class UserService {
 
     private final UserRepository userRepository;
-    private final BCryptPasswordEncoder passwordEncoder;
+    private final BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
+    private final UserTokenService userTokenService;
 
-    public UserService(UserRepository userRepository) {
-        this.userRepository = userRepository;
-        this.passwordEncoder = new BCryptPasswordEncoder();
-    }
-
-    public UserLoginResponse signUp(UserSignupRequest request) {
+    public void signUp(UserSignupRequest request) {
         if (userRepository.findByEmail(request.email()).isPresent()) {
             throw new RuntimeException("이미 존재하는 이메일입니다.");
         }
@@ -38,7 +35,6 @@ public class UserService {
             .build();
 
         userRepository.save(newUser);
-        return UserLoginResponse.from(request);
     }
 
     public UserLoginResponse login(UserLoginRequest request) {
@@ -48,6 +44,9 @@ public class UserService {
             throw new RuntimeException("잘못된 비밀번호 입니다.");
         }
 
-        return UserLoginResponse.fromByUser(user);
+        String accessToken = userTokenService.createAccessToken(user);
+        //String refreshToken = userTokenService.generateRefreshToken(user);
+
+        return UserLoginResponse.of(accessToken);
     }
 }

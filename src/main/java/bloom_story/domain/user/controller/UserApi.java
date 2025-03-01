@@ -30,7 +30,7 @@ public interface UserApi {
         })
     @Operation(summary = "사용자 회원가입")
     @PostMapping("/signup")
-    ResponseEntity<UserLoginResponse> signUp(
+    ResponseEntity<Void> signUp(
         @RequestBody UserSignupRequest request
     );
 
@@ -71,15 +71,15 @@ public interface UserApi {
     //     @RequestBody UserUpdateRequest request
     // );
 
-    @ApiResponses(
-        value = {
-            @ApiResponse(responseCode = "201"),
-            @ApiResponse(responseCode = "400", content = @Content(schema = @Schema(hidden = true))),
-            @ApiResponse(responseCode = "404", content = @Content(schema = @Schema(hidden = true)))
-        })
-    @Operation(summary = "사용자 회원탈퇴")
-    @DeleteMapping("/{id}")
-    ResponseEntity<Void> deleteUser(
-        @PathVariable Integer id
-    );
+    // @ApiResponses(
+    //     value = {
+    //         @ApiResponse(responseCode = "201"),
+    //         @ApiResponse(responseCode = "400", content = @Content(schema = @Schema(hidden = true))),
+    //         @ApiResponse(responseCode = "404", content = @Content(schema = @Schema(hidden = true)))
+    //     })
+    // @Operation(summary = "사용자 회원탈퇴")
+    // @DeleteMapping("/{id}")
+    // ResponseEntity<Void> deleteUser(
+    //     @PathVariable Integer id
+    // );
 }

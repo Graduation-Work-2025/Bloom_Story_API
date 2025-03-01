@@ -26,11 +26,11 @@ public class UserController implements UserApi {
 
     @Operation(summary = "사용자 회원가입")
     @PostMapping("/signup")
-    public ResponseEntity<UserLoginResponse> signUp(
+    public ResponseEntity<Void> signUp(
         @RequestBody UserSignupRequest request
     ) {
-        UserLoginResponse response = userService.signUp(request);
-        return ResponseEntity.status(HttpStatus.CREATED).body(response);
+        userService.signUp(request);
+        return ResponseEntity.status(HttpStatus.CREATED).build();
     }
 
     @Operation(summary = "사용자 로그인")
@@ -59,11 +59,11 @@ public class UserController implements UserApi {
     //     return null;
     // }
 
-    @Operation(summary = "사용자 회원탈퇴")
-    @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deleteUser(
-        @PathVariable Integer id
-    ) {
-        return ResponseEntity.ok().body(null);
-    }
+    // @Operation(summary = "사용자 회원탈퇴")
+    // @DeleteMapping("/{id}")
+    // public ResponseEntity<Void> deleteUser(
+    //     @PathVariable Integer id
+    // ) {
+    //     return ResponseEntity.ok().body(null);
+    // }
 }

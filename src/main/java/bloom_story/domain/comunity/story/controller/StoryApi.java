@@ -83,4 +83,38 @@ public interface StoryApi {
     ResponseEntity<Void> deleteStory(
         @PathVariable Integer id
     );
+
+    @ApiResponses(
+        value = {
+            @ApiResponse(responseCode = "201"),
+            @ApiResponse(responseCode = "400", content = @Content(schema = @Schema(hidden = true))),
+            @ApiResponse(responseCode = "404", content = @Content(schema = @Schema(hidden = true)))
+        })
+    @Operation(summary = "감정 정원에 스토리 추가")
+    @PutMapping("/garden/{id}")
+    ResponseEntity<Void> addStoryGarden(
+        @PathVariable Integer id
+    );
+
+    @ApiResponses(
+        value = {
+            @ApiResponse(responseCode = "201"),
+            @ApiResponse(responseCode = "400", content = @Content(schema = @Schema(hidden = true))),
+            @ApiResponse(responseCode = "404", content = @Content(schema = @Schema(hidden = true)))
+        })
+    @Operation(summary = "감정 정원 조회")
+    @GetMapping("/garden")
+    ResponseEntity<StoriesResponse> getStoryGarden();
+
+    @ApiResponses(
+        value = {
+            @ApiResponse(responseCode = "201"),
+            @ApiResponse(responseCode = "400", content = @Content(schema = @Schema(hidden = true))),
+            @ApiResponse(responseCode = "404", content = @Content(schema = @Schema(hidden = true)))
+        })
+    @Operation(summary = "감정 정원에서 스토리 제거")
+    @DeleteMapping("/garden/{id}")
+    ResponseEntity<Void> deleteStoryGarden(
+        @PathVariable Integer id
+    );
 }

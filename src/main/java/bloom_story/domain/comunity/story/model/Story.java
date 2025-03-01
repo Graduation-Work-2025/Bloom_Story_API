@@ -63,6 +63,9 @@ public class Story extends BaseEntity {
     @Column(name = "location", nullable = false, columnDefinition = "POINT")
     private Point location;
 
+    @Column(name = "is_highlight", columnDefinition = "TINYINT")
+    private Boolean isHighlight = false;
+
     @OneToMany(mappedBy = "story", cascade = ALL, orphanRemoval = true, fetch = LAZY)
     private List<Comment> comments = new ArrayList<>();
 
