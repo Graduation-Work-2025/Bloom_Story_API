@@ -1,4 +1,4 @@
-package bloom_story.global.domain.websocket.dto;
+package bloom_story.global.domain.websocket;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 

@@ -1,13 +1,14 @@
-package bloom_story.global.domain.websocket.handler;
+package bloom_story.global.domain.websocket;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+
+import org.springframework.stereotype.Component;
 import org.springframework.web.socket.*;
 import org.springframework.web.socket.handler.TextWebSocketHandler;
 import java.io.IOException;
 import java.util.concurrent.CopyOnWriteArrayList;
 
-import bloom_story.global.domain.websocket.dto.UnityMessage;
-
+@Component
 public class UnityWebSocketHandler extends TextWebSocketHandler {
 
     private static final CopyOnWriteArrayList<WebSocketSession> sessions = new CopyOnWriteArrayList<>();
