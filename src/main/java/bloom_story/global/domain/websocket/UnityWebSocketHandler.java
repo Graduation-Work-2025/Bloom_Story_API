@@ -1,15 +1,18 @@
 package bloom_story.global.domain.websocket;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
-
-import org.springframework.stereotype.Component;
-import org.springframework.web.socket.*;
-import org.springframework.web.socket.handler.TextWebSocketHandler;
 import java.io.IOException;
+import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
 
-import bloom_story.domain.comunity.story.dto.StoryResponse;
-import bloom_story.domain.comunity.story.service.StoryService;
+import org.springframework.stereotype.Component;
+import org.springframework.web.socket.CloseStatus;
+import org.springframework.web.socket.TextMessage;
+import org.springframework.web.socket.WebSocketSession;
+import org.springframework.web.socket.handler.TextWebSocketHandler;
+
+import com.fasterxml.jackson.databind.ObjectMapper;
+
+import bloom_story.domain.user.controller.UserHandler;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
@@ -18,10 +21,10 @@ import lombok.extern.slf4j.Slf4j;
 @RequiredArgsConstructor
 public class UnityWebSocketHandler extends TextWebSocketHandler {
 
-    private static final CopyOnWriteArrayList<WebSocketSession> sessions = new CopyOnWriteArrayList<>();
-    private final ObjectMapper objectMapper = new ObjectMapper(); // JSON 변환 객체
-
-    private final StoryService storyService;
+    private final List<WebSocketHandler> webSocketHandlers;
+    private final CopyOnWriteArrayList<WebSocketSession> sessions = new CopyOnWriteArrayList<>();
+    private final ObjectMapper objectMapper = new ObjectMapper();
+    private final UserHandler userHandler;
 
     @Override
     public void afterConnectionEstablished(WebSocketSession session) throws Exception {
@@ -30,25 +33,21 @@ public class UnityWebSocketHandler extends TextWebSocketHandler {
     }
 
     @Override
-    protected void handleTextMessage(WebSocketSession session, TextMessage message) throws Exception {
-        log.info("[WebSocket] 메시지 수신: " + message.getPayload());
+    protected void handleTextMessage(WebSocketSession session, TextMessage textMessage) throws Exception {
+        log.info("[WebSocket] 메시지 수신: " + textMessage.getPayload());
 
-        // JSON 데이터 변환 (예제)
-        UnityMessage unityMessage = objectMapper.readValue(message.getPayload(), UnityMessage.class);
-        String command = unityMessage.command();
+        WebSocketRequest request = objectMapper.readValue(textMessage.getPayload(), WebSocketRequest.class);
+        String domain = request.getDomain();
 
-        if (command.equals("get_story")) {
-            Integer storyId = Integer.parseInt(unityMessage.data());
-            StoryResponse story = storyService.getStoryById(storyId);
-            UnityMessage response = new UnityMessage(
-                "response",
-                story.content(),
-                "스토리 내용"
-            );
-            sendMessage(session, response);
+        for (var webSocketHandler : webSocketHandlers) {
+            if (webSocketHandler.is_supported(domain)) {
+                WebSocketResponse<?> response = webSocketHandler.handle(session, request);
+                sendMessage(session, response);
+                return;
+            }
         }
 
-        sendMessage(session, unityMessage);
+        session.sendMessage(new TextMessage("{\"error\": \"존재하지 않는 도메인\"}"));
     }
 
     @Override
@@ -57,7 +56,7 @@ public class UnityWebSocketHandler extends TextWebSocketHandler {
         log.info("[WebSocket] 연결 종료: " + session.getId());
     }
 
-    private void sendMessage(WebSocketSession session, UnityMessage message) throws IOException {
+    private void sendMessage(WebSocketSession session, WebSocketResponse message) throws IOException {
         String response = objectMapper.writeValueAsString(message);
         session.sendMessage(new TextMessage(response));
     }

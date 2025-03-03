@@ -1,4 +1,4 @@
-package bloom_story.global.domain.textanalytics;
+package bloom_story.global.domain.emotionAnalytics;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Configuration;

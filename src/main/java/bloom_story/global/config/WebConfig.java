@@ -1,4 +1,4 @@
-package bloom_story.global.utils;
+package bloom_story.global.config;
 
 import java.util.List;
 
