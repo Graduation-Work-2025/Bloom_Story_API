@@ -6,6 +6,8 @@ import org.springframework.transaction.annotation.Transactional;
 
 import bloom_story.domain.user.dto.UserLoginRequest;
 import bloom_story.domain.user.dto.UserLoginResponse;
+import bloom_story.domain.user.dto.UserRequest;
+import bloom_story.domain.user.dto.UserResponse;
 import bloom_story.domain.user.dto.UserSignupRequest;
 import bloom_story.domain.user.model.User;
 import bloom_story.domain.user.repository.UserRepository;
@@ -48,5 +50,14 @@ public class UserService {
         //String refreshToken = userTokenService.generateRefreshToken(user);
 
         return UserLoginResponse.of(accessToken);
+    }
+
+    public UserResponse getUserInfo(UserRequest request) {
+        User user = userRepository.getById(request.userId());
+        if (user == null) {
+            throw new IllegalArgumentException("user not found.");
+        }
+
+        return UserResponse.from(user);
     }
 }

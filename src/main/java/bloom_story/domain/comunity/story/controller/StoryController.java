@@ -36,7 +36,7 @@ public class StoryController implements StoryApi {
         return ResponseEntity.status(HttpStatus.CREATED).body(response);
     }
 
-    @Operation(summary = "스토리 조회")
+    @Operation(summary = "특정 스토리 조회")
     @GetMapping("/{id}")
     public ResponseEntity<StoryResponse> getStory(
         @PathVariable Integer id
@@ -45,12 +45,13 @@ public class StoryController implements StoryApi {
         return ResponseEntity.ok(response);
     }
 
-    @Operation(summary = "모든 스토리 조회")
+    @Operation(summary = "위치 기반 주변 스토리 조회")
     @GetMapping
     public ResponseEntity<StoriesResponse> getStories(
-        @RequestBody String location
+        @RequestBody double longitude,
+        @RequestBody double latitude
     ) {
-        StoriesResponse response = storyService.getStoriesByLocation(location);
+        StoriesResponse response = storyService.getStoriesByLocation(longitude, latitude);
         return ResponseEntity.ok(response);
     }
 

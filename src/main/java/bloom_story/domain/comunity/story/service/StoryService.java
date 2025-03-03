@@ -16,6 +16,7 @@ import bloom_story.domain.comunity.story.repository.StoryRepository;
 import bloom_story.domain.emotion.model.Emotion;
 import bloom_story.domain.emotion.repository.EmotionBloomMapRepository;
 import bloom_story.domain.emotion.repository.EmotionRepository;
+import bloom_story.domain.location.repository.LocationRepository;
 import bloom_story.domain.location.service.LocationService;
 import bloom_story.domain.user.model.User;
 import bloom_story.domain.user.repository.UserRepository;
@@ -33,6 +34,9 @@ public class StoryService {
     private final EmotionBloomMapRepository emotionBloomMapRepository;
     private final LocationService locationService;
     private final EmotionAnalyticsClient emotionAnalyticsClient;
+    private final LocationRepository locationRepository;
+
+    private static final double DISTANCE = 4.0;
 
     @Transactional
     public StoryResponse createStory(Integer userId, StoryRequest request) {
@@ -73,8 +77,9 @@ public class StoryService {
         return StoryResponse.from(story);
     }
 
-    public StoriesResponse getStoriesByLocation(String location) {
-        List<Story> stories = storyRepository.findAllByLocation(location);
+    public StoriesResponse getStoriesByLocation(double longitude, double latitude) {
+        String point = String.format("POINT(%.5f %.5f)", longitude, latitude);
+        List<Story> stories = locationRepository.findStoriesWithinDistance(point, DISTANCE);
         return StoriesResponse.from(stories);
     }
 
