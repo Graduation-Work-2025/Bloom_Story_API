@@ -24,6 +24,11 @@ public interface StoryRepository extends Repository<Story, Integer> {
     @Query("SELECT s FROM Story s WHERE s.expiredAt >= :now AND s.user.id = :userId")
     List<Story> findAllByUserIdAndExpiredAtAfter(@Param("userId") Integer userId, @Param("now") LocalDateTime now);
 
+    @Query(value = "SELECT * FROM stories " +
+        "WHERE ST_Distance_Sphere(location, ST_GeomFromText(:point)) <= :distance",
+        nativeQuery = true)
+    List<Story> findStoriesWithinDistance(@Param("point") String point, @Param("distance") double distance);
+
     default Story getById(Integer id) {
         return findById(id)
             .orElseThrow(() -> new RuntimeException("id: " + id));

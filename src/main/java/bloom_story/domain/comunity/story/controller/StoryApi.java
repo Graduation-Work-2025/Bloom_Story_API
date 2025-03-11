@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import bloom_story.domain.comunity.story.dto.StoriesResponse;
 import bloom_story.domain.comunity.story.dto.StoryRequest;
@@ -58,8 +59,9 @@ public interface StoryApi {
     @Operation(summary = "모든 스토리 조회")
     @GetMapping
     ResponseEntity<StoriesResponse> getStories(
-        @RequestBody double longitude,
-        @RequestBody double latitude
+        @UserId Integer userId,
+        @RequestParam double longitude,
+        @RequestParam double latitude
     );
 
     @ApiResponses(

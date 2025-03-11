@@ -93,7 +93,7 @@ public class StoryHandler implements WebSocketHandler {
         WebSocketRequest message
     ) {
         StoryLocationRequest request = objectMapper.convertValue(message.getRequest(), StoryLocationRequest.class);
-        StoriesResponse response = storyService.getStoriesByLocation(request.longitude(), request.latitude());
+        StoriesResponse response = storyService.getNearbyStories(1, request.longitude(), request.latitude());
         return WebSocketResponse.of(0, message, response);
     }
 }
