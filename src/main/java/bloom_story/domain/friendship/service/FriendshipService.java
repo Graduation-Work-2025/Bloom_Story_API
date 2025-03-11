@@ -27,6 +27,7 @@ public class FriendshipService {
         Friendship friendship = Friendship.builder()
             .requester(requester)
             .sender(sender)
+            .isAllowed(false)
             .build();
 
         friendshipRepository.save(friendship);
@@ -43,17 +44,28 @@ public class FriendshipService {
 
     public FriendshipsResponse getFriendships(Integer userId) {
         User user = userRepository.getById(userId);
-        List<Friendship> friendships = friendshipRepository.findAllByUserIdAndIsAllowed(userId, true);
-        List<User> friends = null;
-        // TODO: friendship 리스트에서 나를 제외한 상대방 ID 리스트 추출하기
+        List<User> friends = getFriendsByFriendships(userId, true);
+
         return FriendshipsResponse.from(friends);
     }
 
     public FriendshipsResponse getPendingFriendships(Integer userId) {
         User user = userRepository.getById(userId);
-        List<Friendship> friendships = friendshipRepository.findAllByUserIdAndIsAllowed(userId, false);
-        List<User> friends = null;
-        // TODO: friendship 리스트에서 나를 제외한 상대방 ID 리스트 추출하기
+        List<User> friends = getFriendsByFriendships(userId, false);
+
         return FriendshipsResponse.from(friends);
+    }
+
+    public List<User> getFriendsByFriendships(Integer userId, Boolean isAllowed) {
+        // TODO: friendship 리스트에서 나를 제외한 상대방 ID 리스트 추출하기
+        List<Integer> friendships = friendshipRepository.findAllByUserIdAndIsAllowed(userId, isAllowed);
+        return friendships.stream()
+            .map(userRepository::getById)
+            .toList();
+    }
+
+    public void deleteFriendship(Integer userId, Integer friendId) {
+        Friendship friendship = friendshipRepository.getByIds(userId, friendId);
+        friendshipRepository.delete(friendship);
     }
 }

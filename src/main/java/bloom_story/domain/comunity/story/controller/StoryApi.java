@@ -59,8 +59,9 @@ public interface StoryApi {
     @Operation(summary = "모든 스토리 조회")
     @GetMapping
     ResponseEntity<StoriesResponse> getStories(
-        @RequestBody double longitude,
-        @RequestBody double latitude
+        @UserId Integer userId,
+        @RequestParam double longitude,
+        @RequestParam double latitude
     );
 
     @ApiResponses(

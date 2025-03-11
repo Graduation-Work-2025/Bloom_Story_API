@@ -49,10 +49,11 @@ public class StoryController implements StoryApi {
     @Operation(summary = "위치 기반 주변 스토리 조회")
     @GetMapping
     public ResponseEntity<StoriesResponse> getStories(
-        @RequestBody double longitude,
-        @RequestBody double latitude
+        @UserId Integer userId,
+        @RequestParam double longitude,
+        @RequestParam double latitude
     ) {
-        StoriesResponse response = storyService.getNearbyStories(longitude, latitude);
+        StoriesResponse response = storyService.getNearbyStories(userId, longitude, latitude);
         return ResponseEntity.ok(response);
     }
 

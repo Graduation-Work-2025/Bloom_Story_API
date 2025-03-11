@@ -1,6 +1,9 @@
 package bloom_story.domain.friendship.controller;
 
+import static io.swagger.v3.oas.annotations.enums.ParameterIn.PATH;
+
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -12,6 +15,7 @@ import bloom_story.domain.friendship.dto.FriendshipsResponse;
 import bloom_story.domain.user.dto.UserLoginRequest;
 import bloom_story.global.domain.jwt.UserId;
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
@@ -70,5 +74,20 @@ public interface FriendshipApi {
     @GetMapping("/pending")
     ResponseEntity<FriendshipsResponse> getPendingFriendships(
         @UserId Integer userId
+    );
+
+    @ApiResponses(
+        value = {
+            @ApiResponse(responseCode = "204"),
+            @ApiResponse(responseCode = "401", content = @Content(schema = @Schema(hidden = true))),
+            @ApiResponse(responseCode = "403", content = @Content(schema = @Schema(hidden = true))),
+            @ApiResponse(responseCode = "404", content = @Content(schema = @Schema(hidden = true))),
+        }
+    )
+    @Operation(summary = "친구 삭제")
+    @DeleteMapping("/{id}")
+    ResponseEntity<Void> deleteFriendship(
+        @UserId Integer userId,
+        @PathVariable("id") Integer friendId
     );
 }

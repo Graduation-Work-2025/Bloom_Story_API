@@ -2,8 +2,10 @@ package bloom_story.domain.comunity.story.service;
 
 import java.time.Clock;
 import java.time.LocalDateTime;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Random;
+import java.util.Set;
 
 import org.locationtech.jts.geom.Point;
 import org.springframework.stereotype.Service;
@@ -16,9 +18,10 @@ import bloom_story.domain.comunity.story.dto.StoryResponse;
 import bloom_story.domain.comunity.story.model.Story;
 import bloom_story.domain.comunity.story.repository.StoryRepository;
 import bloom_story.domain.emotion.model.Emotion;
+import bloom_story.domain.emotion.model.EmotionBloomMap;
 import bloom_story.domain.emotion.repository.EmotionBloomMapRepository;
 import bloom_story.domain.emotion.repository.EmotionRepository;
-import bloom_story.domain.location.repository.LocationRepository;
+import bloom_story.domain.friendship.service.FriendshipService;
 import bloom_story.domain.location.service.LocationService;
 import bloom_story.domain.user.model.User;
 import bloom_story.domain.user.repository.UserRepository;
@@ -36,7 +39,7 @@ public class StoryService {
     private final EmotionBloomMapRepository emotionBloomMapRepository;
     private final LocationService locationService;
     private final EmotionAnalyticsClient emotionAnalyticsClient;
-    private final LocationRepository locationRepository;
+    private final FriendshipService friendshipService;
     private final Clock clock;
 
     private static final double DISTANCE = 4.0;
@@ -69,7 +72,7 @@ public class StoryService {
     private Bloom getRandomBloom(Emotion emotion) {
         //TODO: emotion을 gpt에게 말해서 적절한 꽃으로 표현하기(꽃말 활용?)
         List<Bloom> blooms = emotionBloomMapRepository.findAllByEmotion(emotion).stream()
-            .map(emo -> emo.getBloom())
+            .map(EmotionBloomMap::getBloom)
             .toList();
 
         Random random = new Random();
@@ -82,10 +85,16 @@ public class StoryService {
         return StoryResponse.from(story);
     }
 
-    public StoriesResponse getNearbyStories(double longitude, double latitude) {
+    public StoriesResponse getNearbyStories(Integer userId, double longitude, double latitude) {
         String point = String.format("POINT(%.5f %.5f)", longitude, latitude);
         List<Story> stories = storyRepository.findStoriesWithinDistance(point, DISTANCE);
-        return StoriesResponse.from(stories);
+        Set<User> friends = new HashSet<>(friendshipService.getFriendsByFriendships(userId, true));
+
+        List<Story> friendStories = stories.stream()
+            .filter(story -> friends.contains(story.getUser()))
+            .toList();
+
+        return StoriesResponse.from(friendStories);
     }
 
     public StoriesResponse getMyStories(Integer id) {

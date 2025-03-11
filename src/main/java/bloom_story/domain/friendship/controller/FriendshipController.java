@@ -2,6 +2,7 @@ package bloom_story.domain.friendship.controller;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -59,5 +60,15 @@ public class FriendshipController implements FriendshipApi {
     ) {
         FriendshipsResponse response = friendshipService.getPendingFriendships(userId);
         return ResponseEntity.ok().body(response);
+    }
+
+    @Operation(summary = "친구 삭제")
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> deleteFriendship(
+        @UserId Integer userId,
+        @PathVariable("id") Integer friendId
+    ) {
+        friendshipService.deleteFriendship(userId, friendId);
+        return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
     }
 }
