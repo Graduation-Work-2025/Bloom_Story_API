@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import bloom_story.domain.comunity.story.dto.StoriesResponse;
@@ -51,7 +52,7 @@ public class StoryController implements StoryApi {
         @RequestBody double longitude,
         @RequestBody double latitude
     ) {
-        StoriesResponse response = storyService.getStoriesByLocation(longitude, latitude);
+        StoriesResponse response = storyService.getNearbyStories(longitude, latitude);
         return ResponseEntity.ok(response);
     }
 

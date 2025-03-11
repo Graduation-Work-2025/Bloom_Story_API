@@ -82,9 +82,9 @@ public class StoryService {
         return StoryResponse.from(story);
     }
 
-    public StoriesResponse getStoriesByLocation(double longitude, double latitude) {
+    public StoriesResponse getNearbyStories(double longitude, double latitude) {
         String point = String.format("POINT(%.5f %.5f)", longitude, latitude);
-        List<Story> stories = locationRepository.findStoriesWithinDistance(point, DISTANCE);
+        List<Story> stories = storyRepository.findStoriesWithinDistance(point, DISTANCE);
         return StoriesResponse.from(stories);
     }
 
