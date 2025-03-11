@@ -5,6 +5,7 @@ import static jakarta.persistence.FetchType.LAZY;
 import static jakarta.persistence.GenerationType.IDENTITY;
 import static lombok.AccessLevel.PROTECTED;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -17,6 +18,8 @@ import bloom_story.domain.user.model.User;
 import bloom_story.global.domain.BaseEntity;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
@@ -63,8 +66,16 @@ public class Story extends BaseEntity {
     @Column(name = "location", nullable = false, columnDefinition = "POINT")
     private Point location;
 
+    @NotNull
+    @Column(name = "sharing_type", nullable = false)
+    @Enumerated(EnumType.STRING)
+    private SharingType sharingType;
+
     @Column(name = "is_highlight", columnDefinition = "TINYINT")
     private Boolean isHighlight = false;
+
+    @Column(name = "expired_at", columnDefinition = "TIMESTAMP")
+    private LocalDateTime expiredAt;
 
     @OneToMany(mappedBy = "story", cascade = ALL, orphanRemoval = true, fetch = LAZY)
     private List<Comment> comments = new ArrayList<>();
@@ -79,16 +90,20 @@ public class Story extends BaseEntity {
         String content,
         int likes,
         Point location,
+        SharingType sharingType,
         Emotion emotion,
-        Bloom bloom
+        Bloom bloom,
+        LocalDateTime expiredAt
     ) {
         this.id = id;
         this.user = user;
         this.content = content;
         this.likes = likes;
         this.location = location;
+        this.sharingType = sharingType;
         this.emotion = emotion;
         this.bloom = bloom;
+        this.expiredAt = expiredAt;
     }
 
     public void setEmotion(Emotion emotion) {

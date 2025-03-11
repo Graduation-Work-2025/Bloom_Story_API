@@ -1,5 +1,7 @@
 package bloom_story.domain.comunity.story.service;
 
+import java.time.Clock;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Random;
 
@@ -35,6 +37,7 @@ public class StoryService {
     private final LocationService locationService;
     private final EmotionAnalyticsClient emotionAnalyticsClient;
     private final LocationRepository locationRepository;
+    private final Clock clock;
 
     private static final double DISTANCE = 4.0;
 
@@ -47,6 +50,8 @@ public class StoryService {
             .user(user)
             .content(request.content())
             .location(point)
+            .sharingType(request.sharingType())
+            .expiredAt(LocalDateTime.now(clock).plusHours(24))
             .build();
 
         String analyzedEmotion = emotionAnalyticsClient.analysisEmotion(story.getContent());
@@ -80,6 +85,11 @@ public class StoryService {
     public StoriesResponse getStoriesByLocation(double longitude, double latitude) {
         String point = String.format("POINT(%.5f %.5f)", longitude, latitude);
         List<Story> stories = locationRepository.findStoriesWithinDistance(point, DISTANCE);
+        return StoriesResponse.from(stories);
+    }
+
+    public StoriesResponse getMyStories(Integer id) {
+        List<Story> stories = storyRepository.findAllByUserIdAndExpiredAtAfter(id, LocalDateTime.now(clock));
         return StoriesResponse.from(stories);
     }
 

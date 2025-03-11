@@ -55,6 +55,15 @@ public class StoryController implements StoryApi {
         return ResponseEntity.ok(response);
     }
 
+    @Operation(summary = "공개된 내 스토리 목록 조회")
+    @GetMapping("/my")
+    public ResponseEntity<StoriesResponse> getMyStories(
+        @UserId Integer userId
+    ) {
+        StoriesResponse response = storyService.getMyStories(userId);
+        return ResponseEntity.ok(response);
+    }
+
     // @Operation(summary = "스토리 수정")
     // @PutMapping("/{id}")
     // public ResponseEntity<StoryResponse> updateStory(

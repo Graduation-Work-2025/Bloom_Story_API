@@ -2,8 +2,10 @@ package bloom_story.domain.comunity.story.dto;
 
 import static io.swagger.v3.oas.annotations.media.Schema.RequiredMode.REQUIRED;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
+import bloom_story.domain.comunity.story.model.SharingType;
 import bloom_story.domain.comunity.story.model.Story;
 import bloom_story.domain.location.service.LocationService;
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -34,7 +36,13 @@ public record StoryResponse(
     Integer emotionId,
 
     @Schema(description = "Bloom ID", example = "1", requiredMode = REQUIRED)
-    Integer bloomId
+    Integer bloomId,
+
+    @Schema(description = "Bloom ID", example = "1", requiredMode = REQUIRED)
+    LocalDateTime expiredAt,
+
+    @Schema(description = "Bloom ID", example = "1", requiredMode = REQUIRED)
+    SharingType sharingType
 ) {
 
     public static StoryResponse from(Story story) {
@@ -47,7 +55,9 @@ public record StoryResponse(
             story.getLikes(),
             story.getUser().getId(),
             story.getEmotion().getId(),
-            story.getBloom().getId()
+            story.getBloom().getId(),
+            story.getExpiredAt(),
+            story.getSharingType()
         );
     }
 }

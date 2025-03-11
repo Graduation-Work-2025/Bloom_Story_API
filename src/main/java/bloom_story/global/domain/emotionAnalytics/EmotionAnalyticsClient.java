@@ -22,30 +22,35 @@ public class EmotionAnalyticsClient {
     private static final String API_URL = "http://localhost:5000/analyze";  // Flask 서버 주소
 
     public String analysisEmotion(String storyContent) {
-        Map<String, Object> requestBody = new HashMap<>();
-        requestBody.put("comments", List.of(storyContent));
-
-        RestTemplate restTemplate = new RestTemplate();
-        HttpHeaders headers = new HttpHeaders();
-        headers.setContentType(MediaType.APPLICATION_JSON);
-        HttpEntity<Map<String, Object>> request = new HttpEntity<>(requestBody, headers);
-
-        ResponseEntity<String> response = restTemplate.exchange(API_URL, HttpMethod.POST, request, String.class);
-        System.out.println("Response: " + response.getBody());
-
-        // JSON 응답을 리스트 형태로 변환
-        ObjectMapper objectMapper = new ObjectMapper();
-        List<Map<String, String>> resultList = new ArrayList<>();
-
         try {
-            resultList = objectMapper.readValue(
-                response.getBody(),
-                new TypeReference<List<Map<String, String>>>() {}
-            );
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+            Map<String, Object> requestBody = new HashMap<>();
+            requestBody.put("comments", List.of(storyContent));
 
-        return resultList.get(0).get("emotion");
+            RestTemplate restTemplate = new RestTemplate();
+            HttpHeaders headers = new HttpHeaders();
+            headers.setContentType(MediaType.APPLICATION_JSON);
+            HttpEntity<Map<String, Object>> request = new HttpEntity<>(requestBody, headers);
+
+            ResponseEntity<String> response = restTemplate.exchange(API_URL, HttpMethod.POST, request, String.class);
+            System.out.println("Response: " + response.getBody());
+
+            // JSON 응답을 리스트 형태로 변환
+            ObjectMapper objectMapper = new ObjectMapper();
+            List<Map<String, String>> resultList = new ArrayList<>();
+
+            try {
+                resultList = objectMapper.readValue(
+                    response.getBody(),
+                    new TypeReference<List<Map<String, String>>>() {
+                    }
+                );
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+
+            return resultList.get(0).get("emotion");
+        } catch (Exception e) {
+            return "기쁨";
+        }
     }
 }

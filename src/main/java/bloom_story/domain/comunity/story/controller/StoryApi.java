@@ -62,6 +62,18 @@ public interface StoryApi {
         @RequestBody double latitude
     );
 
+    @ApiResponses(
+        value = {
+            @ApiResponse(responseCode = "201"),
+            @ApiResponse(responseCode = "400", content = @Content(schema = @Schema(hidden = true))),
+            @ApiResponse(responseCode = "404", content = @Content(schema = @Schema(hidden = true)))
+        })
+    @Operation(summary = "공개된 내 스토리 목록 조회")
+    @GetMapping("/my")
+    ResponseEntity<StoriesResponse> getMyStories(
+        @UserId Integer userId
+    );
+
     // @ApiResponses(
     //     value = {
     //         @ApiResponse(responseCode = "201"),
