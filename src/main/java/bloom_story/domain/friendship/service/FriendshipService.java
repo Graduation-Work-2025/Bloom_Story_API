@@ -34,8 +34,6 @@ public class FriendshipService {
     }
 
     public void allowFriendship(Integer senderId, Integer requesterId) {
-        // User sender = userRepository.getById(senderId);
-        // User requester = userRepository.getById(requesterId);
         Friendship friendship = friendshipRepository.getByRequesterIdAndSenderId(requesterId, senderId);
 
         friendship.allowRequest();
@@ -43,21 +41,18 @@ public class FriendshipService {
     }
 
     public FriendshipsResponse getFriendships(Integer userId) {
-        User user = userRepository.getById(userId);
         List<User> friends = getFriendsByFriendships(userId, true);
 
         return FriendshipsResponse.from(friends);
     }
 
     public FriendshipsResponse getPendingFriendships(Integer userId) {
-        User user = userRepository.getById(userId);
         List<User> friends = getFriendsByFriendships(userId, false);
 
         return FriendshipsResponse.from(friends);
     }
 
     public List<User> getFriendsByFriendships(Integer userId, Boolean isAllowed) {
-        // TODO: friendship 리스트에서 나를 제외한 상대방 ID 리스트 추출하기
         List<Integer> friendships = friendshipRepository.findAllByUserIdAndIsAllowed(userId, isAllowed);
         return friendships.stream()
             .map(userRepository::getById)
