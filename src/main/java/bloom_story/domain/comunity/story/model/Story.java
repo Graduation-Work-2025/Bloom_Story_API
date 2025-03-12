@@ -11,6 +11,8 @@ import java.util.List;
 
 import org.locationtech.jts.geom.Point;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+
 import bloom_story.domain.bloom.model.Bloom;
 import bloom_story.domain.comunity.comment.model.Comment;
 import bloom_story.domain.emotion.model.Emotion;
@@ -74,6 +76,7 @@ public class Story extends BaseEntity {
     @Column(name = "is_highlight", columnDefinition = "TINYINT")
     private Boolean isHighlight = false;
 
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss")
     @Column(name = "expired_at", columnDefinition = "TIMESTAMP")
     private LocalDateTime expiredAt;
 

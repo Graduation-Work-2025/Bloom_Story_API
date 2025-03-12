@@ -1,4 +1,4 @@
-package bloom_story.global.domain.jwt;
+package bloom_story.global.domain.jwt.handler;
 
 import static org.springframework.http.HttpHeaders.AUTHORIZATION;
 
@@ -8,6 +8,8 @@ import org.springframework.stereotype.Component;
 import org.springframework.util.StringUtils;
 import org.springframework.web.servlet.HandlerInterceptor;
 
+import bloom_story.global.domain.jwt.JwtProvider;
+import bloom_story.global.domain.jwt.UserIdContext;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
@@ -30,7 +32,7 @@ public class ExtractAuthenticationInterceptor implements HandlerInterceptor {
         return true;
     }
 
-    public static String extractAccessToken(HttpServletRequest request) {
+    private static String extractAccessToken(HttpServletRequest request) {
         String bearerToken = request.getHeader(AUTHORIZATION);
         if (StringUtils.hasText(bearerToken) && bearerToken.startsWith(BEARER_TYPE)) {
             return bearerToken.substring(BEARER_TYPE_LEN);
