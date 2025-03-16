@@ -2,10 +2,14 @@ package bloom_story.domain.user.dto;
 
 import static io.swagger.v3.oas.annotations.media.Schema.RequiredMode.NOT_REQUIRED;
 import static io.swagger.v3.oas.annotations.media.Schema.RequiredMode.REQUIRED;
+import static com.fasterxml.jackson.databind.PropertyNamingStrategies.SnakeCaseStrategy;
+
+import com.fasterxml.jackson.databind.annotation.JsonNaming;
 
 import bloom_story.domain.user.model.User;
 import io.swagger.v3.oas.annotations.media.Schema;
 
+@JsonNaming(value = SnakeCaseStrategy.class)
 public record UserResponse(
 
     @Schema(description = "성명", example = "황현식", requiredMode = REQUIRED)

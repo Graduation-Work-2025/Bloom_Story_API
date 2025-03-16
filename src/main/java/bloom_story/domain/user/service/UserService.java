@@ -47,7 +47,6 @@ public class UserService {
         }
 
         String accessToken = userTokenService.createAccessToken(user);
-        //String refreshToken = userTokenService.generateRefreshToken(user);
 
         return UserLoginResponse.of(accessToken);
     }
