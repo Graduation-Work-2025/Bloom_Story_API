@@ -17,9 +17,9 @@ public record UserSignupRequest(
     @Schema(description = "닉네임", example = "캔따개", requiredMode = REQUIRED)
     String nickname,
 
-    @JsonProperty("email")
-    @Schema(description = "이메일", example = "hyunn815@naver.com", requiredMode = REQUIRED)
-    String email,
+    @JsonProperty("userId")
+    @Schema(description = "아이디", example = "hyunn815", requiredMode = REQUIRED)
+    String userId,
 
     @JsonProperty("password")
     @Schema(description = "비밀번호", example = "qwer1234", requiredMode = REQUIRED)

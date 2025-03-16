@@ -30,7 +30,7 @@ public record FriendshipsResponse(
         public static InnerFriendshipResponse from(User user) {
             return new InnerFriendshipResponse(
                 user.getId(),
-                user.getEmail()
+                user.getUserId()
             );
         }
     }

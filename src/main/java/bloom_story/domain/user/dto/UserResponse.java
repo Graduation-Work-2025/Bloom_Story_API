@@ -14,8 +14,8 @@ public record UserResponse(
     @Schema(description = "닉네임", example = "캔따개", requiredMode = REQUIRED)
     String nickname,
 
-    @Schema(description = "이메일", example = "hyunn815@naver.com", requiredMode = REQUIRED)
-    String email,
+    @Schema(description = "아이디", example = "hyunn815", requiredMode = REQUIRED)
+    String userId,
 
     @Schema(description = "휴대폰 번호", example = "010-8434-1160", requiredMode = NOT_REQUIRED)
     String phone
@@ -25,7 +25,7 @@ public record UserResponse(
         return new UserResponse(
             user.getName(),
             user.getNickname(),
-            user.getEmail(),
+            user.getUserId(),
             user.getPhone()
         );
     }

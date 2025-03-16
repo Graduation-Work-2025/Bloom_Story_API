@@ -14,10 +14,11 @@ import bloom_story.domain.comunity.story.dto.StoryLocationRequest;
 import bloom_story.domain.comunity.story.dto.StoryRequest;
 import bloom_story.domain.comunity.story.dto.StoryResponse;
 import bloom_story.domain.comunity.story.service.StoryService;
-import bloom_story.global.domain.websocket.model.CommandType;
-import bloom_story.global.domain.websocket.handler.WebSocketHandler;
 import bloom_story.global.domain.websocket.dto.WebSocketRequest;
 import bloom_story.global.domain.websocket.dto.WebSocketResponse;
+import bloom_story.global.domain.websocket.handler.WebSocketHandler;
+import bloom_story.global.domain.websocket.model.CommandType;
+import bloom_story.global.domain.websocket.model.ErrorCode;
 import io.swagger.v3.oas.annotations.Operation;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -29,6 +30,9 @@ public class StoryHandler implements WebSocketHandler {
 
     private final StoryService storyService;
     private final ObjectMapper objectMapper = new ObjectMapper();
+    private final ErrorCode err = ErrorCode.builder()
+        .errorCode(200)
+        .build();
 
     @Override
     public boolean is_supported(String command) {
@@ -63,7 +67,6 @@ public class StoryHandler implements WebSocketHandler {
         }
 
         log.info("[WebSocket] User: " + message);
-        session.sendMessage(new TextMessage(String.format("{\"result\": \"%s\"}", message)));
         return response;
     }
 
@@ -75,7 +78,7 @@ public class StoryHandler implements WebSocketHandler {
         StoryRequest request = objectMapper.convertValue(message.getRequest(), StoryRequest.class);
         StoryResponse response = storyService.createStory(userId, request);
 
-        return WebSocketResponse.of(0, message, response);
+        return WebSocketResponse.of(err, response);
     }
 
     @Operation(summary = "특정 스토리 조회")
@@ -86,7 +89,7 @@ public class StoryHandler implements WebSocketHandler {
         StoryIdRequest request = objectMapper.convertValue(message.getRequest(), StoryIdRequest.class);
         StoryResponse response = storyService.getStoryById(request.storyId());
 
-        return WebSocketResponse.of(0, message, response);
+        return WebSocketResponse.of(err, response);
     }
 
     @Operation(summary = "위치 기반 주변 스토리 조회")
@@ -96,6 +99,6 @@ public class StoryHandler implements WebSocketHandler {
     ) {
         StoryLocationRequest request = objectMapper.convertValue(message.getRequest(), StoryLocationRequest.class);
         StoriesResponse response = storyService.getNearbyStories(userId, request.longitude(), request.latitude());
-        return WebSocketResponse.of(0, message, response);
+        return WebSocketResponse.of(err, response);
     }
 }

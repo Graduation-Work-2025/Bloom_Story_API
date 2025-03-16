@@ -35,7 +35,7 @@ public interface FriendshipRepository extends Repository<Friendship, Integer> {
 
     default Friendship getByRequesterIdAndSenderId(Integer requesterId, Integer senderId) {
         return findByRequesterIdAndSenderId(requesterId, senderId)
-            .orElseThrow(() -> new RuntimeException("requesterId: " + requesterId + " senderId: " + senderId));
+            .orElseThrow(() -> new RuntimeException("requesterId: " + requesterId + " friendId: " + senderId));
     }
 
     ;

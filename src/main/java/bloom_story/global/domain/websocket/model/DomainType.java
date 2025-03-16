@@ -3,6 +3,7 @@ package bloom_story.global.domain.websocket.model;
 public enum DomainType {
     USER("user"),
     STORY("story"),
+    FRIEND("friend"),
     ;
 
     private String label;

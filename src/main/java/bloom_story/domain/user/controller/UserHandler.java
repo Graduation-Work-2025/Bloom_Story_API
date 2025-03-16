@@ -14,10 +14,11 @@ import bloom_story.domain.user.dto.UserRequest;
 import bloom_story.domain.user.dto.UserResponse;
 import bloom_story.domain.user.dto.UserSignupRequest;
 import bloom_story.domain.user.service.UserService;
-import bloom_story.global.domain.websocket.model.CommandType;
-import bloom_story.global.domain.websocket.handler.WebSocketHandler;
 import bloom_story.global.domain.websocket.dto.WebSocketRequest;
 import bloom_story.global.domain.websocket.dto.WebSocketResponse;
+import bloom_story.global.domain.websocket.handler.WebSocketHandler;
+import bloom_story.global.domain.websocket.model.CommandType;
+import bloom_story.global.domain.websocket.model.ErrorCode;
 import io.swagger.v3.oas.annotations.Operation;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -29,6 +30,9 @@ public class UserHandler implements WebSocketHandler {
 
     private final UserService userService;
     private final ObjectMapper objectMapper = new ObjectMapper();
+    private final ErrorCode err = ErrorCode.builder()
+        .errorCode(200)
+        .build();
 
     @Override
     public boolean is_supported(String command) {
@@ -63,7 +67,6 @@ public class UserHandler implements WebSocketHandler {
         }
 
         log.info("[WebSocket] User: " + message);
-        session.sendMessage(new TextMessage(String.format("{\"result\": \"%s\"}", message)));
         return response;
     }
 
@@ -73,7 +76,8 @@ public class UserHandler implements WebSocketHandler {
     ) {
         UserSignupRequest request = objectMapper.convertValue(message.getRequest(), UserSignupRequest.class);
         userService.signUp(request);
-        return WebSocketResponse.of(0, message, null);
+
+        return WebSocketResponse.of(err, null);
     }
 
     @Operation(summary = "사용자 로그인")
@@ -82,7 +86,7 @@ public class UserHandler implements WebSocketHandler {
     ) {
         UserLoginRequest request = objectMapper.convertValue(message.getRequest(), UserLoginRequest.class);
         UserLoginResponse response = userService.login(request);
-        return WebSocketResponse.of(0, message, response);
+        return WebSocketResponse.of(err, response);
     }
 
     @Operation(summary = "사용자 정보 조회")
@@ -92,6 +96,6 @@ public class UserHandler implements WebSocketHandler {
     ) {
         UserRequest request = objectMapper.convertValue(message.getRequest(), UserRequest.class);
         UserResponse response = userService.getUserInfo(request);
-        return WebSocketResponse.of(0, message, response);
+        return WebSocketResponse.of(err, response);
     }
 }
