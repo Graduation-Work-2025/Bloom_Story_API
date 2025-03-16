@@ -38,8 +38,8 @@ public record StoryResponse(
     @Schema(description = "Bloom ID", example = "1", requiredMode = REQUIRED)
     Integer bloomId,
 
-    @Schema(description = "Bloom ID", example = "1", requiredMode = REQUIRED)
-    LocalDateTime expiredAt,
+    // @Schema(description = "Bloom ID", example = "1", requiredMode = REQUIRED)
+    // LocalDateTime expiredAt,
 
     @Schema(description = "Bloom ID", example = "1", requiredMode = REQUIRED)
     SharingType sharingType
@@ -56,7 +56,6 @@ public record StoryResponse(
             story.getUser().getId(),
             story.getEmotion().getId(),
             story.getBloom().getId(),
-            story.getExpiredAt(),
             story.getSharingType()
         );
     }

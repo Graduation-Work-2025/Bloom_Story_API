@@ -9,11 +9,6 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.NotNull;
 
 public record StoryRequest(
-    @JsonProperty("user_id")
-    @Schema(description = "작성자 ID", example = "1", requiredMode = REQUIRED)
-    @NotNull
-    Integer userId,
-
     @JsonProperty("content")
     @Schema(description = "스토리 내용", example = "오늘은 좋은 일이 많았어요!")
     String content,

@@ -1,5 +1,7 @@
 package bloom_story.domain.comunity.story.controller;
 
+import static bloom_story.global.domain.websocket.model.DomainType.STORY;
+
 import org.springframework.stereotype.Component;
 import org.springframework.web.socket.TextMessage;
 import org.springframework.web.socket.WebSocketSession;
@@ -12,9 +14,11 @@ import bloom_story.domain.comunity.story.dto.StoryLocationRequest;
 import bloom_story.domain.comunity.story.dto.StoryRequest;
 import bloom_story.domain.comunity.story.dto.StoryResponse;
 import bloom_story.domain.comunity.story.service.StoryService;
-import bloom_story.global.domain.websocket.WebSocketHandler;
-import bloom_story.global.domain.websocket.WebSocketRequest;
-import bloom_story.global.domain.websocket.WebSocketResponse;
+import bloom_story.global.domain.websocket.dto.WebSocketRequest;
+import bloom_story.global.domain.websocket.dto.WebSocketResponse;
+import bloom_story.global.domain.websocket.handler.WebSocketHandler;
+import bloom_story.global.domain.websocket.model.CommandType;
+import bloom_story.global.domain.websocket.model.ErrorCode;
 import io.swagger.v3.oas.annotations.Operation;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -24,36 +28,35 @@ import lombok.extern.slf4j.Slf4j;
 @RequiredArgsConstructor
 public class StoryHandler implements WebSocketHandler {
 
-    private static final String DOMAIN_STORY = "story";
-    private static final String CREATE_STORY = "create_story";
-    private static final String GET_STORY = "get_story";
-    private static final String GET_STORIES = "get_stories";
-
     private final StoryService storyService;
     private final ObjectMapper objectMapper = new ObjectMapper();
+    private final ErrorCode err = ErrorCode.builder()
+        .errorCode(200)
+        .build();
 
     @Override
     public boolean is_supported(String command) {
-        return command.equals(DOMAIN_STORY);
+        return command.equals(STORY.toString().toLowerCase());
     }
 
     @Override
-    public WebSocketResponse<?> handle(WebSocketSession session, WebSocketRequest request) throws Exception {
-        String command = request.getCommand();
+    public WebSocketResponse<?> handle(WebSocketSession session, Integer userId, WebSocketRequest request) throws
+        Exception {
+        CommandType command = CommandType.from(request.getCommand());
         WebSocketResponse<?> response;
         String message;
 
         switch (command) {
             case CREATE_STORY -> {
-                response = createStory(request);
+                response = createStory(userId, request);
                 message = "스토리 작성 성공";
             }
             case GET_STORY -> {
-                response = getStory(request);
+                response = getStory(userId, request);
                 message = "스토리 조회 성공";
             }
             case GET_STORIES -> {
-                response = getStories(request);
+                response = getStories(userId, request);
                 message = "주변 스토리 목록 조회 성공";
             }
             default -> {
@@ -64,36 +67,38 @@ public class StoryHandler implements WebSocketHandler {
         }
 
         log.info("[WebSocket] User: " + message);
-        session.sendMessage(new TextMessage(String.format("{\"result\": \"%s\"}", message)));
         return response;
     }
 
     @Operation(summary = "스토리 작성")
     public WebSocketResponse<StoryResponse> createStory(
+        Integer userId,
         WebSocketRequest message
     ) {
         StoryRequest request = objectMapper.convertValue(message.getRequest(), StoryRequest.class);
-        StoryResponse response = storyService.createStory(request.userId(), request);
+        StoryResponse response = storyService.createStory(userId, request);
 
-        return WebSocketResponse.of(0, message, response);
+        return WebSocketResponse.of(err, response);
     }
 
     @Operation(summary = "특정 스토리 조회")
     public WebSocketResponse<StoryResponse> getStory(
+        Integer userId,
         WebSocketRequest message
     ) {
         StoryIdRequest request = objectMapper.convertValue(message.getRequest(), StoryIdRequest.class);
         StoryResponse response = storyService.getStoryById(request.storyId());
 
-        return WebSocketResponse.of(0, message, response);
+        return WebSocketResponse.of(err, response);
     }
 
     @Operation(summary = "위치 기반 주변 스토리 조회")
     public WebSocketResponse<StoriesResponse> getStories(
+        Integer userId,
         WebSocketRequest message
     ) {
         StoryLocationRequest request = objectMapper.convertValue(message.getRequest(), StoryLocationRequest.class);
-        StoriesResponse response = storyService.getNearbyStories(1, request.longitude(), request.latitude());
-        return WebSocketResponse.of(0, message, response);
+        StoriesResponse response = storyService.getNearbyStories(userId, request.longitude(), request.latitude());
+        return WebSocketResponse.of(err, response);
     }
 }

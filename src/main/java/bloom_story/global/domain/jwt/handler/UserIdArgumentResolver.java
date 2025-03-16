@@ -1,4 +1,4 @@
-package bloom_story.global.domain.jwt;
+package bloom_story.global.domain.jwt.handler;
 
 import org.springframework.core.MethodParameter;
 import org.springframework.stereotype.Component;
@@ -7,6 +7,8 @@ import org.springframework.web.context.request.NativeWebRequest;
 import org.springframework.web.method.support.HandlerMethodArgumentResolver;
 import org.springframework.web.method.support.ModelAndViewContainer;
 
+import bloom_story.global.domain.jwt.UserId;
+import bloom_story.global.domain.jwt.UserIdContext;
 import lombok.RequiredArgsConstructor;
 
 /**

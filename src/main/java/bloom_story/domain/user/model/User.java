@@ -40,8 +40,8 @@ public class User extends BaseEntity {
     private String nickname;
 
     @NotNull
-    @Column(name = "email", nullable = false, unique = true)
-    private String email;
+    @Column(name = "user_id", nullable = false, unique = true)
+    private String userId;
 
     @NotNull
     @Column(name = "password", nullable = false)
@@ -59,14 +59,14 @@ public class User extends BaseEntity {
         String name,
         String nickname,
         String password,
-        String email,
+        String userId,
         String phone
     ) {
         this.id = id;
         this.name = name;
         this.nickname = nickname;
         this.password = password;
-        this.email = email;
+        this.userId = userId;
         this.phone = phone;
     }
 }

@@ -7,8 +7,8 @@ import org.springframework.web.method.support.HandlerMethodArgumentResolver;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
-import bloom_story.global.domain.jwt.ExtractAuthenticationInterceptor;
-import bloom_story.global.domain.jwt.UserIdArgumentResolver;
+import bloom_story.global.domain.jwt.handler.ExtractAuthenticationInterceptor;
+import bloom_story.global.domain.jwt.handler.UserIdArgumentResolver;
 import lombok.RequiredArgsConstructor;
 
 @Configuration

@@ -18,14 +18,14 @@ public class LocationController implements LocationApi {
 
     private final LocationService locationService;
 
-    @Operation(summary = "모든 스토리 조회")
-    @GetMapping
-    public ResponseEntity<StoriesResponse> getNearbyStories(
-        @RequestParam double longitude,
-        @RequestParam double latitude
-    ) {
-        StoriesResponse response = locationService.getNearbyStories(longitude, latitude);
-        return ResponseEntity.ok(response);
-    }
+    // @Operation(summary = "모든 스토리 조회")
+    // @GetMapping
+    // public ResponseEntity<StoriesResponse> getNearbyStories(
+    //     @RequestParam double longitude,
+    //     @RequestParam double latitude
+    // ) {
+    //     StoriesResponse response = locationService.getNearbyStories(longitude, latitude);
+    //     return ResponseEntity.ok(response);
+    // }
 }
 

@@ -24,12 +24,12 @@ public class UserService {
     private final UserTokenService userTokenService;
 
     public void signUp(UserSignupRequest request) {
-        if (userRepository.findByEmail(request.email()).isPresent()) {
+        if (userRepository.findByUserId(request.userId()).isPresent()) {
             throw new RuntimeException("이미 존재하는 이메일입니다.");
         }
 
         User newUser = User.builder()
-            .email(request.email())
+            .userId(request.userId())
             .name(request.name())
             .nickname(request.nickname())
             .phone(request.phone())
@@ -40,7 +40,7 @@ public class UserService {
     }
 
     public UserLoginResponse login(UserLoginRequest request) {
-        User user = userRepository.getByEmail(request.email());
+        User user = userRepository.getByUserId(request.userId());
 
         if (!passwordEncoder.matches(request.password(), user.getPassword())) {
             throw new RuntimeException("잘못된 비밀번호 입니다.");

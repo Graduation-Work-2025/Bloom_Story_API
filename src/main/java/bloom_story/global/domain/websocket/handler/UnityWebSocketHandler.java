@@ -1,4 +1,4 @@
-package bloom_story.global.domain.websocket;
+package bloom_story.global.domain.websocket.handler;
 
 import java.io.IOException;
 import java.util.List;
@@ -13,6 +13,9 @@ import org.springframework.web.socket.handler.TextWebSocketHandler;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import bloom_story.domain.user.controller.UserHandler;
+import bloom_story.global.domain.jwt.JwtProvider;
+import bloom_story.global.domain.websocket.dto.WebSocketRequest;
+import bloom_story.global.domain.websocket.dto.WebSocketResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
@@ -25,6 +28,7 @@ public class UnityWebSocketHandler extends TextWebSocketHandler {
     private final CopyOnWriteArrayList<WebSocketSession> sessions = new CopyOnWriteArrayList<>();
     private final ObjectMapper objectMapper = new ObjectMapper();
     private final UserHandler userHandler;
+    private final JwtProvider jwtProvider;
 
     @Override
     public void afterConnectionEstablished(WebSocketSession session) throws Exception {
@@ -37,11 +41,17 @@ public class UnityWebSocketHandler extends TextWebSocketHandler {
         log.info("[WebSocket] 메시지 수신: " + textMessage.getPayload());
 
         WebSocketRequest request = objectMapper.readValue(textMessage.getPayload(), WebSocketRequest.class);
+        Integer userId = null;
+        try {
+            userId = jwtProvider.getUserId(request.getToken());
+        } catch (Exception e) {
+
+        }
         String domain = request.getDomain();
 
         for (var webSocketHandler : webSocketHandlers) {
             if (webSocketHandler.is_supported(domain)) {
-                WebSocketResponse<?> response = webSocketHandler.handle(session, request);
+                WebSocketResponse<?> response = webSocketHandler.handle(session, userId, request);
                 sendMessage(session, response);
                 return;
             }

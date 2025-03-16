@@ -10,6 +10,7 @@ import io.swagger.v3.oas.annotations.security.SecurityScheme;
 import io.swagger.v3.oas.models.OpenAPI;
 import io.swagger.v3.oas.models.servers.Server;
 
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
@@ -26,12 +27,18 @@ import org.springframework.context.annotation.Configuration;
 )
 public class SwaggerConfig {
 
+    @Value("${springdoc.servers.url}")
+    private String localUrl;
+
+    @Value("${springdoc.servers.description}")
+    private String description;
+
     @Bean
     public OpenAPI customOpenAPI() {
         return new OpenAPI()
             .servers(List.of(
-                new Server().url("https://2f5a-203-255-221-69.ngrok-free.app")
-                    .description("Production Server (HTTPS)")
+                new Server().url(localUrl)
+                    .description(description)
             ));
     }
 
