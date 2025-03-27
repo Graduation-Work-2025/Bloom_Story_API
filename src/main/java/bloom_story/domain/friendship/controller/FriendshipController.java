@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import bloom_story.domain.friendship.dto.FriendshipsResponse;
+import bloom_story.domain.friendship.dto.SearchFriendResponse;
 import bloom_story.domain.friendship.service.FriendshipService;
 import bloom_story.global.domain.jwt.UserId;
 import io.swagger.v3.oas.annotations.Operation;
@@ -42,6 +43,15 @@ public class FriendshipController implements FriendshipApi {
     ) {
         friendshipService.allowFriendship(senderId, requesterId);
         return ResponseEntity.status(HttpStatus.OK).build();
+    }
+
+    @Operation(summary = "친구 id로 조회")
+    @GetMapping("/search/{userId}")
+    public ResponseEntity<SearchFriendResponse> searchFriend(
+        @PathVariable("userId") String userId
+    ) {
+        SearchFriendResponse response = friendshipService.searchFriend(userId);
+        return ResponseEntity.status(HttpStatus.OK).body(response);
     }
 
     @Operation(summary = "친구 목록 조회")

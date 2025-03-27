@@ -15,6 +15,7 @@ public enum CommandType {
     GET_FRIENDSHIPS ("get_friendships"),
     GET_PENDING_FRIENDSHIPS ("get_pending_friendships"),
     DELETE_FRIENDSHIP ("delete_friendship"),
+    SEARCH_FRIEND("search_friend"),
     ;
 
     private String label;

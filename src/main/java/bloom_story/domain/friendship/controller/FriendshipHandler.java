@@ -10,6 +10,8 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 
 import bloom_story.domain.friendship.dto.FriendshipRequest;
 import bloom_story.domain.friendship.dto.FriendshipsResponse;
+import bloom_story.domain.friendship.dto.SearchFriendRequest;
+import bloom_story.domain.friendship.dto.SearchFriendResponse;
 import bloom_story.domain.friendship.service.FriendshipService;
 import bloom_story.global.domain.websocket.dto.WebSocketRequest;
 import bloom_story.global.domain.websocket.dto.WebSocketResponse;
@@ -64,6 +66,10 @@ public class FriendshipHandler implements WebSocketHandler {
                 response = deleteFriendship(userId, request);
                 message = "친구 삭제";
             }
+            case SEARCH_FRIEND -> {
+                response = searchFriend(userId, request);
+                message = "친구 id로 검색";
+            }
             default -> {
                 session.sendMessage(new TextMessage("{\"error\": \"알 수 없는 스토리 명령어\"}"));
                 log.error("[WebSocket] User: 잘못된 명령어");
@@ -95,6 +101,16 @@ public class FriendshipHandler implements WebSocketHandler {
         friendshipService.allowFriendship(userId, request.friendId());
 
         return WebSocketResponse.of(err, null);
+    }
+
+    @Operation(summary = "친구 목록 조회")
+    public WebSocketResponse<SearchFriendResponse> searchFriend(
+        Integer userId,
+        WebSocketRequest message
+    ) {
+        SearchFriendRequest request = objectMapper.convertValue(message.getRequest(), SearchFriendRequest.class);
+        SearchFriendResponse response = friendshipService.searchFriend(request.friendUserId());
+        return WebSocketResponse.of(err, response);
     }
 
     @Operation(summary = "친구 목록 조회")
