@@ -1,9 +1,12 @@
 package bloom_story.domain.comunity.story.dto;
 
+import static com.fasterxml.jackson.databind.PropertyNamingStrategies.SnakeCaseStrategy;
 import static io.swagger.v3.oas.annotations.media.Schema.RequiredMode.REQUIRED;
 
 import java.time.LocalDateTime;
 import java.util.List;
+
+import com.fasterxml.jackson.databind.annotation.JsonNaming;
 
 import bloom_story.domain.comunity.story.model.SharingType;
 import bloom_story.domain.comunity.story.model.Story;
@@ -11,6 +14,7 @@ import bloom_story.domain.location.service.LocationService;
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.NotNull;
 
+@JsonNaming(value = SnakeCaseStrategy.class)
 public record StoryResponse(
     @Schema(description = "스토리 고유번호", example = "1", requiredMode = REQUIRED)
     Integer id,

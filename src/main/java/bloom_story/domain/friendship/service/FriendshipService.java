@@ -6,6 +6,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import bloom_story.domain.friendship.dto.FriendshipsResponse;
+import bloom_story.domain.friendship.dto.SearchFriendResponse;
 import bloom_story.domain.friendship.model.Friendship;
 import bloom_story.domain.friendship.repository.FriendshipRepository;
 import bloom_story.domain.user.model.User;
@@ -38,6 +39,12 @@ public class FriendshipService {
 
         friendship.allowRequest();
         friendshipRepository.save(friendship);
+    }
+
+    public SearchFriendResponse searchFriend(String userId) {
+        List<User> friends = userRepository.getByUserIds(userId);
+
+        return SearchFriendResponse.from(friends);
     }
 
     public FriendshipsResponse getFriendships(Integer userId) {

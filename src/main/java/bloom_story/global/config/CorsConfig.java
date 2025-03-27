@@ -22,6 +22,7 @@ public class CorsConfig {
             public void addCorsMappings(CorsRegistry registry) {
                 registry.addMapping("/**") // 모든 엔드포인트에 대해 CORS 허용
                     .allowedOrigins("http://localhost:8080",
+                                    "https://bloom-story.kro.kr/",
                                     localUrl)
                     .allowedMethods("GET", "POST", "PUT", "DELETE", "OPTIONS")
                     .allowedHeaders("*")
