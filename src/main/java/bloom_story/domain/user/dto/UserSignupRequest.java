@@ -23,7 +23,10 @@ public record UserSignupRequest(
     String password,
 
     @Schema(description = "휴대폰 번호", example = "010-8434-1160", requiredMode = NOT_REQUIRED)
-    String phone
+    String phone,
+
+    @Schema(description = "캐릭터 번호", example = "1", requiredMode = REQUIRED)
+    Integer characterId
 ) {
 
 }

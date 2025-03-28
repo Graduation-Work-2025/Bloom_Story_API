@@ -34,6 +34,7 @@ public class UserService {
             .nickname(request.nickname())
             .phone(request.phone())
             .password(passwordEncoder.encode(request.password()))
+            .characterId(request.characterId())
             .build();
 
         userRepository.save(newUser);
