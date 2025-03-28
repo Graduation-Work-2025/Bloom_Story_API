@@ -50,6 +50,9 @@ public class User extends BaseEntity {
     @Column(name = "phone", nullable = false, unique = true)
     private String phone;
 
+    @Column(name = "character_id", nullable = false)
+    private Integer characterId;
+
     @OneToMany(mappedBy = "user", cascade = ALL, orphanRemoval = true, fetch = LAZY)
     private List<Story> stories = new ArrayList<>();
 
@@ -60,7 +63,8 @@ public class User extends BaseEntity {
         String nickname,
         String password,
         String userId,
-        String phone
+        String phone,
+        Integer characterId
     ) {
         this.id = id;
         this.name = name;
@@ -68,5 +72,6 @@ public class User extends BaseEntity {
         this.password = password;
         this.userId = userId;
         this.phone = phone;
+        this.characterId = characterId;
     }
 }
