@@ -50,7 +50,6 @@ public class UserController implements UserApi {
         return ResponseEntity.ok().body(null);
     }
 
-
     // @Operation(summary = "사용자 정보 수정")
     // @PutMapping("/{id}")
     // public ResponseEntity<Void> updateUser(
