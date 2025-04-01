@@ -21,7 +21,7 @@ import lombok.RequiredArgsConstructor;
 @RestController
 @RequestMapping("/users")
 public class UserController implements UserApi {
-
+    //test용
     private final UserService userService;
 
     @Operation(summary = "사용자 회원가입")
@@ -49,6 +49,7 @@ public class UserController implements UserApi {
     ) {
         return ResponseEntity.ok().body(null);
     }
+
 
     // @Operation(summary = "사용자 정보 수정")
     // @PutMapping("/{id}")
