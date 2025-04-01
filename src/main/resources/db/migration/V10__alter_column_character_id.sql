@@ -1,0 +1,2 @@
+ALTER TABLE `users`
+    ADD COLUMN `character_id` INT UNSIGNED NOT NULL;
