@@ -27,7 +27,6 @@ public class UnityWebSocketHandler extends TextWebSocketHandler {
     private final List<WebSocketHandler> webSocketHandlers;
     private final CopyOnWriteArrayList<WebSocketSession> sessions = new CopyOnWriteArrayList<>();
     private final ObjectMapper objectMapper = new ObjectMapper();
-    private final UserHandler userHandler;
     private final JwtProvider jwtProvider;
 
     @Override

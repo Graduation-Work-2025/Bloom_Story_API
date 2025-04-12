@@ -15,6 +15,6 @@ public abstract class BloomStoryException extends RuntimeException {
     }
 
     public String getDetail() {
-        return String.format("%s - %s", getMessage(), detail);
+        return String.format("%s [ %s ]", getMessage(), detail);
     }
 }
