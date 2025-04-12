@@ -37,10 +37,8 @@ public class SwaggerConfig {
     public OpenAPI customOpenAPI() {
         return new OpenAPI()
             .servers(List.of(
-                new Server().url(localUrl)
+                new Server().url("http://localhost:8080")
                     .description(description)
             ));
     }
-
 }
-

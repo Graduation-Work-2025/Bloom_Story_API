@@ -11,6 +11,10 @@ import bloom_story.domain.user.dto.UserResponse;
 import bloom_story.domain.user.dto.UserSignupRequest;
 import bloom_story.domain.user.model.User;
 import bloom_story.domain.user.repository.UserRepository;
+import bloom_story.global.domain.exception.custom.DataDuplicationException;
+import bloom_story.global.domain.exception.custom.DataNotFoundException;
+import bloom_story.global.domain.exception.custom.WrongRequestException;
+import bloom_story.global.domain.jwt.UserIdContext;
 import bloom_story.global.domain.jwt.UserTokenService;
 import lombok.RequiredArgsConstructor;
 
@@ -22,10 +26,11 @@ public class UserService {
     private final UserRepository userRepository;
     private final BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
     private final UserTokenService userTokenService;
+    private final UserIdContext userIdContext;
 
     public void signUp(UserSignupRequest request) {
         if (userRepository.findByUserId(request.userId()).isPresent()) {
-            throw new RuntimeException("이미 존재하는 이메일입니다.");
+            throw DataDuplicationException.withDetail("userId : " + request.userId());
         }
 
         User newUser = User.builder()
@@ -44,7 +49,7 @@ public class UserService {
         User user = userRepository.getByUserId(request.userId());
 
         if (!passwordEncoder.matches(request.password(), user.getPassword())) {
-            throw new RuntimeException("잘못된 비밀번호 입니다.");
+            throw WrongRequestException.withDetail("잘못된 패스워드 입니다.");
         }
 
         String accessToken = userTokenService.createAccessToken(user);
@@ -55,7 +60,7 @@ public class UserService {
     public UserResponse getUserInfo(UserRequest request) {
         User user = userRepository.getById(request.userId());
         if (user == null) {
-            throw new IllegalArgumentException("user not found.");
+            throw DataNotFoundException.withDetail("userId : " + request.userId());
         }
 
         return UserResponse.from(user);

@@ -8,6 +8,7 @@ import org.springframework.data.repository.Repository;
 import org.springframework.data.repository.query.Param;
 
 import bloom_story.domain.user.model.User;
+import bloom_story.global.domain.exception.custom.DataNotFoundException;
 
 public interface UserRepository extends Repository<User, Integer> {
 
@@ -17,14 +18,14 @@ public interface UserRepository extends Repository<User, Integer> {
 
     default User getById(Integer id) {
         return findById(id)
-            .orElseThrow(() -> new RuntimeException("User not found"));
+            .orElseThrow(() -> DataNotFoundException.withDetail("userId: " + id));
     }
 
     Optional<User> findByUserId(String userId);
 
     default User getByUserId(String userId) {
         return findByUserId(userId)
-            .orElseThrow(() -> new RuntimeException("User not found"));
+            .orElseThrow(() -> DataNotFoundException.withDetail("userId: " + userId));
     }
 
     @Query(value = "SELECT * FROM users WHERE user_id LIKE CONCAT('%', :userId, '%')",
