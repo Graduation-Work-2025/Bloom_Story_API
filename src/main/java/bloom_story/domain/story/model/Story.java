@@ -1,4 +1,4 @@
-package bloom_story.domain.comunity.story.model;
+package bloom_story.domain.story.model;
 
 import static jakarta.persistence.CascadeType.ALL;
 import static jakarta.persistence.FetchType.LAZY;
@@ -14,7 +14,6 @@ import org.locationtech.jts.geom.Point;
 import com.fasterxml.jackson.annotation.JsonFormat;
 
 import bloom_story.domain.bloom.model.Bloom;
-import bloom_story.domain.comunity.comment.model.Comment;
 import bloom_story.domain.emotion.model.Emotion;
 import bloom_story.domain.user.model.User;
 import bloom_story.global.domain.BaseEntity;
@@ -79,9 +78,6 @@ public class Story extends BaseEntity {
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss")
     @Column(name = "expired_at", columnDefinition = "TIMESTAMP")
     private LocalDateTime expiredAt;
-
-    @OneToMany(mappedBy = "story", cascade = ALL, orphanRemoval = true, fetch = LAZY)
-    private List<Comment> comments = new ArrayList<>();
 
     @OneToMany(mappedBy = "story", cascade = ALL, orphanRemoval = true, fetch = LAZY)
     private List<StoryImage> images = new ArrayList<>();

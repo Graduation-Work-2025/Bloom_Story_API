@@ -1,4 +1,4 @@
-package bloom_story.domain.comunity.story.model;
+package bloom_story.domain.story.model;
 
 import lombok.Getter;
 

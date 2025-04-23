@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import bloom_story.domain.user.dto.UserLoginRequest;
 import bloom_story.domain.user.dto.UserLoginResponse;
+import bloom_story.domain.user.dto.UserResponse;
 import bloom_story.domain.user.dto.UserSignupRequest;
 import bloom_story.domain.user.service.UserService;
 import io.swagger.v3.oas.annotations.Operation;
@@ -47,6 +48,7 @@ public class UserController implements UserApi {
     public ResponseEntity<Void> getUser(
         @PathVariable Integer id
     ) {
+        UserResponse response = userService.getUserInfo(id);
         return ResponseEntity.ok().body(null);
     }
 

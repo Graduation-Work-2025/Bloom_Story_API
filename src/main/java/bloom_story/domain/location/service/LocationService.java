@@ -8,8 +8,8 @@ import org.locationtech.jts.geom.GeometryFactory;
 import org.locationtech.jts.geom.Point;
 import org.springframework.stereotype.Service;
 
-import bloom_story.domain.comunity.story.dto.StoriesResponse;
-import bloom_story.domain.comunity.story.model.Story;
+import bloom_story.domain.story.dto.StoriesResponse;
+import bloom_story.domain.story.model.Story;
 import bloom_story.domain.location.repository.LocationRepository;
 import lombok.RequiredArgsConstructor;
 

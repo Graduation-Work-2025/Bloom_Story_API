@@ -1,4 +1,4 @@
-package bloom_story.domain.comunity.story.controller;
+package bloom_story.domain.story.controller;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -12,10 +12,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import bloom_story.domain.comunity.story.dto.StoriesResponse;
-import bloom_story.domain.comunity.story.dto.StoryRequest;
-import bloom_story.domain.comunity.story.dto.StoryResponse;
-import bloom_story.domain.comunity.story.service.StoryService;
+import bloom_story.domain.story.dto.StoriesResponse;
+import bloom_story.domain.story.dto.StoryRequest;
+import bloom_story.domain.story.dto.StoryResponse;
+import bloom_story.domain.story.service.StoryService;
 import bloom_story.global.domain.jwt.UserId;
 import io.swagger.v3.oas.annotations.Operation;
 import lombok.RequiredArgsConstructor;

@@ -28,6 +28,12 @@ public interface UserRepository extends Repository<User, Integer> {
             .orElseThrow(() -> DataNotFoundException.withDetail("userId: " + userId));
     }
 
+    Boolean existsByUserId(String userId);
+
+    Boolean existsByNickname(String nickname);
+
+    Boolean existsByPhone(String phone);
+
     @Query(value = "SELECT * FROM users WHERE user_id LIKE CONCAT('%', :userId, '%')",
         nativeQuery = true)
     List<User> getByUserIds(@Param("userId") String userId);

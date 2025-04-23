@@ -1,14 +1,10 @@
-package bloom_story.domain.comunity.story.controller;
+package bloom_story.domain.story.controller;
 
-import java.security.Principal;
-
-import bloom_story.domain.comunity.story.dto.StoriesResponse;
-import bloom_story.domain.comunity.story.dto.StoryLocationRequest;
-import bloom_story.domain.comunity.story.service.StoryService;
+import bloom_story.domain.story.dto.StoriesResponse;
+import bloom_story.domain.story.dto.StoryLocationRequest;
+import bloom_story.domain.story.service.StoryService;
 import bloom_story.global.domain.websocket.dto.WebSocketResponse;
 import bloom_story.global.domain.websocket.model.ErrorCode;
-
-import com.fasterxml.jackson.databind.ObjectMapper;
 
 import lombok.RequiredArgsConstructor;
 
