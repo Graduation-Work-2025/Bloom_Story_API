@@ -6,7 +6,6 @@ import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -27,7 +26,6 @@ public class StoryController implements StoryApi {
 
     private final StoryService storyService;
 
-    @Operation(summary = "스토리 작성")
     @PostMapping
     public ResponseEntity<StoryResponse> createStory(
         @UserId Integer userId,
@@ -37,7 +35,6 @@ public class StoryController implements StoryApi {
         return ResponseEntity.status(HttpStatus.CREATED).body(response);
     }
 
-    @Operation(summary = "특정 스토리 조회")
     @GetMapping("/{id}")
     public ResponseEntity<StoryResponse> getStory(
         @PathVariable Integer id
@@ -46,7 +43,6 @@ public class StoryController implements StoryApi {
         return ResponseEntity.ok(response);
     }
 
-    @Operation(summary = "위치 기반 주변 스토리 조회")
     @GetMapping
     public ResponseEntity<StoriesResponse> getStories(
         @UserId Integer userId,
@@ -57,7 +53,6 @@ public class StoryController implements StoryApi {
         return ResponseEntity.ok(response);
     }
 
-    @Operation(summary = "공개된 내 스토리 목록 조회")
     @GetMapping("/my")
     public ResponseEntity<StoriesResponse> getMyStories(
         @UserId Integer userId
@@ -80,31 +75,6 @@ public class StoryController implements StoryApi {
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteStory(
         @UserId Integer userId,
-        @PathVariable Integer id
-    ) {
-        storyService.deleteStory(id);
-        return ResponseEntity.noContent().build();
-    }
-
-    @Operation(summary = "감정 정원에 스토리 추가")
-    @PutMapping("/garden/{id}")
-    public ResponseEntity<Void> addStoryGarden(
-        @PathVariable Integer id
-    ) {
-        storyService.addStoryGarden(id);
-        return ResponseEntity.ok().build();
-    }
-
-    @Operation(summary = "감정 정원 조회")
-    @GetMapping("/garden")
-    public ResponseEntity<StoriesResponse> getStoryGarden() {
-        StoriesResponse response = storyService.getStoryByIsHighlight();
-        return ResponseEntity.ok(response);
-    }
-
-    @Operation(summary = "감정 정원에서 스토리 제거")
-    @DeleteMapping("/garden/{id}")
-    public ResponseEntity<Void> deleteStoryGarden(
         @PathVariable Integer id
     ) {
         storyService.deleteStory(id);

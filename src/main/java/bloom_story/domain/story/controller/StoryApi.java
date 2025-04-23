@@ -5,7 +5,6 @@ import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -44,7 +43,7 @@ public interface StoryApi {
             @ApiResponse(responseCode = "400", content = @Content(schema = @Schema(hidden = true))),
             @ApiResponse(responseCode = "404", content = @Content(schema = @Schema(hidden = true)))
         })
-    @Operation(summary = "스토리 조회")
+    @Operation(summary = "특정 스토리 조회")
     @GetMapping("/{id}")
     ResponseEntity<StoryResponse> getStory(
         @PathVariable Integer id
@@ -56,7 +55,7 @@ public interface StoryApi {
             @ApiResponse(responseCode = "400", content = @Content(schema = @Schema(hidden = true))),
             @ApiResponse(responseCode = "404", content = @Content(schema = @Schema(hidden = true)))
         })
-    @Operation(summary = "모든 스토리 조회")
+    @Operation(summary = "위치 기반 주변 스토리 조회")
     @GetMapping
     ResponseEntity<StoriesResponse> getStories(
         @UserId Integer userId,
@@ -99,40 +98,6 @@ public interface StoryApi {
     @DeleteMapping("/{id}")
     ResponseEntity<Void> deleteStory(
         @UserId Integer userId,
-        @PathVariable Integer id
-    );
-
-    @ApiResponses(
-        value = {
-            @ApiResponse(responseCode = "201"),
-            @ApiResponse(responseCode = "400", content = @Content(schema = @Schema(hidden = true))),
-            @ApiResponse(responseCode = "404", content = @Content(schema = @Schema(hidden = true)))
-        })
-    @Operation(summary = "감정 정원에 스토리 추가")
-    @PutMapping("/garden/{id}")
-    ResponseEntity<Void> addStoryGarden(
-        @PathVariable Integer id
-    );
-
-    @ApiResponses(
-        value = {
-            @ApiResponse(responseCode = "201"),
-            @ApiResponse(responseCode = "400", content = @Content(schema = @Schema(hidden = true))),
-            @ApiResponse(responseCode = "404", content = @Content(schema = @Schema(hidden = true)))
-        })
-    @Operation(summary = "감정 정원 조회")
-    @GetMapping("/garden")
-    ResponseEntity<StoriesResponse> getStoryGarden();
-
-    @ApiResponses(
-        value = {
-            @ApiResponse(responseCode = "201"),
-            @ApiResponse(responseCode = "400", content = @Content(schema = @Schema(hidden = true))),
-            @ApiResponse(responseCode = "404", content = @Content(schema = @Schema(hidden = true)))
-        })
-    @Operation(summary = "감정 정원에서 스토리 제거")
-    @DeleteMapping("/garden/{id}")
-    ResponseEntity<Void> deleteStoryGarden(
         @PathVariable Integer id
     );
 }

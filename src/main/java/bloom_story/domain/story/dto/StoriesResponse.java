@@ -41,8 +41,8 @@ public record StoriesResponse(
         @Schema(description = "작성자 ID", example = "1", requiredMode = REQUIRED)
         Integer userId,
 
-        @Schema(description = "감정 ID", example = "1", requiredMode = REQUIRED)
-        Integer emotionId,
+        @Schema(description = "감정 타입", example = "기쁨", requiredMode = REQUIRED)
+        String emotionType,
 
         @Schema(description = "Bloom ID", example = "1", requiredMode = REQUIRED)
         Integer bloomId
@@ -55,7 +55,7 @@ public record StoriesResponse(
                 points.get(0),
                 points.get(1),
                 story.getUser().getId(),
-                story.getEmotion().getId(),
+                story.getEmotionType().name(),
                 story.getBloom().getId()
             );
         }
