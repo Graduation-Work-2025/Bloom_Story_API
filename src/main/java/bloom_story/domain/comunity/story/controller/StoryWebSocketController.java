@@ -24,10 +24,9 @@ public class StoryWebSocketController {
 
     private final StoryService storyService;
     private final SimpMessagingTemplate messagingTemplate;
-    private final ObjectMapper objectMapper = new ObjectMapper();
     private final ErrorCode ok = ErrorCode.builder().errorCode(200).build();
 
-    @MessageMapping("/stories/nearby")
+    @MessageMapping("/stories")
     public void getNearbyStories(@Payload StoryLocationRequest request,
         SimpMessageHeaderAccessor headerAccessor) {
 
@@ -36,7 +35,7 @@ public class StoryWebSocketController {
         String sessionId = headerAccessor.getSessionId();
 
         messagingTemplate.convertAndSend(
-            "/queue/stories/nearby-user" + sessionId,
+            "/queue/stories-user" + sessionId,
             WebSocketResponse.of(ok, response)
         );
     }
