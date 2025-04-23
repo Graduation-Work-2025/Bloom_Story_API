@@ -1,4 +1,4 @@
-package bloom_story.domain.comunity.story.repository;
+package bloom_story.domain.story.repository;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -8,7 +8,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.Repository;
 import org.springframework.data.repository.query.Param;
 
-import bloom_story.domain.comunity.story.model.Story;
+import bloom_story.domain.story.model.Story;
 
 public interface StoryRepository extends Repository<Story, Integer> {
 

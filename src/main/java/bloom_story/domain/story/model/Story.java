@@ -1,4 +1,4 @@
-package bloom_story.domain.comunity.story.model;
+package bloom_story.domain.story.model;
 
 import static jakarta.persistence.CascadeType.ALL;
 import static jakarta.persistence.FetchType.LAZY;
@@ -14,8 +14,8 @@ import org.locationtech.jts.geom.Point;
 import com.fasterxml.jackson.annotation.JsonFormat;
 
 import bloom_story.domain.bloom.model.Bloom;
-import bloom_story.domain.comunity.comment.model.Comment;
 import bloom_story.domain.emotion.model.Emotion;
+import bloom_story.domain.emotion.model.EmotionType;
 import bloom_story.domain.user.model.User;
 import bloom_story.global.domain.BaseEntity;
 import jakarta.persistence.Column;
@@ -60,9 +60,9 @@ public class Story extends BaseEntity {
     private Bloom bloom;
 
     @NotNull
-    @ManyToOne(fetch = LAZY, cascade = ALL)
-    @JoinColumn(name = "emotion_id", nullable = false)
-    private Emotion emotion;
+    @JoinColumn(name = "emotion_type", nullable = false)
+    @Enumerated(EnumType.STRING)
+    private EmotionType emotionType;
 
     @NotNull
     @Column(name = "location", nullable = false, columnDefinition = "POINT")
@@ -81,9 +81,6 @@ public class Story extends BaseEntity {
     private LocalDateTime expiredAt;
 
     @OneToMany(mappedBy = "story", cascade = ALL, orphanRemoval = true, fetch = LAZY)
-    private List<Comment> comments = new ArrayList<>();
-
-    @OneToMany(mappedBy = "story", cascade = ALL, orphanRemoval = true, fetch = LAZY)
     private List<StoryImage> images = new ArrayList<>();
 
     @Builder
@@ -94,7 +91,7 @@ public class Story extends BaseEntity {
         int likes,
         Point location,
         SharingType sharingType,
-        Emotion emotion,
+        EmotionType emotionType,
         Bloom bloom,
         LocalDateTime expiredAt
     ) {
@@ -104,13 +101,9 @@ public class Story extends BaseEntity {
         this.likes = likes;
         this.location = location;
         this.sharingType = sharingType;
-        this.emotion = emotion;
+        this.emotionType = emotionType;
         this.bloom = bloom;
         this.expiredAt = expiredAt;
-    }
-
-    public void setEmotion(Emotion emotion) {
-        this.emotion = emotion;
     }
 
     public void setBloom(Bloom bloom) {

@@ -1,28 +1,27 @@
-package bloom_story.domain.comunity.story.service;
+package bloom_story.domain.story.service;
 
 import java.time.Clock;
 import java.time.LocalDateTime;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Random;
-import java.util.Set;
 
 import org.locationtech.jts.geom.Point;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import bloom_story.domain.bloom.model.Bloom;
-import bloom_story.domain.comunity.story.dto.StoriesResponse;
-import bloom_story.domain.comunity.story.dto.StoryRequest;
-import bloom_story.domain.comunity.story.dto.StoryResponse;
-import bloom_story.domain.comunity.story.model.Story;
-import bloom_story.domain.comunity.story.repository.StoryRepository;
 import bloom_story.domain.emotion.model.Emotion;
 import bloom_story.domain.emotion.model.EmotionBloomMap;
+import bloom_story.domain.emotion.model.EmotionType;
 import bloom_story.domain.emotion.repository.EmotionBloomMapRepository;
 import bloom_story.domain.emotion.repository.EmotionRepository;
-import bloom_story.domain.friendship.service.FriendshipService;
 import bloom_story.domain.location.service.LocationService;
+import bloom_story.domain.story.dto.StoriesResponse;
+import bloom_story.domain.story.dto.StoryRequest;
+import bloom_story.domain.story.dto.StoryResponse;
+import bloom_story.domain.story.model.SharingType;
+import bloom_story.domain.story.model.Story;
+import bloom_story.domain.story.repository.StoryRepository;
 import bloom_story.domain.user.model.User;
 import bloom_story.domain.user.repository.UserRepository;
 import bloom_story.global.domain.emotionAnalytics.EmotionAnalyticsClient;
@@ -39,7 +38,6 @@ public class StoryService {
     private final EmotionBloomMapRepository emotionBloomMapRepository;
     private final LocationService locationService;
     private final EmotionAnalyticsClient emotionAnalyticsClient;
-    private final FriendshipService friendshipService;
     private final Clock clock;
 
     private static final double DISTANCE = 40.0;
@@ -48,21 +46,21 @@ public class StoryService {
     public StoryResponse createStory(Integer userId, StoryRequest request) {
         User user = userRepository.getById(userId);
         Point point = locationService.convertToPoint(request.longitude(), request.latitude());
+        EmotionType emotionType = EmotionType.getByName(request.emotionType());
 
         Story story = Story.builder()
             .user(user)
             .content(request.content())
             .location(point)
             .sharingType(request.sharingType())
+            .emotionType(emotionType)
             .expiredAt(LocalDateTime.now(clock).plusHours(24))
             .build();
 
         String analyzedEmotion = emotionAnalyticsClient.analysisEmotion(story.getContent());
-        System.out.println(analyzedEmotion);
         Emotion emotion = emotionRepository.getByType(analyzedEmotion);
         Bloom bloom = getRandomBloom(emotion);
 
-        story.setEmotion(emotion);
         story.setBloom(bloom);
 
         storyRepository.save(story);
@@ -86,12 +84,11 @@ public class StoryService {
     }
 
     public StoriesResponse getNearbyStories(Integer userId, double longitude, double latitude) {
+        User user = userRepository.getById(userId);
         String point = String.format("POINT(%.5f %.5f)", longitude, latitude);
-        List<Story> stories = storyRepository.findStoriesWithinDistance(point, DISTANCE);
-        Set<User> friends = new HashSet<>(friendshipService.getFriendsByFriendships(userId, true));
-
-        List<Story> friendStories = stories.stream()
-            .filter(story -> friends.contains(story.getUser()))
+        List<Story> stories = storyRepository.findStoriesWithinDistance(point, DISTANCE)
+            .stream()
+            .filter(story -> story.getSharingType().equals(SharingType.PUBLIC) || story.getUser().equals(user))
             .toList();
 
         return StoriesResponse.from(stories);
@@ -122,13 +119,5 @@ public class StoryService {
     public void deleteStory(Integer id) {
         Story story = storyRepository.getById(id);
         storyRepository.delete(story);
-    }
-
-    public StoriesResponse getStoryByIsHighlight() {
-        return null;
-    }
-
-    public StoriesResponse addStoryGarden(Integer id) {
-        return null;
     }
 }

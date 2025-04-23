@@ -1,15 +1,14 @@
-package bloom_story.domain.comunity.story.dto;
+package bloom_story.domain.story.dto;
 
 import static com.fasterxml.jackson.databind.PropertyNamingStrategies.SnakeCaseStrategy;
 import static io.swagger.v3.oas.annotations.media.Schema.RequiredMode.REQUIRED;
 
-import java.time.LocalDateTime;
 import java.util.List;
 
 import com.fasterxml.jackson.databind.annotation.JsonNaming;
 
-import bloom_story.domain.comunity.story.model.SharingType;
-import bloom_story.domain.comunity.story.model.Story;
+import bloom_story.domain.story.model.SharingType;
+import bloom_story.domain.story.model.Story;
 import bloom_story.domain.location.service.LocationService;
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.NotNull;
@@ -36,14 +35,11 @@ public record StoryResponse(
     @Schema(description = "작성자 ID", example = "1", requiredMode = REQUIRED)
     Integer userId,
 
-    @Schema(description = "감정 ID", example = "1", requiredMode = REQUIRED)
-    Integer emotionId,
+    @Schema(description = "감정 타입", example = "기쁨", requiredMode = REQUIRED)
+    String emotionType,
 
     @Schema(description = "Bloom ID", example = "1", requiredMode = REQUIRED)
     Integer bloomId,
-
-    // @Schema(description = "Bloom ID", example = "1", requiredMode = REQUIRED)
-    // LocalDateTime expiredAt,
 
     @Schema(description = "Bloom ID", example = "1", requiredMode = REQUIRED)
     SharingType sharingType
@@ -58,7 +54,7 @@ public record StoryResponse(
             points.get(1),
             story.getLikes(),
             story.getUser().getId(),
-            story.getEmotion().getId(),
+            story.getEmotionType().name(),
             story.getBloom().getId(),
             story.getSharingType()
         );

@@ -8,7 +8,7 @@ import static lombok.AccessLevel.PROTECTED;
 import java.util.ArrayList;
 import java.util.List;
 
-import bloom_story.domain.comunity.story.model.Story;
+import bloom_story.domain.story.model.Story;
 import bloom_story.global.domain.BaseEntity;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;

@@ -6,7 +6,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.Repository;
 import org.springframework.data.repository.query.Param;
 
-import bloom_story.domain.comunity.story.model.Story;
+import bloom_story.domain.story.model.Story;
 
 public interface LocationRepository extends Repository<Story, Integer> {
 

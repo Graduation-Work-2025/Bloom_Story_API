@@ -1,4 +1,4 @@
-package bloom_story.domain.comunity.story.model;
+package bloom_story.domain.story.model;
 
 import static jakarta.persistence.GenerationType.IDENTITY;
 import static lombok.AccessLevel.PROTECTED;
