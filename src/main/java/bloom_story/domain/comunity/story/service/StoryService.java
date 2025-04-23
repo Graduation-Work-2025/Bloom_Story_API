@@ -42,7 +42,7 @@ public class StoryService {
     private final FriendshipService friendshipService;
     private final Clock clock;
 
-    private static final double DISTANCE = 4.0;
+    private static final double DISTANCE = 40.0;
 
     @Transactional
     public StoryResponse createStory(Integer userId, StoryRequest request) {
@@ -94,7 +94,7 @@ public class StoryService {
             .filter(story -> friends.contains(story.getUser()))
             .toList();
 
-        return StoriesResponse.from(friendStories);
+        return StoriesResponse.from(stories);
     }
 
     public StoriesResponse getMyStories(Integer id) {
