@@ -56,7 +56,7 @@ public class Story extends BaseEntity {
     private int likes = 0;
 
     @ManyToOne(fetch = LAZY, cascade = ALL)
-    @JoinColumn(name = "bloom_id", nullable = false)
+    @JoinColumn(name = "bloom_id")
     private Bloom bloom;
 
     @NotNull

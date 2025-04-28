@@ -38,5 +38,5 @@ public interface UserRepository extends Repository<User, Integer> {
         nativeQuery = true)
     List<User> getByUserIds(@Param("userId") String userId);
 
-    //void delete(User user);
+    void delete(User user);
 }
