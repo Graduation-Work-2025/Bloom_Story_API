@@ -33,6 +33,10 @@ public class UserValidationService {
         return user;
     }
 
+    public void checkUpdateData(User user) {
+        checkDuplicationNickName(user.getNickname());
+    }
+
     private void checkDuplicationUserId(String userId) {
         if (userRepository.existsByUserId(userId)) {
             throw DataDuplicationException.withDetail("userId: " + userId);

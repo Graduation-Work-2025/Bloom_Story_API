@@ -24,7 +24,7 @@ import bloom_story.domain.story.model.Story;
 import bloom_story.domain.story.repository.StoryRepository;
 import bloom_story.domain.user.model.User;
 import bloom_story.domain.user.repository.UserRepository;
-import bloom_story.global.domain.emotionAnalytics.EmotionAnalyticsClient;
+import bloom_story.global.domain.chatgpt.EmotionAnalyticsClient;
 import lombok.RequiredArgsConstructor;
 
 @Service
