@@ -8,6 +8,7 @@ import bloom_story.domain.user.dto.UserLoginRequest;
 import bloom_story.domain.user.dto.UserLoginResponse;
 import bloom_story.domain.user.dto.UserResponse;
 import bloom_story.domain.user.dto.UserSignupRequest;
+import bloom_story.domain.user.dto.UserUpdateRequest;
 import bloom_story.domain.user.model.User;
 import bloom_story.domain.user.repository.UserRepository;
 import bloom_story.global.domain.exception.custom.DataNotFoundException;
@@ -15,7 +16,7 @@ import bloom_story.global.domain.jwt.UserTokenService;
 import lombok.RequiredArgsConstructor;
 
 @Service
-@Transactional
+@Transactional(readOnly = true)
 @RequiredArgsConstructor
 public class UserService {
 
@@ -24,6 +25,7 @@ public class UserService {
     private final UserTokenService userTokenService;
     private final UserValidationService userValidationService;
 
+    @Transactional
     public void signUp(UserSignupRequest request) {
         User newUser = User.builder()
             .userId(request.userId())
@@ -31,13 +33,13 @@ public class UserService {
             .nickname(request.nickname())
             .phone(request.phone())
             .password(passwordEncoder.encode(request.password()))
-            .characterId(request.characterId())
             .build();
 
         userValidationService.checkSignUpData(newUser);
         userRepository.save(newUser);
     }
 
+    @Transactional
     public UserLoginResponse login(UserLoginRequest request) {
         User user = userValidationService.checkLoginData(request);
         String accessToken = userTokenService.createAccessToken(user);
@@ -52,5 +54,23 @@ public class UserService {
         }
 
         return UserResponse.from(user);
+    }
+
+    @Transactional
+    public UserResponse updateUserInfo(Integer userId, UserUpdateRequest request) {
+        User user = userRepository.getById(userId);
+        user.updateInfo(request.name(), request.nickname(), request.phone(), request.password());
+
+        userRepository.save(user);
+        return null;
+    }
+
+    @Transactional
+    public void deleteUser(Integer userId) {
+        User user = userRepository.getById(userId);
+        if (user == null) {
+            throw DataNotFoundException.withDetail("userId : " + userId);
+        }
+        userRepository.delete(user);
     }
 }
