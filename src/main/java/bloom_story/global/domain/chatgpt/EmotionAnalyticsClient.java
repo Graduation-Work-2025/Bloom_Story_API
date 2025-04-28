@@ -1,4 +1,4 @@
-package bloom_story.global.domain.emotionAnalytics;
+package bloom_story.global.domain.chatgpt;
 
 import java.util.ArrayList;
 import java.util.HashMap;

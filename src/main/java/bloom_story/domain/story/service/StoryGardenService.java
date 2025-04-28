@@ -11,7 +11,7 @@ import bloom_story.domain.location.service.LocationService;
 import bloom_story.domain.story.dto.StoriesResponse;
 import bloom_story.domain.story.repository.StoryRepository;
 import bloom_story.domain.user.repository.UserRepository;
-import bloom_story.global.domain.emotionAnalytics.EmotionAnalyticsClient;
+import bloom_story.global.domain.chatgpt.EmotionAnalyticsClient;
 import lombok.RequiredArgsConstructor;
 
 @Service

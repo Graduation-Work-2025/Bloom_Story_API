@@ -61,6 +61,11 @@ dependencies {
 	// Hibernate Spatial (JPA에서 GEOMETRY 타입을 사용할 경우 필요)
 	implementation 'org.hibernate:hibernate-spatial:6.2.1.Final'
 
+	// ChatGPT API
+	implementation 'io.github.flashvayne:chatgpt-spring-boot-starter:1.0.4'
+	implementation 'com.fasterxml.jackson.core:jackson-databind'
+	implementation 'org.springframework.boot:spring-boot-configuration-processor'
+
 }
 
 tasks.named('test') {
