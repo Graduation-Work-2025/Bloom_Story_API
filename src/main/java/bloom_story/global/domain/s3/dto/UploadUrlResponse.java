@@ -14,7 +14,10 @@ public record UploadUrlResponse(
         example = "https://bucketname.ap-northeast-2.amazonaws.com/upload/domain/2000/00/00/d4cb13df-cf57-...")
     String preSignedUrl,
 
-    @Schema(description = "첨부 파일 URL", example = "https://static.koreatech.in/1.png")
+    @Schema(
+        description = "첨부 파일 URL",
+        example = "https://bloom-story-s3.s3.ap-northeast-2.amazonaws.com/upload/1-bpokeknjfijdo.png"
+    )
     String fileUrl,
 
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
