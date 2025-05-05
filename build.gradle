@@ -66,6 +66,13 @@ dependencies {
 	implementation 'com.fasterxml.jackson.core:jackson-databind'
 	implementation 'org.springframework.boot:spring-boot-configuration-processor'
 
+	// AWS S3
+	implementation 'org.springframework.cloud:spring-cloud-starter-aws:2.2.6.RELEASE'
+
+	// Presigned Url
+	implementation platform('software.amazon.awssdk:bom:2.20.56')
+	implementation 'software.amazon.awssdk:s3'
+
 }
 
 tasks.named('test') {
