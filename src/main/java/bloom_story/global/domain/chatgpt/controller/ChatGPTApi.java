@@ -31,4 +31,14 @@ public interface ChatGPTApi {
     @Operation(summary = "ChatGPT API (테스트용)")
     @PostMapping("/test")
     ResponseEntity<String> testRecommend(@RequestParam String emotion);
+
+    @ApiResponses(
+        value = {
+            @ApiResponse(responseCode = "201"),
+            @ApiResponse(responseCode = "400", content = @Content(schema = @Schema(hidden = true))),
+            @ApiResponse(responseCode = "404", content = @Content(schema = @Schema(hidden = true)))
+        })
+    @Operation(summary = "GPT 일주일 일기 요약")
+    @PostMapping("/test")
+    ResponseEntity<String> summaryWeekDiary(@RequestParam String emotion);
 }

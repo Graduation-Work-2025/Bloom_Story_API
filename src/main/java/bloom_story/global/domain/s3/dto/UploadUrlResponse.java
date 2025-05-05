@@ -12,7 +12,7 @@ import io.swagger.v3.oas.annotations.media.Schema;
 public record UploadUrlResponse(
     @Schema(description = "파일을 업로드할 수 있는 url",
         example = "https://bucketname.ap-northeast-2.amazonaws.com/upload/domain/2000/00/00/d4cb13df-cf57-...")
-    String preSignedUrl,
+    String presignedUrl,
 
     @Schema(
         description = "첨부 파일 URL",
