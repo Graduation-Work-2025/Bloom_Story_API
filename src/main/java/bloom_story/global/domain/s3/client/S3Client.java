@@ -76,7 +76,7 @@ public class S3Client {
             PresignedPutObjectRequest presignedRequest = presigner.presignPutObject(presignRequest);
             return new UploadUrlResponse(
                 presignedRequest.url().toExternalForm(),
-                uploadFilePath,
+                String.format("https://bloom-story-s3.s3.ap-northeast-2.amazonaws.com/" + uploadFilePath),
                 LocalDateTime.now(clock).plusMinutes(URL_EXPIRATION_MINUTE)
             );
         }
