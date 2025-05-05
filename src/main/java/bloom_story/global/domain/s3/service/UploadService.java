@@ -36,11 +36,7 @@ public class UploadService {
         String fileExt = parts[parts.length - 1];
         String fileName = String.join("", Arrays.copyOf(parts, parts.length - 1));
         uploadPrefix.add("upload")
-            .add(String.valueOf(now.getYear()))
-            .add(String.valueOf(now.getMonth().getValue()))
-            .add(String.valueOf(now.getDayOfMonth()))
-            .add(UUID.randomUUID().toString())
-            .add(fileName);
+            .add(fileName + "-" + UUID.randomUUID());
         return uploadPrefix + "." + fileExt;
     }
 
