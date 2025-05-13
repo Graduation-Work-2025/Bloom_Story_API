@@ -55,6 +55,7 @@ public class StoryService {
             .sharingType(request.sharingType())
             .emotionType(emotionType)
             .expiredAt(LocalDateTime.now(clock).plusHours(24))
+            .imageUrl(request.imageUrl())
             .build();
 
         String analyzedEmotion = emotionAnalyticsClient.analysisEmotion(story.getContent());
@@ -97,10 +98,6 @@ public class StoryService {
     public StoriesResponse getMyStories(Integer id) {
         List<Story> stories = storyRepository.findAllByUserIdAndExpiredAtAfter(id, LocalDateTime.now(clock));
         return StoriesResponse.from(stories);
-    }
-
-    public void getMyStoryEmotionReport() {
-
     }
 
     // public StoryResponse updateStory(Integer id, StoryRequest request) {
