@@ -25,7 +25,7 @@ public class ChatGPTController implements ChatGPTApi{
         return ResponseEntity.status(HttpStatus.CREATED).body(result);
     }
 
-    @PostMapping("/test")
+    @PostMapping("/summary-diary")
     public ResponseEntity<String> summaryWeekDiary(@RequestParam String emotion) {
         return null;
     }
