@@ -1,11 +1,11 @@
 package bloom_story.domain.story.dto;
 
 import static com.fasterxml.jackson.databind.PropertyNamingStrategies.SnakeCaseStrategy;
+import static io.swagger.v3.oas.annotations.media.Schema.RequiredMode.NOT_REQUIRED;
 import static io.swagger.v3.oas.annotations.media.Schema.RequiredMode.REQUIRED;
 
 import com.fasterxml.jackson.databind.annotation.JsonNaming;
 
-import bloom_story.domain.emotion.model.EmotionType;
 import bloom_story.domain.story.model.SharingType;
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.NotNull;
@@ -29,7 +29,10 @@ public record StoryRequest(
 
     @Schema(description = "감정 타입", example = "기쁨", requiredMode = REQUIRED)
     @NotNull
-    String emotionType
+    String emotionType,
+
+    @Schema(description = "이미지 url", requiredMode = NOT_REQUIRED)
+    String imageUrl
 ) {
 
 }

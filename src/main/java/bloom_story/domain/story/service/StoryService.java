@@ -99,6 +99,10 @@ public class StoryService {
         return StoriesResponse.from(stories);
     }
 
+    public void getMyStoryEmotionReport() {
+
+    }
+
     // public StoryResponse updateStory(Integer id, StoryRequest request) {
     //     Story story = storyRepository.getById(id);
     //

@@ -11,7 +11,6 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
-import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
 import jakarta.validation.constraints.NotNull;
 import lombok.Builder;
@@ -19,10 +18,10 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 @Entity
-@Table(name = "reports")
+@Table(name = "recommend_activities")
 @Getter
 @NoArgsConstructor(access = PROTECTED)
-public class Report extends BaseEntity {
+public class RecommendActivity extends BaseEntity {
 
     @Id
     @GeneratedValue(strategy = IDENTITY)
@@ -36,21 +35,29 @@ public class Report extends BaseEntity {
     @Column(name = "content", columnDefinition = "TEXT")
     private String content;
 
-    @NotNull
-    @OneToOne
-    @JoinColumn(name = "emotion_rate", nullable = false)
-    private EmotionRate emotionRate;
+    @Column(name = "category", columnDefinition = "TEXT")
+    private String category;
+
+    @Column(name = "reason", columnDefinition = "TEXT")
+    private String reason;
+
+    @Column(name = "story_id", nullable = false)
+    private Integer storyId;
 
     @Builder
-    public Report(
+    public RecommendActivity(
         Integer id,
         User user,
         String content,
-        EmotionRate emotionRate
+        String category,
+        String reason,
+        Integer storyId
     ) {
         this.id = id;
         this.user = user;
         this.content = content;
-        this.emotionRate = emotionRate;
+        this.category = category;
+        this.reason = reason;
+        this.storyId = storyId;
     }
 }

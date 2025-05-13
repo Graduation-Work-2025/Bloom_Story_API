@@ -3,16 +3,13 @@ package bloom_story.domain.report.model;
 import static jakarta.persistence.GenerationType.IDENTITY;
 import static lombok.AccessLevel.PROTECTED;
 
-import bloom_story.domain.user.model.User;
+import bloom_story.domain.emotion.model.EmotionType;
 import bloom_story.global.domain.BaseEntity;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
-import jakarta.validation.constraints.NotNull;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -27,27 +24,26 @@ public class EmotionRate extends BaseEntity {
     @GeneratedValue(strategy = IDENTITY)
     private Integer id;
 
-    @Column(name = "happy", nullable = false)
-    private Integer happy;
+    @Column(name = "happy")
+    private Integer happy = 0;
 
-    @Column(name = "sad", nullable = false)
-    private Integer sad;
+    @Column(name = "sad")
+    private Integer sad = 0;
 
-    @Column(name = "fear", nullable = false)
-    private Integer fear;
+    @Column(name = "fear")
+    private Integer fear = 0;
 
-    @Column(name = "disgust", nullable = false)
-    private Integer disgust;
+    @Column(name = "disgust")
+    private Integer disgust = 0;
 
-    @Column(name = "angry", nullable = false)
-    private Integer angry;
+    @Column(name = "angry")
+    private Integer angry = 0;
 
-    @Column(name = "surprised", nullable = false)
-    private Integer surprised;
+    @Column(name = "surprised")
+    private Integer surprised = 0;
 
-    @Column(name = "neutral", nullable = false)
-    private Integer neutral;
-
+    @Column(name = "neutral")
+    private Integer neutral = 0;
 
     @Builder
     public EmotionRate(
@@ -69,4 +65,17 @@ public class EmotionRate extends BaseEntity {
         this.surprised = surprised;
         this.neutral = neutral;
     }
+
+    public void increase(EmotionType emotion) {
+        switch (emotion) {
+            case HAPPY -> this.happy++;
+            case SAD -> this.sad++;
+            case FEAR -> this.fear++;
+            case DISGUST -> this.disgust++;
+            case ANGRY -> this.angry++;
+            case SURPRISED -> this.surprised++;
+            case NEUTRAL -> this.neutral++;
+        }
+    }
+
 }

@@ -18,6 +18,16 @@ public interface StoryRepository extends Repository<Story, Integer> {
 
     Optional<Story> findById(Integer id);
 
+    Optional<Story> findTop1ByUserIdOrderByCreatedAtDesc(Integer userId);
+
+    default Story getTop1ByUserIdOrderByCreatedAtDesc(Integer userId) {
+        return findTop1ByUserIdOrderByCreatedAtDesc(userId)
+            .orElse(null);
+    }
+
+    List<Story> findAllByUserIdAndCreatedAtAfterOrderByCreatedAtDesc(Integer userId, LocalDateTime oneWeekAgo);
+
+
     // @Query(value = "SELECT * FROM stories WHERE expired_at >= :now AND user_id = :userId", nativeQuery = true)
     // List<Story> findAllByUserIdAndExpiredAtAfter(@Param("userId") Integer userId, @Param("now") LocalDateTime now);
 

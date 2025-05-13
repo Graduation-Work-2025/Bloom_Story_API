@@ -80,8 +80,7 @@ public class Story extends BaseEntity {
     @Column(name = "expired_at", columnDefinition = "TIMESTAMP")
     private LocalDateTime expiredAt;
 
-    @NotNull
-    @Column(name = "image_url", nullable = false)
+    @Column(name = "image_url")
     private String imageUrl;
 
     @Builder
