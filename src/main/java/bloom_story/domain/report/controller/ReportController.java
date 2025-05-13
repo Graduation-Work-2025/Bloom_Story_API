@@ -2,13 +2,13 @@ package bloom_story.domain.report.controller;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import bloom_story.domain.report.dto.EmotionReportResponse;
-import bloom_story.domain.report.service.ReportService;
 import bloom_story.domain.report.dto.RecommendActivityResponse;
+import bloom_story.domain.report.service.ReportService;
 import bloom_story.global.domain.jwt.UserId;
 import lombok.RequiredArgsConstructor;
 
@@ -19,7 +19,7 @@ public class ReportController implements ReportApi {
 
     private final ReportService reportService;
 
-    @PostMapping("/emotions")
+    @GetMapping("/emotions")
     public ResponseEntity<EmotionReportResponse> getEmotionReport(
         @UserId Integer userId
     ) {
@@ -27,7 +27,7 @@ public class ReportController implements ReportApi {
         return ResponseEntity.status(HttpStatus.CREATED).body(response);
     }
 
-    @PostMapping("/recommend")
+    @GetMapping("/recommend")
     public ResponseEntity<RecommendActivityResponse> getRecommendActivity(
         @UserId Integer userId
     ) {
@@ -35,7 +35,7 @@ public class ReportController implements ReportApi {
         return ResponseEntity.status(HttpStatus.CREATED).body(response);
     }
 
-    @PostMapping("/keywords")
+    @GetMapping("/keywords")
     public ResponseEntity<EmotionReportResponse> getLastWeekKeyword(
         @UserId Integer userId
     ) {
