@@ -1,7 +1,7 @@
 package bloom_story.domain.report.controller;
 
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import bloom_story.domain.report.dto.EmotionReportResponse;
@@ -25,7 +25,7 @@ public interface ReportApi {
             @ApiResponse(responseCode = "404", content = @Content(schema = @Schema(hidden = true)))
         })
     @Operation(summary = "감정 통계")
-    @PostMapping("/emotions")
+    @GetMapping("/emotions")
     ResponseEntity<EmotionReportResponse> getEmotionReport(
         @UserId Integer userId
     );
@@ -37,7 +37,7 @@ public interface ReportApi {
             @ApiResponse(responseCode = "404", content = @Content(schema = @Schema(hidden = true)))
         })
     @Operation(summary = "추천 활동")
-    @PostMapping("/recommend")
+    @GetMapping("/recommend")
     ResponseEntity<RecommendActivityResponse> getRecommendActivity(
         @UserId Integer userId
     );
@@ -49,7 +49,7 @@ public interface ReportApi {
             @ApiResponse(responseCode = "404", content = @Content(schema = @Schema(hidden = true)))
         })
     @Operation(summary = "지난 일주일 키워드 요약")
-    @PostMapping("/keywords")
+    @GetMapping("/keywords")
     ResponseEntity<EmotionReportResponse> getLastWeekKeyword(
         @UserId Integer userId
     );
