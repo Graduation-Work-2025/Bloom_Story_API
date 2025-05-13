@@ -1,6 +1,7 @@
 package bloom_story.domain.story.dto;
 
 import static com.fasterxml.jackson.databind.PropertyNamingStrategies.SnakeCaseStrategy;
+import static io.swagger.v3.oas.annotations.media.Schema.RequiredMode.NOT_REQUIRED;
 import static io.swagger.v3.oas.annotations.media.Schema.RequiredMode.REQUIRED;
 
 import java.util.List;
@@ -42,7 +43,10 @@ public record StoryResponse(
     Integer bloomId,
 
     @Schema(description = "Bloom ID", example = "1", requiredMode = REQUIRED)
-    SharingType sharingType
+    SharingType sharingType,
+
+    @Schema(description = "이미지 Url", example = "1", requiredMode = NOT_REQUIRED)
+    String imageUrl
 ) {
 
     public static StoryResponse from(Story story) {
@@ -56,7 +60,8 @@ public record StoryResponse(
             story.getUser().getId(),
             story.getEmotionType().name(),
             story.getBloom().getId(),
-            story.getSharingType()
+            story.getSharingType(),
+            story.getImageUrl() == null ? null : story.getImageUrl()
         );
     }
 }

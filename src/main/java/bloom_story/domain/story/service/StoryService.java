@@ -55,6 +55,7 @@ public class StoryService {
             .sharingType(request.sharingType())
             .emotionType(emotionType)
             .expiredAt(LocalDateTime.now(clock).plusHours(24))
+            .imageUrl(request.imageUrl())
             .build();
 
         String analyzedEmotion = emotionAnalyticsClient.analysisEmotion(story.getContent());

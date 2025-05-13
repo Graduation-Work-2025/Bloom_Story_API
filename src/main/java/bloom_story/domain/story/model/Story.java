@@ -80,8 +80,8 @@ public class Story extends BaseEntity {
     @Column(name = "expired_at", columnDefinition = "TIMESTAMP")
     private LocalDateTime expiredAt;
 
-    @OneToMany(mappedBy = "story", cascade = ALL, orphanRemoval = true, fetch = LAZY)
-    private List<StoryImage> images = new ArrayList<>();
+    @Column(name = "image_url")
+    private String imageUrl;
 
     @Builder
     public Story(
@@ -93,7 +93,8 @@ public class Story extends BaseEntity {
         SharingType sharingType,
         EmotionType emotionType,
         Bloom bloom,
-        LocalDateTime expiredAt
+        LocalDateTime expiredAt,
+        String imageUrl
     ) {
         this.id = id;
         this.user = user;
@@ -104,6 +105,7 @@ public class Story extends BaseEntity {
         this.emotionType = emotionType;
         this.bloom = bloom;
         this.expiredAt = expiredAt;
+        this.imageUrl = imageUrl;
     }
 
     public void setBloom(Bloom bloom) {
