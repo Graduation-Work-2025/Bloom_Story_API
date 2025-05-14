@@ -58,7 +58,7 @@ public record StoryResponse(
             points.get(1),
             story.getLikes(),
             story.getUser().getId(),
-            story.getEmotionType().name(),
+            story.getEmotionDetailType().name(),
             story.getBloom().getId(),
             story.getSharingType(),
             story.getImageUrl() == null ? null : story.getImageUrl()

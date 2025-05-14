@@ -1,10 +1,10 @@
 package bloom_story.domain.emotion.model;
 
-import static bloom_story.domain.emotion.model.EmotionType.NEUTRAL;
 import static jakarta.persistence.GenerationType.IDENTITY;
 import static lombok.AccessLevel.PROTECTED;
 
-import bloom_story.global.domain.BaseEntity;
+import bloom_story.domain.story.model.EmotionDetailType;
+import bloom_story.domain.story.model.EmotionType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
@@ -30,7 +30,11 @@ public class Emotion {
     @NotNull
     @Enumerated(EnumType.STRING)
     @Column(name = "type", nullable = false)
-    private EmotionType type;
+    private EmotionType emotionType;
+
+    @Enumerated(EnumType.STRING)
+    @Column(name = "detail_type")
+    private EmotionDetailType detailType;
 
     @Column(name = "color")
     private String color;
@@ -40,11 +44,13 @@ public class Emotion {
 
     @Builder
     public Emotion(
-        EmotionType type,
+        EmotionType emotionType,
+        EmotionDetailType detailType,
         String color,
         String content
     ) {
-        this.type = type;
+        this.emotionType = emotionType;
+        this.detailType = detailType;
         this.color = color;
         this.content = content;
     }

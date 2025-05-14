@@ -6,16 +6,12 @@ import static jakarta.persistence.GenerationType.IDENTITY;
 import static lombok.AccessLevel.PROTECTED;
 
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.List;
 
 import org.locationtech.jts.geom.Point;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 
 import bloom_story.domain.bloom.model.Bloom;
-import bloom_story.domain.emotion.model.Emotion;
-import bloom_story.domain.emotion.model.EmotionType;
 import bloom_story.domain.user.model.User;
 import bloom_story.global.domain.BaseEntity;
 import jakarta.persistence.Column;
@@ -26,7 +22,6 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
-import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import jakarta.validation.constraints.NotNull;
 import lombok.Builder;
@@ -64,6 +59,10 @@ public class Story extends BaseEntity {
     @Enumerated(EnumType.STRING)
     private EmotionType emotionType;
 
+    @JoinColumn(name = "emotion_detail_type")
+    @Enumerated(EnumType.STRING)
+    private EmotionDetailType emotionDetailType;
+
     @NotNull
     @Column(name = "location", nullable = false, columnDefinition = "POINT")
     private Point location;
@@ -92,6 +91,7 @@ public class Story extends BaseEntity {
         Point location,
         SharingType sharingType,
         EmotionType emotionType,
+        EmotionDetailType emotionDetailType,
         Bloom bloom,
         LocalDateTime expiredAt,
         String imageUrl
@@ -103,6 +103,7 @@ public class Story extends BaseEntity {
         this.location = location;
         this.sharingType = sharingType;
         this.emotionType = emotionType;
+        this.emotionDetailType = emotionDetailType;
         this.bloom = bloom;
         this.expiredAt = expiredAt;
         this.imageUrl = imageUrl;

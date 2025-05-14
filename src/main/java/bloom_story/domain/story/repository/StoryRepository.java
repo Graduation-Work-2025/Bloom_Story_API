@@ -20,6 +20,8 @@ public interface StoryRepository extends Repository<Story, Integer> {
 
     Optional<Story> findTop1ByUserIdOrderByCreatedAtDesc(Integer userId);
 
+    List<Story> findAllByUserId(Integer userId);
+
     default Story getTop1ByUserIdOrderByCreatedAtDesc(Integer userId) {
         return findTop1ByUserIdOrderByCreatedAtDesc(userId)
             .orElse(null);

@@ -3,7 +3,7 @@ package bloom_story.domain.emotion.dto;
 import static io.swagger.v3.oas.annotations.media.Schema.RequiredMode.REQUIRED;
 
 import bloom_story.domain.emotion.model.Emotion;
-import bloom_story.domain.emotion.model.EmotionType;
+import bloom_story.domain.story.model.EmotionType;
 import io.swagger.v3.oas.annotations.media.Schema;
 
 public record EmotionResponse(
@@ -20,7 +20,7 @@ public record EmotionResponse(
     public static EmotionResponse from(Emotion emotion) {
         return new EmotionResponse(
             emotion.getId(),
-            emotion.getType(),
+            emotion.getEmotionType(),
             emotion.getColor()
         );
     }
