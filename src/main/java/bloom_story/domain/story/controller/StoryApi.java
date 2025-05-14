@@ -75,19 +75,6 @@ public interface StoryApi {
         @UserId Integer userId
     );
 
-    // @ApiResponses(
-    //     value = {
-    //         @ApiResponse(responseCode = "201"),
-    //         @ApiResponse(responseCode = "400", content = @Content(schema = @Schema(hidden = true))),
-    //         @ApiResponse(responseCode = "404", content = @Content(schema = @Schema(hidden = true)))
-    //     })
-    // @Operation(summary = "스토리 수정")
-    // @PutMapping("/{id}")
-    // ResponseEntity<StoryResponse> updateStory(
-    //     @PathVariable Integer id,
-    //     @RequestBody StoryRequest request
-    // );
-
     @ApiResponses(
         value = {
             @ApiResponse(responseCode = "201"),
@@ -100,4 +87,17 @@ public interface StoryApi {
         @UserId Integer userId,
         @PathVariable Integer id
     );
+
+    // @ApiResponses(
+    //     value = {
+    //         @ApiResponse(responseCode = "201"),
+    //         @ApiResponse(responseCode = "400", content = @Content(schema = @Schema(hidden = true))),
+    //         @ApiResponse(responseCode = "404", content = @Content(schema = @Schema(hidden = true)))
+    //     })
+    // @Operation(summary = "스토리 수정")
+    // @PutMapping("/{id}")
+    // ResponseEntity<StoryResponse> updateStory(
+    //     @PathVariable Integer id,
+    //     @RequestBody StoryRequest request
+    // );
 }

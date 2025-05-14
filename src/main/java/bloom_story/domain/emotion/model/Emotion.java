@@ -30,7 +30,7 @@ public class Emotion {
     @NotNull
     @Enumerated(EnumType.STRING)
     @Column(name = "type", nullable = false)
-    private EmotionType emotionType;
+    private EmotionType type;
 
     @Enumerated(EnumType.STRING)
     @Column(name = "detail_type")
@@ -44,12 +44,12 @@ public class Emotion {
 
     @Builder
     public Emotion(
-        EmotionType emotionType,
+        EmotionType type,
         EmotionDetailType detailType,
         String color,
         String content
     ) {
-        this.emotionType = emotionType;
+        this.type = type;
         this.detailType = detailType;
         this.color = color;
         this.content = content;

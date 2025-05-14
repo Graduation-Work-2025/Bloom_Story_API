@@ -4,14 +4,14 @@ import java.time.Clock;
 import java.time.LocalDateTime;
 import java.util.List;
 
+import org.locationtech.jts.geom.Coordinate;
+import org.locationtech.jts.geom.GeometryFactory;
 import org.locationtech.jts.geom.Point;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import bloom_story.domain.bloom.model.Bloom;
 import bloom_story.domain.bloom.repository.BloomRepository;
-import bloom_story.domain.story.model.EmotionDetailType;
-import bloom_story.domain.story.model.EmotionType;
 import bloom_story.domain.emotion.repository.EmotionBloomMapRepository;
 import bloom_story.domain.emotion.repository.EmotionRepository;
 import bloom_story.domain.location.service.LocationService;
@@ -19,7 +19,8 @@ import bloom_story.domain.story.dto.StoriesResponse;
 import bloom_story.domain.story.dto.StoryRequest;
 import bloom_story.domain.story.dto.StoryResponse;
 import bloom_story.domain.story.model.BloomType;
-import bloom_story.domain.story.model.SharingType;
+import bloom_story.domain.story.model.EmotionDetailType;
+import bloom_story.domain.story.model.EmotionType;
 import bloom_story.domain.story.model.Story;
 import bloom_story.domain.story.repository.StoryRepository;
 import bloom_story.domain.user.model.User;
@@ -37,14 +38,15 @@ public class StoryService {
     private final EmotionBloomMapRepository emotionBloomMapRepository;
     private final BloomRepository bloomRepository;
     private final LocationService locationService;
+    private final GeometryFactory geometryFactory = new GeometryFactory();
     private final Clock clock;
 
-    private static final double DISTANCE = 40.0;
+    private static final double DISTANCE = 100.0;
 
     @Transactional
     public StoryResponse createStory(Integer userId, StoryRequest request) {
         User user = userRepository.getById(userId);
-        Point point = locationService.convertToPoint(request.longitude(), request.latitude());
+        Point point = convertToPoint(request.latitude(), request.longitude());
         EmotionDetailType detailType = EmotionDetailType.valueOf(request.emotionType());
         EmotionType emotionType = detailType.getSuperType();
         BloomType bloomType = BloomType.getByName(emotionType);
@@ -66,18 +68,18 @@ public class StoryService {
         return StoryResponse.from(story);
     }
 
+    private Point convertToPoint(double longitude, double latitude) {
+        return geometryFactory.createPoint(new Coordinate(longitude, latitude));
+    }
+
     public StoryResponse getStoryById(Integer id) {
         Story story = storyRepository.getById(id);
         return StoryResponse.from(story);
     }
 
     public StoriesResponse getNearbyStories(Integer userId, double longitude, double latitude) {
-        User user = userRepository.getById(userId);
-        String point = String.format("POINT(%.5f %.5f)", longitude, latitude);
-        List<Story> stories = storyRepository.findStoriesWithinDistance(point, DISTANCE)
-            .stream()
-            .filter(story -> story.getSharingType().equals(SharingType.PUBLIC) || story.getUser().equals(user))
-            .toList();
+        String point = String.format("POINT(%.5f %.5f)", latitude, longitude);
+        List<Story> stories = storyRepository.findStoriesByVisibilityAndDistance(point, DISTANCE, userId);
 
         return StoriesResponse.from(stories);
     }

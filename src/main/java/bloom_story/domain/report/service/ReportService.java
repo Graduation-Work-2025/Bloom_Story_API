@@ -38,7 +38,7 @@ public class ReportService {
         List<Story> stories = storyRepository
             .findAllByUserIdAndCreatedAtAfterOrderByCreatedAtDesc(userId, LocalDateTime.now(clock).minusDays(7));
         EmotionRate rate = EmotionRate.builder()
-            .happy(0).sad(0).angry(0).disgust(0).neutral(0).fear(0).surprised(0).build();
+            .happy(0).sad(0).angry(0).disgust(0).fear(0).surprised(0).build();
 
         for (Story story : stories) {
             rate.increase(story.getEmotionType());

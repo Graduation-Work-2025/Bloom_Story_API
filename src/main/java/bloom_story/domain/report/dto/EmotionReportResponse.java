@@ -26,10 +26,7 @@ public record EmotionReportResponse(
     Integer surprised,
 
     @Schema(description = "화남 감정 비율", example = "10", requiredMode = REQUIRED)
-    Integer angry,
-
-    @Schema(description = "중립 감정 비율", example = "10", requiredMode = REQUIRED)
-    Integer neutral
+    Integer angry
 ) {
 
     public static EmotionReportResponse from(EmotionRate emotionRate) {
@@ -39,8 +36,7 @@ public record EmotionReportResponse(
             emotionRate.getFear(),
             emotionRate.getDisgust(),
             emotionRate.getSurprised(),
-            emotionRate.getAngry(),
-            emotionRate.getNeutral()
+            emotionRate.getAngry()
         );
     }
 }

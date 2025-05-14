@@ -61,16 +61,6 @@ public class StoryController implements StoryApi {
         return ResponseEntity.ok(response);
     }
 
-    // @Operation(summary = "스토리 수정")
-    // @PutMapping("/{id}")
-    // public ResponseEntity<StoryResponse> updateStory(
-    //     @PathVariable Integer id,
-    //     @RequestBody StoryRequest request
-    // ) {
-    //     StoryResponse response = storyService.updateStory(id, request);
-    //     return ResponseEntity.ok(response);
-    // }
-
     @Operation(summary = "스토리 삭제")
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteStory(
@@ -80,5 +70,15 @@ public class StoryController implements StoryApi {
         storyService.deleteStory(id);
         return ResponseEntity.noContent().build();
     }
+
+    // @Operation(summary = "스토리 수정")
+    // @PutMapping("/{id}")
+    // public ResponseEntity<StoryResponse> updateStory(
+    //     @PathVariable Integer id,
+    //     @RequestBody StoryRequest request
+    // ) {
+    //     StoryResponse response = storyService.updateStory(id, request);
+    //     return ResponseEntity.ok(response);
+    // }
 }
 

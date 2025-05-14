@@ -59,7 +59,7 @@ public record StoriesResponse(
                 points.get(0),
                 points.get(1),
                 story.getUser().getId(),
-                story.getEmotionType().name(),
+                story.getEmotionDetailType().name(),
                 story.getBloom().getId(),
                 story.getImageUrl() == null ? null : story.getImageUrl()
             );

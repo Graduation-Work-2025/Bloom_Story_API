@@ -9,10 +9,10 @@ import io.swagger.v3.oas.annotations.media.Schema;
 
 @JsonNaming(value = SnakeCaseStrategy.class)
 public record StoryLocationRequest(
-    @Schema(description = "내 위치", example = "POINT(122.2356 34.67532)", requiredMode = REQUIRED)
+    @Schema(description = "내 위치", example = "POINT('latitude' 'longitude')", requiredMode = REQUIRED)
     double longitude,
 
-    @Schema(description = "내 위치", example = "POINT(122.2356 34.67532)", requiredMode = REQUIRED)
+    @Schema(description = "내 위치", example = "POINT(34.67532 -122.2356)", requiredMode = REQUIRED)
     double latitude
 ) {
 

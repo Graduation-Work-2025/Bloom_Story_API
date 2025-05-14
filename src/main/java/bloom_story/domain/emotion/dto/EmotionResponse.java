@@ -20,7 +20,7 @@ public record EmotionResponse(
     public static EmotionResponse from(Emotion emotion) {
         return new EmotionResponse(
             emotion.getId(),
-            emotion.getEmotionType(),
+            emotion.getType(),
             emotion.getColor()
         );
     }
