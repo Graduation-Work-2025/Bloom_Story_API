@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import bloom_story.domain.story.dto.CreateStoryResponse;
 import bloom_story.domain.story.dto.StoriesResponse;
 import bloom_story.domain.story.dto.StoryRequest;
 import bloom_story.domain.story.dto.StoryResponse;
@@ -32,7 +33,7 @@ public interface StoryApi {
         })
     @Operation(summary = "스토리 작성")
     @PostMapping
-    ResponseEntity<StoryResponse> createStory(
+    ResponseEntity<CreateStoryResponse> createStory(
         @UserId Integer userId,
         @RequestBody StoryRequest request
     );

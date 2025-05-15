@@ -37,14 +37,25 @@ public interface StoryRepository extends Repository<Story, Integer> {
     @Query("SELECT s FROM Story s WHERE s.expiredAt >= :now AND s.user.id = :userId")
     List<Story> findAllByUserIdAndExpiredAtAfter(@Param("userId") Integer userId, @Param("now") LocalDateTime now);
 
-    @Query(value = "SELECT * FROM stories " +
-        "WHERE ST_Distance_Sphere(location, ST_GeomFromText(:point)) <= :distance", nativeQuery = true)
-    List<Story> findStoriesWithinDistance(@Param("point") String point, @Param("distance") double distance);
-
     @Query(value = "SELECT * FROM stories s " +
         "WHERE (ST_Distance_Sphere(location, ST_GeomFromText(:point, 4326)) <= :distance AND s.sharing_type = 'PUBLIC') OR s.user_id = :user_id",
         nativeQuery = true)
     List<Story> findStoriesByVisibilityAndDistance(
         @Param("point") String point, @Param("distance") double distance, @Param("user_id") Integer userId
     );
+
+    @Query(value = "SELECT * FROM stories s "
+        + "WHERE s.user_id = :user_id "
+        + "AND s.created_at <= NOW() - INTERVAL 7 DAY "
+        + "AND ST_Distance_Sphere(location, ST_GeomFromText(:point, 4326)) <= :distance AND s.sharing_type = 'PUBLIC' "
+        + "ORDER BY s.created_at DESC LIMIT 1",
+        nativeQuery = true)
+    Optional<Story> findMyLastStoryByDistance(
+        @Param("point") String point, @Param("distance") double distance, @Param("user_id") Integer userId
+    );
+
+    default Story getMyLastStoryByDistance(String point, double distance, Integer userId) {
+        return findMyLastStoryByDistance(point, distance, userId)
+            .orElse(null);
+    }
 }

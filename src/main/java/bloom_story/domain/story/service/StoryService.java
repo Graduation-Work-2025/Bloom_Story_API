@@ -7,14 +7,13 @@ import java.util.List;
 import org.locationtech.jts.geom.Coordinate;
 import org.locationtech.jts.geom.GeometryFactory;
 import org.locationtech.jts.geom.Point;
+import org.locationtech.jts.geom.PrecisionModel;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import bloom_story.domain.bloom.model.Bloom;
 import bloom_story.domain.bloom.repository.BloomRepository;
-import bloom_story.domain.emotion.repository.EmotionBloomMapRepository;
-import bloom_story.domain.emotion.repository.EmotionRepository;
-import bloom_story.domain.location.service.LocationService;
+import bloom_story.domain.story.dto.CreateStoryResponse;
 import bloom_story.domain.story.dto.StoriesResponse;
 import bloom_story.domain.story.dto.StoryRequest;
 import bloom_story.domain.story.dto.StoryResponse;
@@ -34,23 +33,21 @@ public class StoryService {
 
     private final StoryRepository storyRepository;
     private final UserRepository userRepository;
-    private final EmotionRepository emotionRepository;
-    private final EmotionBloomMapRepository emotionBloomMapRepository;
     private final BloomRepository bloomRepository;
-    private final LocationService locationService;
-    private final GeometryFactory geometryFactory = new GeometryFactory();
+    private final GeometryFactory geometryFactory = new GeometryFactory(new PrecisionModel(), 4326);
     private final Clock clock;
 
     private static final double DISTANCE = 100.0;
 
     @Transactional
-    public StoryResponse createStory(Integer userId, StoryRequest request) {
+    public CreateStoryResponse createStory(Integer userId, StoryRequest request) {
         User user = userRepository.getById(userId);
         Point point = convertToPoint(request.latitude(), request.longitude());
-        EmotionDetailType detailType = EmotionDetailType.valueOf(request.emotionType());
+        EmotionDetailType detailType = EmotionDetailType.getByName(request.emotionType());
         EmotionType emotionType = detailType.getSuperType();
         BloomType bloomType = BloomType.getByName(emotionType);
         Bloom bloom = bloomRepository.getById(bloomType.getBloomId());
+        Integer remindStoryId = getRemindStory(userId, request);
 
         Story story = Story.builder()
             .user(user)
@@ -65,7 +62,16 @@ public class StoryService {
             .build();
 
         storyRepository.save(story);
-        return StoryResponse.from(story);
+        return CreateStoryResponse.from(story, remindStoryId);
+    }
+
+    private Integer getRemindStory(Integer userId, StoryRequest request) {
+        String point = String.format("POINT(%.5f %.5f)", request.latitude(), request.longitude());
+        Story remindStory = storyRepository.getMyLastStoryByDistance(point, DISTANCE, userId);
+        if (remindStory == null) {
+            return null;
+        }
+        return remindStory.getId();
     }
 
     private Point convertToPoint(double longitude, double latitude) {

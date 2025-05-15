@@ -1,5 +1,6 @@
 package bloom_story.domain.story.model;
 
+import bloom_story.global.domain.exception.custom.DataNotFoundException;
 import lombok.Getter;
 
 @Getter
@@ -54,6 +55,6 @@ public enum EmotionDetailType {
                 return emotionType;
             }
         }
-        return null;
+        throw DataNotFoundException.withDetail("emotion_detail_type: " + name);
     }
 }
