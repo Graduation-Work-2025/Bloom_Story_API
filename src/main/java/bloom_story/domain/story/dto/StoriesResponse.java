@@ -4,8 +4,10 @@ import static com.fasterxml.jackson.databind.PropertyNamingStrategies.SnakeCaseS
 import static io.swagger.v3.oas.annotations.media.Schema.RequiredMode.NOT_REQUIRED;
 import static io.swagger.v3.oas.annotations.media.Schema.RequiredMode.REQUIRED;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.databind.annotation.JsonNaming;
 
 import bloom_story.domain.story.model.Story;
@@ -49,7 +51,10 @@ public record StoriesResponse(
         Integer bloomId,
 
         @Schema(description = "이미지 url", requiredMode = NOT_REQUIRED)
-        String imageUrl
+        String imageUrl,
+
+        @Schema(description = "등록 일자", example = "2024-08-28", requiredMode = REQUIRED)
+        @JsonFormat(pattern = "yyyy-MM-dd") LocalDateTime createdAt
     ) {
 
         private static InnerStoryResponse from(Story story) {
@@ -61,7 +66,8 @@ public record StoriesResponse(
                 story.getUser().getId(),
                 story.getEmotionDetailType().getDescription(),
                 story.getBloom().getId(),
-                story.getImageUrl() == null ? null : story.getImageUrl()
+                story.getImageUrl() == null ? null : story.getImageUrl(),
+                story.getCreatedAt()
             );
         }
 

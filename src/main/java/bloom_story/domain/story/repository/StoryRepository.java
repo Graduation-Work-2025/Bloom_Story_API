@@ -43,7 +43,7 @@ public interface StoryRepository extends Repository<Story, Integer> {
 
     @Query(value = "SELECT * FROM stories s "
         + "WHERE s.user_id = :user_id "
-        + "AND s.created_at <= NOW() - INTERVAL 7 DAY "
+        + "AND s.created_at <= (NOW() - INTERVAL 7 DAY) "
         + "AND ST_Distance_Sphere(location, ST_GeomFromText(:point, 4326)) <= :distance AND s.sharing_type = 'PUBLIC' "
         + "ORDER BY s.created_at DESC LIMIT 1",
         nativeQuery = true)
