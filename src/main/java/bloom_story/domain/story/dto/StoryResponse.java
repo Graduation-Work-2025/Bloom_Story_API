@@ -4,13 +4,15 @@ import static com.fasterxml.jackson.databind.PropertyNamingStrategies.SnakeCaseS
 import static io.swagger.v3.oas.annotations.media.Schema.RequiredMode.NOT_REQUIRED;
 import static io.swagger.v3.oas.annotations.media.Schema.RequiredMode.REQUIRED;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.databind.annotation.JsonNaming;
 
+import bloom_story.domain.location.service.LocationService;
 import bloom_story.domain.story.model.SharingType;
 import bloom_story.domain.story.model.Story;
-import bloom_story.domain.location.service.LocationService;
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.NotNull;
 
@@ -46,7 +48,10 @@ public record StoryResponse(
     SharingType sharingType,
 
     @Schema(description = "이미지 Url", example = "1", requiredMode = NOT_REQUIRED)
-    String imageUrl
+    String imageUrl,
+
+    @Schema(description = "등록 일자", example = "2024-08-28", requiredMode = REQUIRED)
+    @JsonFormat(pattern = "yyyy-MM-dd") LocalDateTime createdAt
 ) {
 
     public static StoryResponse from(Story story) {
@@ -61,7 +66,8 @@ public record StoryResponse(
             story.getEmotionDetailType().getDescription(),
             story.getBloom().getId(),
             story.getSharingType(),
-            story.getImageUrl() == null ? null : story.getImageUrl()
+            story.getImageUrl() == null ? null : story.getImageUrl(),
+            story.getCreatedAt()
         );
     }
 }
