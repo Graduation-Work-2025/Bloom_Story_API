@@ -6,6 +6,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 import bloom_story.domain.report.dto.EmotionReportResponse;
 import bloom_story.domain.report.dto.RecommendActivityResponse;
+import bloom_story.global.domain.chatgpt.dto.SummaryKeywordResponse;
 import bloom_story.global.domain.jwt.UserId;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
@@ -50,7 +51,7 @@ public interface ReportApi {
         })
     @Operation(summary = "지난 일주일 키워드 요약")
     @GetMapping("/keywords")
-    ResponseEntity<EmotionReportResponse> getLastWeekKeyword(
+    ResponseEntity<SummaryKeywordResponse> getSummaryKeyword(
         @UserId Integer userId
     );
 }

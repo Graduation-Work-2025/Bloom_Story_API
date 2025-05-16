@@ -10,6 +10,8 @@ import org.springframework.web.bind.annotation.RestController;
 
 import bloom_story.global.domain.chatgpt.dto.RecommendRequest;
 import bloom_story.global.domain.chatgpt.dto.RecommendResponse;
+import bloom_story.global.domain.chatgpt.dto.SummaryKeywordRequest;
+import bloom_story.global.domain.chatgpt.dto.SummaryKeywordResponse;
 import bloom_story.global.domain.chatgpt.service.ChatGPTService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -28,9 +30,15 @@ public class ChatGPTController implements ChatGPTApi{
         return ResponseEntity.status(HttpStatus.CREATED).body(result);
     }
 
-    @PostMapping("/recommand")
-    public ResponseEntity<RecommendResponse> recommendActivity(@RequestBody RecommendRequest request) {
+    @PostMapping("/recommend")
+    public ResponseEntity<RecommendResponse> createRecommendActivity(@RequestBody RecommendRequest request) {
         RecommendResponse response = chatgptService.recommendActivity(request.emotion(), request.content());
+        return ResponseEntity.status(HttpStatus.CREATED).body(response);
+    }
+
+    @PostMapping("/keywords")
+    public ResponseEntity<SummaryKeywordResponse> createSummaryKeyword(@RequestBody SummaryKeywordRequest request) {
+        SummaryKeywordResponse response = chatgptService.summaryLastWeekToKeyword(request);
         return ResponseEntity.status(HttpStatus.CREATED).body(response);
     }
 }

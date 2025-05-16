@@ -18,6 +18,8 @@ import bloom_story.domain.story.repository.StoryRepository;
 import bloom_story.domain.user.model.User;
 import bloom_story.domain.user.repository.UserRepository;
 import bloom_story.global.domain.chatgpt.dto.RecommendResponse;
+import bloom_story.global.domain.chatgpt.dto.SummaryKeywordRequest;
+import bloom_story.global.domain.chatgpt.dto.SummaryKeywordResponse;
 import bloom_story.global.domain.chatgpt.service.ChatGPTService;
 import lombok.RequiredArgsConstructor;
 
@@ -68,9 +70,11 @@ public class ReportService {
     }
 
     @Transactional
-    public EmotionReportResponse getLastWeekKeyword(Integer userId) {
-        User user = userRepository.getById(userId);
-        //TODO: 사용자 조회 -> 최근 일주일치 스토리 가져오기 -> GPT 분석해서 요약 내용 받기 -> response에 담기
-        return EmotionReportResponse.from(null);
+    public SummaryKeywordResponse getSummaryKeyword(Integer userId) {
+        List<Story> stories = storyRepository
+            .findAllByUserIdAndCreatedAtAfterOrderByCreatedAtDesc(userId, LocalDateTime.now(clock).minusDays(7));
+        SummaryKeywordRequest request = SummaryKeywordRequest.from(stories);
+
+        return gptService.summaryLastWeekToKeyword(request);
     }
 }
