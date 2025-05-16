@@ -9,7 +9,7 @@ import io.swagger.v3.oas.annotations.media.Schema;
 
 @JsonNaming(value = SnakeCaseStrategy.class)
 public record UserLoginRequest(
-    @Schema(description = "아이디", example = "hyunn815", requiredMode = REQUIRED)
+    @Schema(description = "아이디", example = "hyunn816", requiredMode = REQUIRED)
     String userId,
 
     @Schema(description = "비밀번호", example = "qwer1234", requiredMode = REQUIRED)

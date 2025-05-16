@@ -1,4 +1,4 @@
-package bloom_story.domain.emotion.model;
+package bloom_story.domain.story.model;
 
 import lombok.Getter;
 
@@ -9,8 +9,7 @@ public enum EmotionType {
     DISGUST("혐오"),
     ANGRY("분노"),
     SURPRISED("놀람"),
-    FEAR("공포"),
-    NEUTRAL("중립");
+    FEAR("공포");
 
     private final String description;
 

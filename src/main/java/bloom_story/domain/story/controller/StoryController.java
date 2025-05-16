@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import bloom_story.domain.story.dto.CreateStoryResponse;
 import bloom_story.domain.story.dto.StoriesResponse;
 import bloom_story.domain.story.dto.StoryRequest;
 import bloom_story.domain.story.dto.StoryResponse;
@@ -27,11 +28,11 @@ public class StoryController implements StoryApi {
     private final StoryService storyService;
 
     @PostMapping
-    public ResponseEntity<StoryResponse> createStory(
+    public ResponseEntity<CreateStoryResponse> createStory(
         @UserId Integer userId,
         @RequestBody StoryRequest request
     ) {
-        StoryResponse response = storyService.createStory(userId, request);
+        CreateStoryResponse response = storyService.createStory(userId, request);
         return ResponseEntity.status(HttpStatus.CREATED).body(response);
     }
 
@@ -61,16 +62,6 @@ public class StoryController implements StoryApi {
         return ResponseEntity.ok(response);
     }
 
-    // @Operation(summary = "스토리 수정")
-    // @PutMapping("/{id}")
-    // public ResponseEntity<StoryResponse> updateStory(
-    //     @PathVariable Integer id,
-    //     @RequestBody StoryRequest request
-    // ) {
-    //     StoryResponse response = storyService.updateStory(id, request);
-    //     return ResponseEntity.ok(response);
-    // }
-
     @Operation(summary = "스토리 삭제")
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteStory(
@@ -80,5 +71,15 @@ public class StoryController implements StoryApi {
         storyService.deleteStory(id);
         return ResponseEntity.noContent().build();
     }
+
+    // @Operation(summary = "스토리 수정")
+    // @PutMapping("/{id}")
+    // public ResponseEntity<StoryResponse> updateStory(
+    //     @PathVariable Integer id,
+    //     @RequestBody StoryRequest request
+    // ) {
+    //     StoryResponse response = storyService.updateStory(id, request);
+    //     return ResponseEntity.ok(response);
+    // }
 }
 

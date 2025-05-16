@@ -8,7 +8,9 @@ import org.springframework.web.bind.annotation.RestController;
 
 import bloom_story.domain.report.dto.EmotionReportResponse;
 import bloom_story.domain.report.dto.RecommendActivityResponse;
+
 import bloom_story.domain.report.service.ReportService;
+import bloom_story.global.domain.chatgpt.dto.SummaryKeywordResponse;
 import bloom_story.global.domain.jwt.UserId;
 import lombok.RequiredArgsConstructor;
 
@@ -36,10 +38,10 @@ public class ReportController implements ReportApi {
     }
 
     @GetMapping("/keywords")
-    public ResponseEntity<EmotionReportResponse> getLastWeekKeyword(
+    public ResponseEntity<SummaryKeywordResponse> getSummaryKeyword(
         @UserId Integer userId
     ) {
-        EmotionReportResponse response = reportService.getLastWeekKeyword(userId);
+        SummaryKeywordResponse response = reportService.getSummaryKeyword(userId);
         return ResponseEntity.status(HttpStatus.CREATED).body(response);
     }
 }

@@ -3,7 +3,7 @@ package bloom_story.domain.report.model;
 import static jakarta.persistence.GenerationType.IDENTITY;
 import static lombok.AccessLevel.PROTECTED;
 
-import bloom_story.domain.emotion.model.EmotionType;
+import bloom_story.domain.story.model.EmotionType;
 import bloom_story.global.domain.BaseEntity;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -42,9 +42,6 @@ public class EmotionRate extends BaseEntity {
     @Column(name = "surprised")
     private Integer surprised = 0;
 
-    @Column(name = "neutral")
-    private Integer neutral = 0;
-
     @Builder
     public EmotionRate(
         Integer id,
@@ -53,8 +50,7 @@ public class EmotionRate extends BaseEntity {
         Integer fear,
         Integer disgust,
         Integer angry,
-        Integer surprised,
-        Integer neutral
+        Integer surprised
     ) {
         this.id = id;
         this.happy = happy;
@@ -63,7 +59,6 @@ public class EmotionRate extends BaseEntity {
         this.disgust = disgust;
         this.angry = angry;
         this.surprised = surprised;
-        this.neutral = neutral;
     }
 
     public void increase(EmotionType emotion) {
@@ -74,7 +69,6 @@ public class EmotionRate extends BaseEntity {
             case DISGUST -> this.disgust++;
             case ANGRY -> this.angry++;
             case SURPRISED -> this.surprised++;
-            case NEUTRAL -> this.neutral++;
         }
     }
 

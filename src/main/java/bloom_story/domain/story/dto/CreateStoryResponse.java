@@ -8,14 +8,14 @@ import java.util.List;
 
 import com.fasterxml.jackson.databind.annotation.JsonNaming;
 
+import bloom_story.domain.location.service.LocationService;
 import bloom_story.domain.story.model.SharingType;
 import bloom_story.domain.story.model.Story;
-import bloom_story.domain.location.service.LocationService;
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.NotNull;
 
 @JsonNaming(value = SnakeCaseStrategy.class)
-public record StoryResponse(
+public record CreateStoryResponse(
     @Schema(description = "스토리 고유번호", example = "1", requiredMode = REQUIRED)
     Integer id,
 
@@ -46,12 +46,15 @@ public record StoryResponse(
     SharingType sharingType,
 
     @Schema(description = "이미지 Url", example = "1", requiredMode = NOT_REQUIRED)
-    String imageUrl
+    String imageUrl,
+
+    @Schema(description = "과거 작성된 스토리 id 리마인드", example = "1", requiredMode = NOT_REQUIRED)
+    Integer remindStory
 ) {
 
-    public static StoryResponse from(Story story) {
+    public static CreateStoryResponse from(Story story, Integer remindStoryId) {
         List<Double> points = LocationService.extractFromPoint(story.getLocation());
-        return new StoryResponse(
+        return new CreateStoryResponse(
             story.getId(),
             story.getContent(),
             points.get(0),
@@ -61,7 +64,8 @@ public record StoryResponse(
             story.getEmotionDetailType().getDescription(),
             story.getBloom().getId(),
             story.getSharingType(),
-            story.getImageUrl() == null ? null : story.getImageUrl()
+            story.getImageUrl() == null ? null : story.getImageUrl(),
+            remindStoryId
         );
     }
 }

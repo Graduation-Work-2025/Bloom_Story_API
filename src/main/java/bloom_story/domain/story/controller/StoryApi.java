@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import bloom_story.domain.story.dto.CreateStoryResponse;
 import bloom_story.domain.story.dto.StoriesResponse;
 import bloom_story.domain.story.dto.StoryRequest;
 import bloom_story.domain.story.dto.StoryResponse;
@@ -32,7 +33,7 @@ public interface StoryApi {
         })
     @Operation(summary = "스토리 작성")
     @PostMapping
-    ResponseEntity<StoryResponse> createStory(
+    ResponseEntity<CreateStoryResponse> createStory(
         @UserId Integer userId,
         @RequestBody StoryRequest request
     );
@@ -75,19 +76,6 @@ public interface StoryApi {
         @UserId Integer userId
     );
 
-    // @ApiResponses(
-    //     value = {
-    //         @ApiResponse(responseCode = "201"),
-    //         @ApiResponse(responseCode = "400", content = @Content(schema = @Schema(hidden = true))),
-    //         @ApiResponse(responseCode = "404", content = @Content(schema = @Schema(hidden = true)))
-    //     })
-    // @Operation(summary = "스토리 수정")
-    // @PutMapping("/{id}")
-    // ResponseEntity<StoryResponse> updateStory(
-    //     @PathVariable Integer id,
-    //     @RequestBody StoryRequest request
-    // );
-
     @ApiResponses(
         value = {
             @ApiResponse(responseCode = "201"),
@@ -100,4 +88,17 @@ public interface StoryApi {
         @UserId Integer userId,
         @PathVariable Integer id
     );
+
+    // @ApiResponses(
+    //     value = {
+    //         @ApiResponse(responseCode = "201"),
+    //         @ApiResponse(responseCode = "400", content = @Content(schema = @Schema(hidden = true))),
+    //         @ApiResponse(responseCode = "404", content = @Content(schema = @Schema(hidden = true)))
+    //     })
+    // @Operation(summary = "스토리 수정")
+    // @PutMapping("/{id}")
+    // ResponseEntity<StoryResponse> updateStory(
+    //     @PathVariable Integer id,
+    //     @RequestBody StoryRequest request
+    // );
 }

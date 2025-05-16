@@ -5,7 +5,7 @@ import java.util.Optional;
 import org.springframework.data.repository.Repository;
 
 import bloom_story.domain.emotion.model.Emotion;
-import bloom_story.domain.emotion.model.EmotionType;
+import bloom_story.domain.story.model.EmotionType;
 
 public interface EmotionRepository extends Repository<Emotion, Integer> {
 
