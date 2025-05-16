@@ -91,7 +91,7 @@ public class StoryService {
     }
 
     public StoriesResponse getMyStories(Integer myId) {
-        List<Story> stories = storyRepository.findAllByUserId(myId, LocalDateTime.now(clock));
+        List<Story> stories = storyRepository.findAllByUserId(myId);
         return StoriesResponse.from(stories);
     }
 
