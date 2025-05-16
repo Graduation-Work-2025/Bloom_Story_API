@@ -34,9 +34,6 @@ public interface StoryRepository extends Repository<Story, Integer> {
 
     List<Story> findAllByUserIdAndCreatedAtAfterOrderByCreatedAtDesc(Integer userId, LocalDateTime oneWeekAgo);
 
-    @Query("SELECT s FROM Story s WHERE s.user.id = :userId")
-    List<Story> findAllByUserId(@Param("userId") Integer userId);
-
     @Query(value = "SELECT * FROM stories s " +
         "WHERE (ST_Distance_Sphere(location, ST_GeomFromText(:point, 4326)) <= :distance AND s.sharing_type = 'PUBLIC') OR s.user_id = :user_id",
         nativeQuery = true)
