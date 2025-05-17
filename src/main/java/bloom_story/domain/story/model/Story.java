@@ -64,7 +64,7 @@ public class Story extends BaseEntity {
     private EmotionDetailType emotionDetailType;
 
     @NotNull
-    @Column(name = "location", nullable = false, columnDefinition = "POINT")
+    @Column(name = "location", nullable = false, columnDefinition = "POINT SRID 4326")
     private Point location;
 
     @NotNull
