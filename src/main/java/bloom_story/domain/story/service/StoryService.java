@@ -83,7 +83,7 @@ public class StoryService {
     }
 
     public StoriesResponse getNearbyStories(Integer userId, double longitude, double latitude) {
-        String point = String.format("POINT(%.5f %.5f)", longitude, latitude);
+        String point = String.format("POINT(%.5f %.5f)", latitude, longitude);
         List<Story> stories = storyRepository.findStoriesByVisibilityAndDistance(point, DISTANCE, userId);
 
         return StoriesResponse.from(stories);
