@@ -62,8 +62,8 @@ public record CreateStoryResponse(
         return new CreateStoryResponse(
             story.getId(),
             story.getContent(),
-            points.get(1),
             points.get(0),
+            points.get(1),
             story.getLikes(),
             story.getUser().getId(),
             story.getEmotionDetailType().getDescription(),

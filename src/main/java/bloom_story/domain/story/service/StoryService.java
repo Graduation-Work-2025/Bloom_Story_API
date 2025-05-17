@@ -73,8 +73,8 @@ public class StoryService {
         return remindStory.getId();
     }
 
-    private Point convertToPoint(double latitude, double longitude) {
-        return geometryFactory.createPoint(new Coordinate(latitude, longitude));
+    private Point convertToPoint(double longitude, double latitude) {
+        return geometryFactory.createPoint(new Coordinate(longitude, latitude));
     }
 
     public StoryResponse getStoryById(Integer id) {
@@ -83,7 +83,7 @@ public class StoryService {
     }
 
     public StoriesResponse getNearbyStories(Integer userId, double longitude, double latitude) {
-        String point = String.format("POINT(%.5f %.5f)", longitude, latitude);
+        String point = String.format("POINT(%.5f %.5f)", latitude, longitude);
         List<Story> stories = storyRepository.findStoriesByVisibilityAndDistance(point, DISTANCE, userId);
 
         return StoriesResponse.from(stories);
