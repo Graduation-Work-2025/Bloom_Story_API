@@ -73,8 +73,8 @@ public class StoryService {
         return remindStory.getId();
     }
 
-    private Point convertToPoint(double latitude, double longitude) {
-        return geometryFactory.createPoint(new Coordinate(latitude, longitude));
+    private Point convertToPoint(double longitude, double latitude) {
+        return geometryFactory.createPoint(new Coordinate(longitude, latitude));
     }
 
     public StoryResponse getStoryById(Integer id) {
