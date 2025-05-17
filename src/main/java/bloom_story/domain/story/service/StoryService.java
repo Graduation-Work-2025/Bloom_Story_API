@@ -42,12 +42,11 @@ public class StoryService {
     @Transactional
     public CreateStoryResponse createStory(Integer userId, StoryRequest request) {
         User user = userRepository.getById(userId);
-        Point point = convertToPoint(request.latitude(), request.longitude());
         EmotionDetailType detailType = EmotionDetailType.getByName(request.emotionType());
         EmotionType emotionType = detailType.getSuperType();
-        BloomType bloomType = BloomType.getByName(emotionType);
-        Bloom bloom = bloomRepository.getById(bloomType.getBloomId());
-        Integer remindStoryId = getRemindStory(userId, request);
+        Bloom bloom = bloomRepository.getById(BloomType.getByName(emotionType).getBloomId());
+        Point point = convertToPoint(request.longitude(), request.latitude());
+        Integer remindStoryId = getRemindStory(userId, point);
 
         Story story = Story.builder()
             .user(user)
@@ -65,17 +64,17 @@ public class StoryService {
         return CreateStoryResponse.from(story, remindStoryId);
     }
 
-    private Integer getRemindStory(Integer userId, StoryRequest request) {
-        String point = String.format("POINT(%.5f %.5f)", request.latitude(), request.longitude());
-        Story remindStory = storyRepository.getMyLastStoryByDistance(point, DISTANCE, userId);
+    private Integer getRemindStory(Integer userId, Point point) {
+        String pointWkt = String.format("POINT(%f %f)", point.getY(), point.getX());
+        Story remindStory = storyRepository.getMyLastStoryByDistance(pointWkt, DISTANCE, userId);
         if (remindStory == null) {
             return null;
         }
         return remindStory.getId();
     }
 
-    private Point convertToPoint(double latitude, double longitude) {
-        return geometryFactory.createPoint(new Coordinate(latitude, longitude));
+    private Point convertToPoint(double longitude, double latitude) {
+        return geometryFactory.createPoint(new Coordinate(longitude, latitude));
     }
 
     public StoryResponse getStoryById(Integer id) {
@@ -84,7 +83,7 @@ public class StoryService {
     }
 
     public StoriesResponse getNearbyStories(Integer userId, double longitude, double latitude) {
-        String point = String.format("POINT(%.5f %.5f)", longitude, latitude);
+        String point = String.format("POINT(%.5f %.5f)", latitude, longitude);
         List<Story> stories = storyRepository.findStoriesByVisibilityAndDistance(point, DISTANCE, userId);
 
         return StoriesResponse.from(stories);
