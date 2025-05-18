@@ -72,7 +72,6 @@ public interface StoryApi {
             @ApiResponse(responseCode = "404", content = @Content(schema = @Schema(hidden = true)))
         })
     @Operation(summary = "공개된 내 스토리 목록 조회")
-    @SecurityRequirement(name = "Jwt Authentication")
     @GetMapping("/my")
     ResponseEntity<StoriesResponse> getMyStories(
         @UserId Integer userId
