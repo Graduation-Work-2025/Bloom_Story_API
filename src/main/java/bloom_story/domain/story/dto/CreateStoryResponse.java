@@ -18,9 +18,6 @@ import jakarta.validation.constraints.NotNull;
 
 @JsonNaming(value = SnakeCaseStrategy.class)
 public record CreateStoryResponse(
-    @Schema(description = "스토리 고유번호", example = "1", requiredMode = REQUIRED)
-    Integer id,
-
     @Schema(description = "스토리 내용", example = "오늘은 좋은 일이 많았어요!")
     String content,
 
@@ -60,7 +57,6 @@ public record CreateStoryResponse(
     public static CreateStoryResponse from(Story story, Integer remindStoryId) {
         List<Double> points = LocationService.extractFromPoint(story.getLocation());
         return new CreateStoryResponse(
-            story.getId(),
             story.getContent(),
             points.get(0),
             points.get(1),
