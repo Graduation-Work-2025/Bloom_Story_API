@@ -33,7 +33,6 @@ public interface StoryApi {
             @ApiResponse(responseCode = "404", content = @Content(schema = @Schema(hidden = true)))
         })
     @Operation(summary = "스토리 작성")
-    @SecurityRequirement(name = "Jwt Authentication")
     @PostMapping
     ResponseEntity<CreateStoryResponse> createStory(
         @UserId Integer userId,
@@ -47,7 +46,6 @@ public interface StoryApi {
             @ApiResponse(responseCode = "404", content = @Content(schema = @Schema(hidden = true)))
         })
     @Operation(summary = "특정 스토리 조회")
-    @SecurityRequirement(name = "Jwt Authentication")
     @GetMapping("/{id}")
     ResponseEntity<StoryResponse> getStory(
         @PathVariable Integer id
@@ -87,7 +85,6 @@ public interface StoryApi {
             @ApiResponse(responseCode = "404", content = @Content(schema = @Schema(hidden = true)))
         })
     @Operation(summary = "스토리 삭제")
-    @SecurityRequirement(name = "Jwt Authentication")
     @DeleteMapping("/{id}")
     ResponseEntity<Void> deleteStory(
         @UserId Integer userId,

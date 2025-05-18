@@ -42,11 +42,16 @@ public class StoryService {
     @Transactional
     public CreateStoryResponse createStory(Integer userId, StoryRequest request) {
         User user = userRepository.getById(userId);
+        System.out.println("============ 유저 아이디 추출 완료 ==========");
         EmotionDetailType detailType = EmotionDetailType.getByName(request.emotionType());
         EmotionType emotionType = detailType.getSuperType();
+        System.out.println("============ 감정 타입 추출 완료 ==========");
         Bloom bloom = bloomRepository.getById(BloomType.getByName(emotionType).getBloomId());
+        System.out.println("============ 꽃 매핑 완료 ==========");
         Point point = convertToPoint(request.longitude(), request.latitude());
+        System.out.println("============ 좌표 포인트 추출 완료 ==========");
         Integer remindStoryId = getRemindStory(userId, point);
+        System.out.println("============ 응답 형성 완료 ==========");
 
         Story story = Story.builder()
             .user(user)
