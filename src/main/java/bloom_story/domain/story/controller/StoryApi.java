@@ -19,6 +19,7 @@ import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
 
 @Tag(name = "[NORMAL] Story: 스토리", description = "사용자의 스토리 정보 관리")
@@ -32,6 +33,7 @@ public interface StoryApi {
             @ApiResponse(responseCode = "404", content = @Content(schema = @Schema(hidden = true)))
         })
     @Operation(summary = "스토리 작성")
+    @SecurityRequirement(name = "Jwt Authentication")
     @PostMapping
     ResponseEntity<CreateStoryResponse> createStory(
         @UserId Integer userId,
@@ -45,6 +47,7 @@ public interface StoryApi {
             @ApiResponse(responseCode = "404", content = @Content(schema = @Schema(hidden = true)))
         })
     @Operation(summary = "특정 스토리 조회")
+    @SecurityRequirement(name = "Jwt Authentication")
     @GetMapping("/{id}")
     ResponseEntity<StoryResponse> getStory(
         @PathVariable Integer id
@@ -71,6 +74,7 @@ public interface StoryApi {
             @ApiResponse(responseCode = "404", content = @Content(schema = @Schema(hidden = true)))
         })
     @Operation(summary = "공개된 내 스토리 목록 조회")
+    @SecurityRequirement(name = "Jwt Authentication")
     @GetMapping("/my")
     ResponseEntity<StoriesResponse> getMyStories(
         @UserId Integer userId
@@ -83,6 +87,7 @@ public interface StoryApi {
             @ApiResponse(responseCode = "404", content = @Content(schema = @Schema(hidden = true)))
         })
     @Operation(summary = "스토리 삭제")
+    @SecurityRequirement(name = "Jwt Authentication")
     @DeleteMapping("/{id}")
     ResponseEntity<Void> deleteStory(
         @UserId Integer userId,
