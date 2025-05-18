@@ -44,5 +44,21 @@ public class ReportController implements ReportApi {
         SummaryKeywordResponse response = reportService.getSummaryKeyword(userId);
         return ResponseEntity.status(HttpStatus.CREATED).body(response);
     }
+
+    @GetMapping("/keywords/renewal")
+    public ResponseEntity<SummaryKeywordResponse> renewalSummaryKeyword(
+        @UserId Integer userId
+    ) {
+        SummaryKeywordResponse response = reportService.renewalSummaryKeyword(userId);
+        return ResponseEntity.status(HttpStatus.CREATED).body(response);
+    }
+
+    @GetMapping("/recommend/renewal")
+    public ResponseEntity<RecommendActivityResponse> renewalRecommendActivity(
+        @UserId Integer userId
+    ) {
+        RecommendActivityResponse response = reportService.renewalRecommendActivity(userId);
+        return ResponseEntity.status(HttpStatus.CREATED).body(response);
+    }
 }
 

@@ -32,7 +32,7 @@ public interface StoryRepository extends Repository<Story, Integer> {
             .orElse(null);
     }
 
-    List<Story> findAllByUserIdAndCreatedAtAfterOrderByCreatedAtDesc(Integer userId, LocalDateTime oneWeekAgo);
+    List<Story> findAllByUserIdAndCreatedAtBetweenOrderByCreatedAtDesc(Integer userId, LocalDateTime start, LocalDateTime end);
 
     @Query(value = "SELECT * FROM stories s " +
         "WHERE (ST_Distance_Sphere(location, ST_GeomFromText(:point, 4326)) <= :distance AND s.sharing_type = 'PUBLIC') OR s.user_id = :user_id",

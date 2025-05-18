@@ -25,7 +25,7 @@ public interface ReportApi {
             @ApiResponse(responseCode = "400", content = @Content(schema = @Schema(hidden = true))),
             @ApiResponse(responseCode = "404", content = @Content(schema = @Schema(hidden = true)))
         })
-    @Operation(summary = "감정 통계")
+    @Operation(summary = "감정 통계 불러오기")
     @GetMapping("/emotions")
     ResponseEntity<EmotionReportResponse> getEmotionReport(
         @UserId Integer userId
@@ -37,7 +37,7 @@ public interface ReportApi {
             @ApiResponse(responseCode = "400", content = @Content(schema = @Schema(hidden = true))),
             @ApiResponse(responseCode = "404", content = @Content(schema = @Schema(hidden = true)))
         })
-    @Operation(summary = "추천 활동")
+    @Operation(summary = "추천 활동 불러오기")
     @GetMapping("/recommend")
     ResponseEntity<RecommendActivityResponse> getRecommendActivity(
         @UserId Integer userId
@@ -49,9 +49,33 @@ public interface ReportApi {
             @ApiResponse(responseCode = "400", content = @Content(schema = @Schema(hidden = true))),
             @ApiResponse(responseCode = "404", content = @Content(schema = @Schema(hidden = true)))
         })
-    @Operation(summary = "지난 일주일 키워드 요약")
+    @Operation(summary = "지난 일주일 키워드 요약 불러오기")
     @GetMapping("/keywords")
     ResponseEntity<SummaryKeywordResponse> getSummaryKeyword(
+        @UserId Integer userId
+    );
+
+    @ApiResponses(
+        value = {
+            @ApiResponse(responseCode = "201"),
+            @ApiResponse(responseCode = "400", content = @Content(schema = @Schema(hidden = true))),
+            @ApiResponse(responseCode = "404", content = @Content(schema = @Schema(hidden = true)))
+        })
+    @Operation(summary = "추천 활동 갱신(새로고침)")
+    @GetMapping("/recommend/renewal")
+    ResponseEntity<RecommendActivityResponse> renewalRecommendActivity(
+        @UserId Integer userId
+    );
+
+    @ApiResponses(
+        value = {
+            @ApiResponse(responseCode = "201"),
+            @ApiResponse(responseCode = "400", content = @Content(schema = @Schema(hidden = true))),
+            @ApiResponse(responseCode = "404", content = @Content(schema = @Schema(hidden = true)))
+        })
+    @Operation(summary = "지난 일주일 키워드 요약 갱신(새로고침)")
+    @GetMapping("/keywords/renewal")
+    ResponseEntity<SummaryKeywordResponse> renewalSummaryKeyword(
         @UserId Integer userId
     );
 }
