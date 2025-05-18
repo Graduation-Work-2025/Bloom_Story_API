@@ -14,6 +14,8 @@ public interface UserRepository extends Repository<User, Integer> {
 
     User save(User user);
 
+    List<User> findAll();
+
     Optional<User> findById(Integer id);
 
     default User getById(Integer id) {
