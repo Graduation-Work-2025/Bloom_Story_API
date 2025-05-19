@@ -17,6 +17,7 @@ import bloom_story.domain.user.dto.UserResponse;
 import bloom_story.domain.user.dto.UserSignupRequest;
 import bloom_story.domain.user.dto.UserUpdateRequest;
 import bloom_story.domain.user.service.UserService;
+import bloom_story.global.domain.jwt.UserId;
 import io.swagger.v3.oas.annotations.Operation;
 import lombok.RequiredArgsConstructor;
 
@@ -46,9 +47,9 @@ public class UserController implements UserApi {
     }
 
     @Operation(summary = "사용자 정보 조회")
-    @GetMapping("/{id}")
+    @GetMapping("/my")
     public ResponseEntity<UserResponse> getUser(
-        @PathVariable Integer id
+        @UserId Integer id
     ) {
         UserResponse response = userService.getUserInfo(id);
         return ResponseEntity.ok().body(response);
