@@ -14,6 +14,7 @@ import bloom_story.domain.user.dto.UserLoginResponse;
 import bloom_story.domain.user.dto.UserResponse;
 import bloom_story.domain.user.dto.UserSignupRequest;
 import bloom_story.domain.user.dto.UserUpdateRequest;
+import bloom_story.global.domain.jwt.UserId;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -56,9 +57,9 @@ public interface UserApi {
             @ApiResponse(responseCode = "404", content = @Content(schema = @Schema(hidden = true)))
         })
     @Operation(summary = "사용자 정보 조회")
-    @GetMapping("/{id}")
+    @GetMapping("/my")
     ResponseEntity<UserResponse> getUser(
-        @PathVariable Integer id
+        @UserId Integer id
     );
 
     @ApiResponses(
