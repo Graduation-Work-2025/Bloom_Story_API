@@ -13,6 +13,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import bloom_story.domain.bloom.model.Bloom;
 import bloom_story.domain.bloom.repository.BloomRepository;
+import bloom_story.domain.report.service.ReportService;
 import bloom_story.domain.story.dto.CreateStoryResponse;
 import bloom_story.domain.story.dto.StoriesResponse;
 import bloom_story.domain.story.dto.StoryRequest;
@@ -34,6 +35,7 @@ public class StoryService {
     private final StoryRepository storyRepository;
     private final UserRepository userRepository;
     private final BloomRepository bloomRepository;
+    private final ReportService reportService;
     private final GeometryFactory geometryFactory = new GeometryFactory(new PrecisionModel(), 4326);
     private final Clock clock;
 
@@ -42,16 +44,11 @@ public class StoryService {
     @Transactional
     public CreateStoryResponse createStory(Integer userId, StoryRequest request) {
         User user = userRepository.getById(userId);
-        System.out.println("============ 유저 아이디 추출 완료 ==========");
         EmotionDetailType detailType = EmotionDetailType.getByName(request.emotionType());
         EmotionType emotionType = detailType.getSuperType();
-        System.out.println("============ 감정 타입 추출 완료 ==========");
         Bloom bloom = bloomRepository.getById(BloomType.getByName(emotionType).getBloomId());
-        System.out.println("============ 꽃 매핑 완료 ==========");
         Point point = convertToPoint(request.longitude(), request.latitude());
-        System.out.println("============ 좌표 포인트 추출 완료 ==========");
         Integer remindStoryId = getRemindStory(userId, point);
-        System.out.println("============ 응답 형성 완료 ==========");
 
         Story story = Story.builder()
             .user(user)
@@ -66,6 +63,7 @@ public class StoryService {
             .build();
 
         storyRepository.save(story);
+        reportService.renewalRecommendActivityFromStory(user, story);
         return CreateStoryResponse.from(story, remindStoryId);
     }
 
@@ -91,12 +89,12 @@ public class StoryService {
         String point = String.format("POINT(%.5f %.5f)", latitude, longitude);
         List<Story> stories = storyRepository.findStoriesByVisibilityAndDistance(point, DISTANCE, userId);
 
-        return StoriesResponse.from(stories);
+        return StoriesResponse.from(userId, stories);
     }
 
     public StoriesResponse getMyStories(Integer myId) {
         List<Story> stories = storyRepository.findAllByUserId(myId);
-        return StoriesResponse.from(stories);
+        return StoriesResponse.from(myId, stories);
     }
 
     public void deleteStory(Integer id) {

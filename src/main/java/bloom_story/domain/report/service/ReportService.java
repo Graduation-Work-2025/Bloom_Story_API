@@ -77,6 +77,10 @@ public class ReportService {
     public RecommendActivityResponse renewalRecommendActivity(Integer userId) {
         User user = userRepository.getById(userId);
         Story recentlyStory = storyRepository.getTop1ByUserIdOrderByCreatedAtDesc(userId);
+        return renewalRecommendActivityFromStory(user, recentlyStory);
+    }
+
+    public RecommendActivityResponse renewalRecommendActivityFromStory(User user, Story recentlyStory) {
         RecommendResponse response = gptService.recommendActivity(
             recentlyStory.getEmotionType().getDescription(),
             recentlyStory.getContent()

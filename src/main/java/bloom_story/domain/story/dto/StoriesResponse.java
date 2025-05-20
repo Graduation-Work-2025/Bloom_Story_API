@@ -17,14 +17,16 @@ import jakarta.validation.constraints.NotNull;
 
 @JsonNaming(value = SnakeCaseStrategy.class)
 public record StoriesResponse(
-    List<InnerStoryResponse> stories
+    List<InnerStoryResponse> stories,
+    Integer count
 ) {
 
-    public static StoriesResponse from(List<Story> stories) {
+    public static StoriesResponse from(Integer userId, List<Story> stories) {
         return new StoriesResponse(
             stories.stream()
-                .map(InnerStoryResponse::from)
-                .toList()
+                .map(story -> InnerStoryResponse.from(userId, story))
+                .toList(),
+            stories.size()
         );
     }
 
@@ -54,10 +56,13 @@ public record StoriesResponse(
         String imageUrl,
 
         @Schema(description = "등록 일자", example = "2024-08-28", requiredMode = REQUIRED)
-        @JsonFormat(pattern = "yyyy-MM-dd") LocalDateTime createdAt
+        @JsonFormat(pattern = "yyyy-MM-dd") LocalDateTime createdAt,
+
+        @Schema(description = "내 스토리 여부", requiredMode = NOT_REQUIRED)
+        Boolean isMine
     ) {
 
-        private static InnerStoryResponse from(Story story) {
+        private static InnerStoryResponse from(Integer userId, Story story) {
             List<Double> points = LocationService.extractFromPoint(story.getLocation());
             return new InnerStoryResponse(
                 story.getId(),
@@ -67,7 +72,8 @@ public record StoriesResponse(
                 story.getEmotionDetailType().getDescription(),
                 story.getBloom().getId(),
                 story.getImageUrl() == null ? null : story.getImageUrl(),
-                story.getCreatedAt()
+                story.getCreatedAt(),
+                userId.equals(story.getUser().getId())
             );
         }
 
