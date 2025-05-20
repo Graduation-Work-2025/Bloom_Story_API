@@ -15,14 +15,16 @@ import jakarta.validation.constraints.NotNull;
 
 @JsonNaming(value = SnakeCaseStrategy.class)
 public record StoryGardenResponse(
-    List<InnerStoryResponse> stories
+    List<InnerStoryResponse> stories,
+    Integer count
 ) {
 
     public static StoryGardenResponse from(List<Story> stories) {
         return new StoryGardenResponse(
             stories.stream()
                 .map(InnerStoryResponse::from)
-                .toList()
+                .toList(),
+            stories.size()
         );
     }
 
