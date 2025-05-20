@@ -41,10 +41,10 @@ public record CreateStoryResponse(
     @Schema(description = "Bloom ID", example = "1", requiredMode = REQUIRED)
     Integer bloomId,
 
-    @Schema(description = "Bloom ID", example = "1", requiredMode = REQUIRED)
+    @Schema(description = "공유 타입", example = "PUBLIC", requiredMode = REQUIRED)
     SharingType sharingType,
 
-    @Schema(description = "이미지 Url", example = "1", requiredMode = NOT_REQUIRED)
+    @Schema(description = "이미지 Url", example = "https://www.example.jpg", requiredMode = NOT_REQUIRED)
     String imageUrl,
 
     @Schema(description = "등록 일자", example = "2024-08-28", requiredMode = REQUIRED)

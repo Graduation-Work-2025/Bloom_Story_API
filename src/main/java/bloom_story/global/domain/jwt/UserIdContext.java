@@ -14,6 +14,5 @@ public class UserIdContext {
 
     public void setUserId(Integer userId) {
         this.userId = userId;
-        System.out.println("set userId: " + userId);
     }
 }
