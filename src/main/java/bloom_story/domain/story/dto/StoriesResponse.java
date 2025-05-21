@@ -46,6 +46,9 @@ public record StoriesResponse(
         @Schema(description = "작성자 ID", example = "1", requiredMode = REQUIRED)
         Integer userId,
 
+        @Schema(description = "작성자 닉네임", example = "캔따개", requiredMode = REQUIRED)
+        String nickname,
+
         @Schema(description = "감정 타입", example = "기쁨", requiredMode = REQUIRED)
         String emotionType,
 
@@ -69,6 +72,7 @@ public record StoriesResponse(
                 points.get(0),
                 points.get(1),
                 story.getUser().getId(),
+                story.getUser().getNickname(),
                 story.getEmotionDetailType().getDescription(),
                 story.getBloom().getId(),
                 story.getImageUrl() == null ? null : story.getImageUrl(),
