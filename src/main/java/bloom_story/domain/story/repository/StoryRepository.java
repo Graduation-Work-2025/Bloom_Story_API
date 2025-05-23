@@ -25,6 +25,7 @@ public interface StoryRepository extends Repository<Story, Integer> {
 
     Optional<Story> findTop1ByUserIdOrderByCreatedAtDesc(Integer userId);
 
+    @Query(value = "SELECT * FROM stories WHERE user_id = :userId ORDER BY created_at DESC", nativeQuery = true)
     List<Story> findAllByUserId(Integer userId);
 
     default Story getTop1ByUserIdOrderByCreatedAtDesc(Integer userId) {
