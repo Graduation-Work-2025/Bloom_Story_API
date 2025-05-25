@@ -44,19 +44,18 @@ public class ReportService {
     private final SummaryKeywordRepository summaryKeywordRepository;
     private final Clock clock;
 
-    @Transactional
     public EmotionReportResponse getEmotionReport(Integer userId) {
         EmotionRate rate = emotionRateRepository.getLatestByUserId(userId);
         return EmotionReportResponse.from(rate);
     }
 
-    @Transactional
+
     public RecommendActivityResponse getRecommendActivity(Integer userId) {
         RecommendActivity recommend = recommendActivityRepository.getLatestByUserId(userId);
         return RecommendActivityResponse.from(recommend);
     }
 
-    @Transactional
+
     public SummaryKeywordResponse getSummaryKeyword(Integer userId) {
         SummaryKeyword keywords = summaryKeywordRepository.getLatestByUserId(userId);
         return SummaryKeywordResponse.from(keywords);

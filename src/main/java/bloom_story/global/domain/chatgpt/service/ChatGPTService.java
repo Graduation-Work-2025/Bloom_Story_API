@@ -37,6 +37,29 @@ public class ChatGPTService {
     @Value("${openai.api.model}")
     private String model;
 
+    @Value("${prompt.recommend.happy}")
+    private String happyRecommendPrompt;
+
+    @Value("${prompt.recommend.sad}")
+    private String sadRecommendPrompt;
+
+    @Value("${prompt.recommend.disgust}")
+    private String disgustRecommendPrompt;
+
+    @Value("${prompt.recommend.fear}")
+    private String fearRecommendPrompt;
+
+    @Value("${prompt.recommend.surprised}")
+    private String surprisedRecommendPrompt;
+
+    @Value("${prompt.recommend.angry}")
+    private String angryRecommendPrompt;
+
+    @Value("${prompt.summary}")
+    private String summaryKeywordPrompt;
+
+    private static final String URL = "https://api.openai.com/v1/chat/completions";
+
     private final RestTemplate restTemplate = new RestTemplate();
 
     public String requestRecommendation(String emotion) {
@@ -66,23 +89,19 @@ public class ChatGPTService {
     }
 
     public RecommendResponse recommendActivity(String emotion, String content) {
-        String url = "https://api.openai.com/v1/chat/completions";
+        String prompt;
+        switch (emotion) {
+            case "분노" -> prompt = angryRecommendPrompt;
+            case "슬픔" -> prompt = sadRecommendPrompt;
+            case "혐오" -> prompt = disgustRecommendPrompt;
+            case "공포" -> prompt = fearRecommendPrompt;
+            default -> prompt = happyRecommendPrompt;
+        }
 
         GptRequest request = new GptRequest();
         request.setModel(model);
         request.setMessages(List.of(
-            new GptMessage("system", """
-                당신은 감정 기반 콘텐츠 추천 전문가입니다. 사용자가 작성한 스토리와 감정을 기반으로, 가장 적절한 활동, 책, 영화, 드라마, 혹은 짧은 문구 중 하나를 추천해 주세요.
-                
-                - 응답은 공감이 담긴 따뜻한 말투를 사용하세요.
-                - 너무 장황한 설명은 피하고, 사용자의 감정에 집중하세요.
-                - 결과는 반드시 아래 형식을 따라주세요:
-                {
-                  "category": "책 | 영화 | 드라마 | 활동 | 문구 중 하나",
-                  "content": "추천할 콘텐츠 제목 또는 문구",
-                  "reason": "짧고 따뜻한 추천 이유 (1문장)"
-                }
-                """),
+            new GptMessage("system", prompt),
             new GptMessage("user", "감정: " + emotion + "\n스토리 내용: " + content)
         ));
 
@@ -93,7 +112,7 @@ public class ChatGPTService {
         HttpEntity<GptRequest> entity = new HttpEntity<>(request, headers);
 
         ResponseEntity<GptResponse> response = restTemplate.exchange(
-            url,
+            URL,
             HttpMethod.POST,
             entity,
             GptResponse.class
@@ -118,48 +137,10 @@ public class ChatGPTService {
     }
 
     public SummaryKeywordResponse summaryLastWeekToKeyword(SummaryKeywordRequest storyRequest) {
-        String url = "https://api.openai.com/v1/chat/completions";
-
         GptRequest request = new GptRequest();
         request.setModel(model);
         request.setMessages(List.of(
-            new GptMessage("system", """
-                // 문현수님 담당, 일주일 치 스토리를 받아서 요일별 키워드들로 추출하는 프롬프팅 진행중
-                위 내용을 바탕으로 요일(날짜) 별로 있었던 일들과 감정을 요약하고, 각각을 키워드로 변환해서 제공해줘.
-                형식은 아래 형식으로 지켜줘.
-                {
-                    "summaries": {
-                        "monday": {
-                            "weekday": "25.05.01",
-                            "keyword": ["키워드1", "키워드2", "키워드3", ...]
-                        },
-                        "tuesday": {
-                            "weekday": "25.05.02",
-                            "keyword": ["키워드1", "키워드2", "키워드3", ...]
-                        },
-                        "wednesday": {
-                            "weekday": "25.05.03",
-                            "keyword": ["키워드1", "키워드2", "키워드3", ...]
-                        },
-                        "thursday": {
-                            "weekday": "25.05.04",
-                            "keyword": ["키워드1", "키워드2", "키워드3", ...]
-                        },
-                        "friday": {
-                            "weekday": "25.05.05",
-                            "keyword": ["키워드1", "키워드2", "키워드3", ...]
-                        },
-                        "saturday": {
-                            "weekday": "25.05.06",
-                            "keyword": ["키워드1", "키워드2", "키워드3", ...]
-                        },
-                        "sunday": {
-                            "weekday": "25.05.07",
-                            "keyword": ["키워드1", "키워드2", "키워드3", ...]
-                        }
-                    }
-                }
-                """),
+            new GptMessage("system", summaryKeywordPrompt),
             new GptMessage("user",
                 storyRequest.stories().stream()
                     .map(story ->
@@ -179,7 +160,7 @@ public class ChatGPTService {
         HttpEntity<GptRequest> entity = new HttpEntity<>(request, headers);
 
         ResponseEntity<GptResponse> response = restTemplate.exchange(
-            url,
+            URL,
             HttpMethod.POST,
             entity,
             GptResponse.class
