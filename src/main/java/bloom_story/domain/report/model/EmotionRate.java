@@ -59,7 +59,8 @@ public class EmotionRate extends BaseEntity {
         Integer fear,
         Integer disgust,
         Integer angry,
-        Integer surprised
+        Integer surprised,
+        User user
     ) {
         this.id = id;
         this.happy = happy;
@@ -68,6 +69,7 @@ public class EmotionRate extends BaseEntity {
         this.disgust = disgust;
         this.angry = angry;
         this.surprised = surprised;
+        this.user = user;
     }
 
     public void increase(EmotionType emotion) {

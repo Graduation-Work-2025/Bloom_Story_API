@@ -66,6 +66,19 @@ public interface ReportApi {
     ResponseEntity<RecommendActivityResponse> renewalRecommendActivity(
         @UserId Integer userId
     );
+
+    @ApiResponses(
+        value = {
+            @ApiResponse(responseCode = "201"),
+            @ApiResponse(responseCode = "400", content = @Content(schema = @Schema(hidden = true))),
+            @ApiResponse(responseCode = "404", content = @Content(schema = @Schema(hidden = true)))
+        })
+    @Operation(summary = "리포트 수동 갱신(관리자용 새로고침)")
+    @GetMapping("/renewal")
+    ResponseEntity<EmotionReportResponse> renewalReportFromManual(
+        @UserId Integer userId
+    );
+
     //
     // @ApiResponses(
     //     value = {

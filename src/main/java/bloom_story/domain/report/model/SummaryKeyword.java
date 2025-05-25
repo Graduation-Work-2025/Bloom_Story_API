@@ -37,7 +37,7 @@ public class SummaryKeyword extends BaseEntity {
     @JoinColumn(name = "user_id", nullable = false)
     private User user;
 
-    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd")
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd hh:mm:ss")
     @Column(name = "start_date", columnDefinition = "TIMESTAMP")
     private LocalDate startDate;
 
