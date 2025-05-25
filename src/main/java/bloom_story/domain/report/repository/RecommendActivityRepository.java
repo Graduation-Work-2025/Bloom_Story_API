@@ -4,7 +4,6 @@ import java.util.Optional;
 
 import org.springframework.data.repository.Repository;
 
-import bloom_story.domain.report.model.EmotionRate;
 import bloom_story.domain.report.model.RecommendActivity;
 import bloom_story.global.domain.exception.custom.DataNotFoundException;
 

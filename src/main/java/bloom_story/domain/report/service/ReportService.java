@@ -2,6 +2,7 @@ package bloom_story.domain.report.service;
 
 import java.time.Clock;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.temporal.ChronoField;
 import java.util.List;
@@ -63,8 +64,13 @@ public class ReportService {
 
     @Transactional
     public EmotionReportResponse renewalEmotionReport(Integer userId) {
+        LocalDateTime today = LocalDateTime.now(clock);
         List<Story> stories = getLastWeekStories(userId);
-        EmotionRate rate = EmotionRate.builder().happy(0).sad(0).angry(0).disgust(0).fear(0).surprised(0).build();
+        User user = userRepository.getById(userId);
+        EmotionRate rate = EmotionRate.builder()
+            .happy(0).sad(0).angry(0).disgust(0).fear(0).surprised(0)
+            .user(user)
+            .build();
         for (Story story : stories) {
             rate.increase(story.getEmotionType());
         }
@@ -109,13 +115,13 @@ public class ReportService {
         SummaryKeyword summaryKeyword = SummaryKeyword.builder()
             .user(userRepository.getById(userId))
             .startDate(startDate)
+            .sunday(toJson(response.summaries().get("sunday"), objectMapper))
             .monday(toJson(response.summaries().get("monday"), objectMapper))
             .tuesday(toJson(response.summaries().get("tuesday"), objectMapper))
             .wednesday(toJson(response.summaries().get("wednesday"), objectMapper))
             .thursday(toJson(response.summaries().get("thursday"), objectMapper))
             .friday(toJson(response.summaries().get("friday"), objectMapper))
             .saturday(toJson(response.summaries().get("saturday"), objectMapper))
-            .sunday(toJson(response.summaries().get("sunday"), objectMapper))
             .build();
 
         summaryKeywordRepository.save(summaryKeyword);

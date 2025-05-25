@@ -20,13 +20,17 @@ public class ReportScheduler {
     private final UserRepository userRepository;
 
     @Scheduled(cron = "0 0 1 * * SUN")
-    public void cacheCityBusByOpenApi() {
+    public void renewalReport() {
         try {
+            StringBuilder names = new StringBuilder();
             List<Integer> userIds = userRepository.findAll().stream().map(User::getId).toList();
             for (Integer userId : userIds) {
                 reportService.renewalEmotionReport(userId);
                 reportService.renewalSummaryKeyword(userId);
+                names.append(userId).append(" ");
             }
+            log.info("감정 레포트 스케줄링이 성공하였습니다.");
+            log.info(String.format("갱신한 사용자 목록: %s", names));
         } catch (Exception e) {
             log.warn("감정 레포트 스케줄링 과정에서 오류가 발생했습니다.");
         }
