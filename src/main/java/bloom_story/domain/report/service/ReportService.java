@@ -196,6 +196,12 @@ public class ReportService {
             .build();
 
         recommendActivityRepository.save(randomActivity);
+        try {
+            Thread.sleep(1000); // 1초 대기
+        } catch (InterruptedException e) {
+            Thread.currentThread().interrupt(); // 인터럽트 상태 복원
+            e.printStackTrace();
+        }
         return randomActivity;
     }
 }
